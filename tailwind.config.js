@@ -27,6 +27,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
+        Klee: [ 'Klee One', "cursive"],
       },
       colors: {
         primary: colors.teal,
