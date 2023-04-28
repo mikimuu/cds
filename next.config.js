@@ -3,7 +3,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 // You might need to insert additional domains in script-src if you are using external services
-const ContentSecurityPolicy = `
+const ContentSecurityPolicy = 
+`
 default-src 'self';
 script-src 'self' platform.twitter.com syndication.twitter.com; giscus.app;
   style-src 'self' 'unsafe-inline';
@@ -18,7 +19,7 @@ const securityHeaders = [
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
   {
     key: 'Content-Security-Policy',
-     value: ContentSecurityPolicy
+    value: ContentSecurityPolicy
     
   },
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
