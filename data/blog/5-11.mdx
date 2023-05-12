@@ -50,7 +50,7 @@ summary: はちかいみみの書評集を買った。
     ![](/static/images/may/IMG_4108.jpg)
 </div>
 
-
+import VideoPlayer from "../components/VideoPlayer";
 
 <video
   controls
@@ -60,3 +60,17 @@ summary: はちかいみみの書評集を買った。
 >
   お使いのブラウザはビデオタグをサポートしていません。
 </video>
+
+<VideoPlayer
+  options={{
+    controls: true,
+    autoplay: false,
+    fluid: true,
+    sources: [
+      {
+        src="../../public/static/images/may/IMG_4107.MOV",
+        type="video/quicktime",
+      },
+    ],
+  }}
+/>
