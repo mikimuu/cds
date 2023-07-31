@@ -6,7 +6,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const ContentSecurityPolicy = 
 `
 default-src 'self';
-script-src 'self' platform.twitter.com syndication.twitter.com; giscus.app;
+script-src 'self' platform.twitter.com syndication.twitter.com; giscus.app; vitals.vercel-insights.com;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   media-src 'none';
