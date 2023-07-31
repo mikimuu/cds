@@ -62,7 +62,7 @@ const Giscus = () => {
   }, [LoadComments])
 
   return (
-    <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300 rotate-12">
+    <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300 rotate-9">
       {enableLoadComments && <button onClick={LoadComments}>githubのアカウント必要だけど、コメントできるようになったのでみんなの日記でもなんでも書いてください。</button>}
       <div className="giscus" id={COMMENTS_ID} />
     </div>
