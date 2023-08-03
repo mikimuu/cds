@@ -77,7 +77,7 @@ const siteMetadata = {
     },
     disqusConfig: {
       // https://help.disqus.com/en/articles/1717111-what-s-a-shortname
-      shortname: process.env. E,
+      shortname: process.env.NEXT_PUBLIC_DISQUS_SHORTNAME,
     },
   },
 }
