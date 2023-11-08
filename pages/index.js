@@ -4,20 +4,59 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 import formatDate from '@/lib/utils/formatDate'
-
+import Image from '@/components/Image'
 import NewsletterForm from '@/components/NewsletterForm'
+import { useMemo } from 'react';
+import { getMDXComponent } from 'mdx-bundler/client';
+import DummyImage from '@/components/dummyimage'; // エイリアスパスを適切に設定してください
+
+
 
 const MAX_DISPLAY = 5
-
-
-
-export async function getStaticProps() {
-  const posts = await getAllFilesFrontMatter('blog')
-
-  return { props: { posts } }
+function extractTextFromMDX(mdxContent) {
+  return mdxContent
+    .replace(/<[^>]*>/g, '') // HTMLタグを削除
+    .replace(/\n/g, ' ') // 改行をスペースに置換
+    .replace(/#.*/g, '') // ヘッダーを削除
+    .trim();
 }
 
-export default function Home({ posts }) {
+
+import { getFileBySlug } from '../lib/mdx';
+
+export async function getStaticProps() {
+  // 全てのフロントマターを取得します
+  const allPostsFrontMatter = await getAllFilesFrontMatter('blog');
+
+  // 最新のポストのslugを取得します
+  const latestPostSlug = allPostsFrontMatter.length > 0 ? allPostsFrontMatter[0].slug : "";
+
+  // 最新のポストのMDXコンテンツを取得します
+  const latestPostContent = latestPostSlug ? await getFileBySlug('blog', latestPostSlug) : {};
+
+  const latestPostText = latestPostContent.mdxSource ? extractTextFromMDX(latestPostContent.mdxSource) : '';
+
+  // propsとして返します
+  return {
+    props: {
+      latestPost: {
+        ...latestPostContent.frontMatter, // メタデータ
+        content: latestPostContent.mdxSource, // トランスパイルされたMDXコンテンツ
+      },
+      posts: allPostsFrontMatter.slice(1), // 最新のポストを除くその他のポスト
+      latestPostText,
+    },
+  };
+}
+
+
+export default function Home({ latestPost, posts ,latestPostText}) {
+  // MDXコンポーネントをレンダリングする際に、スコープに Image コンポーネントを含める
+  const LatestPostComponent = useMemo(() => {
+    if (!latestPost.content) return null;
+    // スコープに DummyImage を追加
+    return getMDXComponent(latestPost.content, { Image});
+  }, [latestPost.content]);
   return (
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
@@ -30,7 +69,24 @@ export default function Home({ posts }) {
             {siteMetadata.description}
           </p>
         </div>
-
+        
+      <div className="latest-post">
+        <h2 className=' text-xl font-mono text-cyan-800 dark:text-gray-50 '>最新の日記　ここバグってるけど気にしないでください。修正中です。読みずらかったら一番下の続きを読むを押せばちゃんと読めます。</h2>
+        {latestPost && (
+          <article>
+            <h3>
+              <Link href={`/blog/${latestPost.slug}`}>
+                <a>{latestPost.title}</a>
+              </Link>
+            </h3>
+            {/* MDXコンポーネントをレンダリング */}
+            <LatestPostComponent />
+      <Link href={`/blog/${latestPost.slug}`}>
+        <a>続きを読む &rarr;</a>
+      </Link>
+          </article>
+        )}
+      </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
           {posts.slice(0, MAX_DISPLAY).map((frontMatter) => {

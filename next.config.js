@@ -3,56 +3,47 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 // You might need to insert additional domains in script-src if you are using external services
-const ContentSecurityPolicy = 
-`
-default-src 'self' https://disqus.com https://c.disquscdn.com;
-script-src 'self' platform.twitter.com syndication.twitter.com; giscus.app; vitals.vercel-insights.com; https://worthhearing.disqus.com;
+const ContentSecurityPolicy = `
+  default-src 'self' https://disqus.com https://c.disquscdn.com;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' platform.twitter.com syndication.twitter.com giscus.app vitals.vercel-insights.com https://worthhearing.disqus.com;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   media-src 'none';
-  connect-src *;
+  connect-src 'self';
   font-src 'self';
   frame-src 'self' https://platform.twitter.com https://open.spotify.com giscus.app;
-`
+`;
 
 const securityHeaders = [
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
   {
     key: 'Content-Security-Policy',
-    value: ContentSecurityPolicy
-    
+    value: ContentSecurityPolicy.replace(/\n/g, ' ').trim() // 改行を削除して整形
   },
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
   {
     key: 'Referrer-Policy',
     value: 'strict-origin-when-cross-origin',
   },
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
   {
     key: 'X-Frame-Options',
     value: 'SAMEORIGIN',
   },
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
   {
     key: 'X-Content-Type-Options',
     value: 'nosniff',
   },
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control
   {
     key: 'X-DNS-Prefetch-Control',
     value: 'on',
   },
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
   {
     key: 'Strict-Transport-Security',
     value: 'max-age=31536000; includeSubDomains',
   },
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
   {
     key: 'Permissions-Policy',
     value: 'camera=(), microphone=(), geolocation=()',
   },
-]
+];
 
 module.exports = withBundleAnalyzer({
   reactStrictMode: true,
