@@ -11,7 +11,7 @@ const ContentSecurityPolicy = `
   media-src 'none';
   connect-src 'self';
   font-src 'self';
-  frame-src 'self' https://platform.twitter.com https://open.spotify.com giscus.app https://embed.music.apple.com;
+  frame-src 'self' https://platform.twitter.com https://open.spotify.com giscus.app https://embed.music.apple.com https://youtube.com https://bandcamp.com/;
 `;
 
 const securityHeaders = [
