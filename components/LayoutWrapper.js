@@ -11,13 +11,18 @@ const LayoutWrapper = ({ children }) => {
   return (
     <SectionContainer className="bg-brblue text-gray-100">
       <header className="p-5 border-b-4 border-brgreen">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">
-          {siteMetadata.title}
-        </h1>
-        <div className="my-3 md:my-5">
-          <Logo />
+        <div className="flex justify-between items-center">
+          <div className="text-2xl md:text-3xl font-medium rotate-12">
+            日記を書いています
+          </div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+            {siteMetadata.title}
+          </h1>
+          <div className="mt-3 md:mt-5">
+            <ThemeSwitch />
+          </div>
         </div>
-        <nav className="flex justify-between">
+        <nav className="flex justify-center my-3 md:my-5">
           {headerNavLinks.map((link) => (
             <Link
               key={link.title}
@@ -28,12 +33,6 @@ const LayoutWrapper = ({ children }) => {
             </Link>
           ))}
         </nav>
-        <div className="text-2xl md:text-3xl font-medium rotate-12">
-          日記を書いています
-        </div>
-        <div className="mt-3 md:mt-5">
-          <ThemeSwitch />
-        </div>
       </header>
       <main className="p-5">
         {children}
