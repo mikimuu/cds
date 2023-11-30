@@ -17,7 +17,7 @@ export async function getStaticProps() {
 
 export default function Home({ posts }) {
   return (
-    <div className="bg-gray-100 text-gray-800 p-5">
+    <div className="bg-brgreen text-gray-800 p-5">
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
       <h1 className="text-3xl font-bold text-red-600 uppercase sm:text-4xl">
         あわわわ
