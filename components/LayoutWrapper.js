@@ -10,12 +10,12 @@ import ThemeSwitch from './ThemeSwitch'
 const LayoutWrapper = ({ children }) => {
   return (
     <SectionContainer className="bg-brsky-blue text-brblue">
-      <header className="bg-brsoftblue p-5 border-b-4 border-brgreen">
+      <header className="bg-brgreen p-5 border-b-4 border-brgreen">
         <h1 className="text-4xl font-bold text-brorange">
           {siteMetadata.title}
         </h1>
         <div className="my-5">
-         <Logo className="h-8 w-8 sm:h-12 sm:w-12 md:h-16 md:w-16" />
+         <Logo className="h-full w-full" />
         </div>
         <nav className="flex justify-between">
           {headerNavLinks.map((link) => (
