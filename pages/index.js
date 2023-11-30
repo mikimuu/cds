@@ -19,7 +19,7 @@ export default function Home({ posts }) {
   return (
     <div className="bg-brgreen text-gray-800 p-5">
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
-      <h1 className="text-3xl font-bold text-red-600 uppercase sm:text-4xl">
+      <h1 className="text-3xl font-bold text-brorange uppercase sm:text-4xl">
         あわわわ
       </h1>
       <p className="text-xl mb-5 sm:text-2xl">
@@ -40,7 +40,7 @@ export default function Home({ posts }) {
               <p className="text-lg mt-2.5">
                 {summary}
               </p>
-              <Link href={`/blog/${slug}`} className="block mt-4 font-bold text-red-600">
+              <Link href={`/blog/${slug}`} className="block mt-4 font-bold text-brorange">
                 Read more &rarr;
               </Link>
             </article>
@@ -49,7 +49,7 @@ export default function Home({ posts }) {
       </div>
       {posts.length > MAX_DISPLAY && (
         <div className="mt-7 text-right">
-          <Link href="/blog" aria-label="all posts" className="font-bold text-red-600">
+          <Link href="/blog" aria-label="all posts" className="font-bold text-brorange">
             All Posts &rarr;
           </Link>
         </div>

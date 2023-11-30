@@ -10,7 +10,7 @@ import ThemeSwitch from './ThemeSwitch'
 const LayoutWrapper = ({ children }) => {
   return (
     <SectionContainer className="bg-brsky-blue text-brblue">
-      <header className="bg-brgreen p-5 border-b-4 border-brgreen">
+      <header className="bg-brgreen p-5 border-b-4 border-brgreen dark:bg-brsoftblue">
         <h1 className="text-4xl font-bold text-brorange">
           {siteMetadata.title}
         </h1>
