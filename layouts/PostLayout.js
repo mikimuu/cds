@@ -19,25 +19,27 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
   const { slug, fileName, date, title, images, tags } = frontMatter
 
   return (
-    <SectionContainer className="bg-gray-100 dark:bg-gray-800">
+    <SectionContainer className="bg-brsky-blue dark:bg-gray-800">
       <BlogSEO
         url={`${siteMetadata.siteUrl}/blog/${slug}`}
         authorDetails={authorDetails}
         {...frontMatter}
       />
       <ScrollTopAndComment />
-      <article className="text-gray-900 dark:text-gray-100">
+      <article className="text-brblue dark:text-gray-100">
         <header className="pt-6 xl:pb-6 text-center border-b-4 border-brgreen">
           <time dateTime={date} className="text-lg font-bold">
             {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
           </time>
-          <h1 className="text-4xl font-bold mt-4">{title}</h1>
+          <h1 className="text-5xl font-extrabold mt-4 bg-brorange text-white p-3 inline-block">
+            {title}
+          </h1>
         </header>
         <div className="xl:grid xl:grid-cols-4 xl:gap-x-6">
-          <aside className="pt-6 xl:pt-11">
-            <ul className="flex justify-center xl:block">
+          <aside className="pt-6 xl:pt-11 bg-brsoftblue p-4">
+            <ul className="flex flex-col space-y-4">
               {authorDetails.map((author) => (
-                <li key={author.name} className="mb-4 xl:mb-8">
+                <li key={author.name} className="bg-white p-2 rounded-lg shadow-lg">
                   {author.avatar && (
                     <Image
                       src={author.avatar}
@@ -48,7 +50,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                     />
                   )}
                   <div className="text-sm font-medium mt-2">
-                    <span className="block">{author.name}</span>
+                    <span className="block font-bold">{author.name}</span>
                     {author.twitter && (
                       <Link
                         href={author.twitter}
@@ -62,7 +64,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               ))}
             </ul>
           </aside>
-          <div className="xl:col-span-3">
+          <div className="xl:col-span-3 bg-white p-5 rounded-lg shadow-lg">
             <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
             <div className="pt-6 pb-6 text-sm">
               <Link href={discussUrl(slug)} rel="nofollow" className="text-brblue hover:text-brsoftblue">
@@ -75,24 +77,24 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
             </div>
             <Comments frontMatter={frontMatter} />
           </div>
-          <footer className="xl:col-start-1 xl:row-start-2">
+          <footer className="xl:col-start-1 xl:row-start-2 bg-brviolet p-4 rounded-lg shadow-lg mt-6 xl:mt-0">
             {tags && (
-              <div className="py-4 xl:py-8">
-                <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+              <div className="py-4">
+                <h2 className="text-xs uppercase tracking-wide text-white">
                   Tags
                 </h2>
                 <div className="flex flex-wrap">
                   {tags.map((tag) => (
-                    <Tag key={tag} text={tag} />
+                    <Tag key={tag} text={tag} className="bg-white text-brblue p-1 rounded-md m-1" />
                   ))}
                 </div>
               </div>
             )}
             {(next || prev) && (
-              <div className="flex justify-between py-4 xl:block xl:space-y-8">
+              <div className="flex flex-col space-y-4">
                 {prev && (
                   <div>
-                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    <h2 className="text-xs uppercase tracking-wide text-white">
                       Previous Article
                     </h2>
                     <Link href={`/blog/${prev.slug}`} className="text-brblue hover:text-brsoftblue">
@@ -102,7 +104,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                 )}
                 {next && (
                   <div>
-                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    <h2 className="text-xs uppercase tracking-wide text-white">
                       Next Article
                     </h2>
                     <Link href={`/blog/${next.slug}`} className="text-brblue hover:text-brsoftblue">
@@ -126,4 +128,3 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
     </SectionContainer>
   )
 }
-
