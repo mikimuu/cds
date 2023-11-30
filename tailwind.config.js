@@ -28,10 +28,20 @@ module.exports = {
       fontFamily: {
         sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
         Klee: [ 'Klee One', "cursive"],
+        mono: ['Courier', 'monospace'],
       },
       colors: {
         primary: colors.teal,
         gray: colors.neutral,
+        'brblue': '#0077b6',
+        'brorange':'#ff5733',
+        'brgreen': '#40d39c',
+        'brsky-blue': '#b9e2f8',
+        'brred': '#ffc5c8',
+        'brviolet':'#bc98cb',
+        'brsoftblue': '#4799ae',
+        'brcyan':'#b9e7de',
+        'bryellow':'#fdfd96',
       },
       typography: (theme) => ({
         DEFAULT: {

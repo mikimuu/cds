@@ -9,44 +9,39 @@ import ThemeSwitch from './ThemeSwitch'
 
 const LayoutWrapper = ({ children }) => {
   return (
-    <SectionContainer>
-      <div className=''>
-        <header className=" ">
-          <div className="  h-auto w-auto">
-            <h1 className="text-3xl font-mono leading-9 py-4 tracking-widest text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14 hover:animate-bounce">
-              {siteMetadata.title}
-            </h1>
-            <div className="flex py-0 md:py-10 md:px-36 hover:animate-pulse">
-              
-                <Logo />
-              
-            </div>
-            <div className=' flex place-content-between shadow-md'>
-            <span className="flex-initial place-items-center">
-              {headerNavLinks.map((link) => (
-                <Link
-                  key={link.title}
-                  href={link.href}
-                  className="text-xl font-mono text-gray-900 dark:text-gray-100 sm:p-4"
-                >
-                  {link.title}
-                </Link>
-              ))}
-            </span>
-            <div className="text-3xl font-extralight text-gray-500 transform rotate-12 ">
-              日記を書いています
-            </div>
-            <div className="px-10">
-              <ThemeSwitch />
-            </div>
-            </div>
-          </div>
-        </header>
-        <main className="mb-auto">{children}</main>
-        <Footer />
-      </div>
+    <SectionContainer className="bg-brsky-blue text-brblue">
+      <header className="bg-brsoftblue p-5 border-b-4 border-brgreen">
+        <h1 className="text-4xl font-bold text-brorange">
+          {siteMetadata.title}
+        </h1>
+        <div className="my-5">
+          <Logo />
+        </div>
+        <nav className="flex justify-between">
+          {headerNavLinks.map((link) => (
+            <Link
+              key={link.title}
+              href={link.href}
+              className="text-2xl font-bold text-bryellow px-2"
+            >
+              {link.title}
+            </Link>
+          ))}
+        </nav>
+        <div className="text-3xl font-bold text-brviolet rotate-12">
+          日記を書いています
+        </div>
+        <div className="mt-5">
+          <ThemeSwitch />
+        </div>
+      </header>
+      <main className="p-5">
+        {children}
+      </main>
+      <Footer className="bg-brcyan p-5 border-t-4 border-brred" />
     </SectionContainer>
   )
 }
 
 export default LayoutWrapper
+

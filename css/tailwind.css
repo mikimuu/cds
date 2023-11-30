@@ -33,3 +33,65 @@ input:-webkit-autofill:focus {
     -webkit-background-clip: text;
     color: transparent;
   }
+  .neobrutalism-container {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 20px;
+  }
+  
+  .neobrutalism-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ff0000;
+    text-transform: uppercase;
+  }
+  
+  .neobrutalism-description {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .neobrutalism-posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .neobrutalism-post {
+    background-color: #fff;
+    padding: 15px;
+    border: 3px solid #000;
+  }
+  
+  .neobrutalism-date {
+    font-size: 1.2rem;
+  }
+  
+  .neobrutalism-post-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .neobrutalism-summary {
+    font-size: 1.2rem;
+    margin-top: 10px;
+  }
+  
+  .neobrutalism-readmore {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #ff0000;
+  }
+  
+  .neobrutalism-more-posts {
+    margin-top: 30px;
+    text-align: right;
+  }
+  
+  .neobrutalism-more-posts a {
+    font-weight: bold;
+    color: #ff0000;
+  }
+  
