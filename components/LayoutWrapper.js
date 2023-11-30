@@ -15,7 +15,7 @@ const LayoutWrapper = ({ children }) => {
           {siteMetadata.title}
         </h1>
         <div className="my-5">
-          <Logo />
+         <Logo className="h-8 w-8 sm:h-12 sm:w-12 md:h-16 md:w-16" />
         </div>
         <nav className="flex justify-between">
           {headerNavLinks.map((link) => (
@@ -28,7 +28,7 @@ const LayoutWrapper = ({ children }) => {
             </Link>
           ))}
         </nav>
-        <div className="text-3xl font-bold text-brviolet rotate-12">
+        <div className="text-3xl font-bold text-brviolet rotate-12 py-12 px-14">
           日記を書いています
         </div>
         <div className="mt-5">
