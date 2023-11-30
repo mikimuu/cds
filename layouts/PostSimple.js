@@ -40,12 +40,12 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
             </div>
             <Comments frontMatter={frontMatter} />
             <footer>
-              <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
+              <div className="flex flex-col text-sm  sm:flex-row sm:justify-between sm:text-base">
                 {prev && (
                   <div className="pt-4 xl:pt-8">
                     <Link
                       href={`/blog/${prev.slug}`}
-                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                      className="font-mono text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     >
                       &larr; {prev.title}
                     </Link>
@@ -55,7 +55,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                   <div className="pt-4 xl:pt-8">
                     <Link
                       href={`/blog/${next.slug}`}
-                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                      className=" font-mono text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     >
                       {next.title} &rarr;
                     </Link>

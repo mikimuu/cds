@@ -7,7 +7,7 @@ const siteMetadata = {
   theme: 'system', // system, dark or light
   siteUrl: 'https://cosmic-dancin.vercel.app',
   siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
-  siteLogo: '/static/images/logo.jpeg',
+  siteLogo: '/static/images/dalle.png',
   image: '/static/images/avatar.png',
   socialBanner: '/static/images/taiwan.jpg',
   email: 'address@yoursite.com',
