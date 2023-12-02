@@ -15,14 +15,17 @@ export default function TournamentBracket() {
       <Head>
         <title>Tournament Bracket</title>
       </Head>
-      <div className="container mx-auto p-4">
-        <div className="flex flex-col items-center bg-brorange">
+      <div className="container mx-auto p-4 font-bold">
+        <div className="flex flex-col items-center">
           {/* Round 1 */}
-          <div className="  bg-white grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="text-4xl mb-2 p-2 bg-brred text-brsky-blue font-extrabold shadow-lg">
+            一回戦
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 bg-brgreen p-2 rounded">
             {/* Match 1 */}
-            <div className="flex flex-col justify-between items-center bg-gray-200 p-2 border-b-2">
+            <div className="flex flex-col justify-between items-center bg-brorange p-2 border-b-2 border-brblue">
               <iframe src="https://open.spotify.com/embed/track/3RauRsiIxUOQTS8h9sVWcP?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-              <span>vs</span>
+              <span className="text-brblue">vs</span>
               <iframe src="https://open.spotify.com/embed/track/3RauRsiIxUOQTS8h9sVWcP?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </div>
             {/* Match 2 */}
