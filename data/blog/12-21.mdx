@@ -8,6 +8,7 @@ summary:
 
 import Head from 'next/head'
 
+
 export default function TournamentBracket() {
   return (
     <>
@@ -19,25 +20,25 @@ export default function TournamentBracket() {
           {/* Round 1 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             {/* Match 1 */}
-            <div className="flex justify-between items-center bg-gray-200 p-2">
+            <div className="flex justify-between items-center bg-gray-200 p-2 border-b-2">
               <span>Team A</span>
               <span>vs</span>
               <span>Team B</span>
             </div>
             {/* Match 2 */}
-            <div className="flex justify-between items-center bg-gray-200 p-2">
+            <div className="flex justify-between items-center bg-gray-200 p-2 border-b-2">
               <span>Team C</span>
               <span>vs</span>
               <span>Team D</span>
             </div>
             {/* Match 3 */}
-            <div className="flex justify-between items-center bg-gray-200 p-2">
+            <div className="flex justify-between items-center bg-gray-200 p-2 border-b-2">
               <span>Team E</span>
               <span>vs</span>
               <span>Team F</span>
             </div>
             {/* Match 4 */}
-            <div className="flex justify-between items-center bg-gray-200 p-2">
+            <div className="flex justify-between items-center bg-gray-200 p-2 border-b-2">
               <span>Team G</span>
               <span>vs</span>
               <span>Team H</span>
@@ -47,13 +48,13 @@ export default function TournamentBracket() {
           {/* Round 2 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             {/* Match 5 */}
-            <div className="flex justify-between items-center bg-blue-200 p-2">
+            <div className="flex justify-between items-center bg-blue-200 p-2 border-b-2">
               <span>Winner A/B</span>
               <span>vs</span>
               <span>Winner C/D</span>
             </div>
             {/* Match 6 */}
-            <div className="flex justify-between items-center bg-blue-200 p-2">
+            <div className="flex justify-between items-center bg-blue-200 p-2 border-b-2">
               <span>Winner E/F</span>
               <span>vs</span>
               <span>Winner G/H</span>
@@ -61,7 +62,7 @@ export default function TournamentBracket() {
           </div>
 
           {/* Final */}
-          <div className="flex justify-between items-center bg-blue-300 p-2">
+          <div className="flex justify-between items-center bg-blue-300 p-2 border-b-2">
             <span>Winner Match 5</span>
             <span>vs</span>
             <span>Winner Match 6</span>
@@ -71,3 +72,4 @@ export default function TournamentBracket() {
     </>
   )
 }
+
