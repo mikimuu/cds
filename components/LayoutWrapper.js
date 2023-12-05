@@ -44,4 +44,3 @@ const LayoutWrapper = ({ children }) => {
 }
 
 export default LayoutWrapper
-
