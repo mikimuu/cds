@@ -12,6 +12,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.3",
+    "@auth0/nextjs-auth0": "github:auth0/nextjs-auth0",
     "@fontsource/inter": "4.5.2",
     "@mailchimp/mailchimp_marketing": "^3.0.58",
     "@mdx-js/react": "^3.0.0",
@@ -19,6 +21,7 @@
     "@tailwindcss/forms": "^0.4.0",
     "@tailwindcss/typography": "^0.5.0",
     "@vercel/analytics": "^1.0.1",
+    "auth0": "^4.1.0",
     "autoprefixer": "^10.4.0",
     "disqus-react": "^1.1.5",
     "esbuild": "^0.13.13",
