@@ -12,7 +12,6 @@ import { Analytics } from '@vercel/analytics/react';
 import LayoutWrapper from '@/components/LayoutWrapper'
 import { ClientReload } from '@/components/ClientReload'
 import "video.js/dist/video-js.css"
-// pages/_app.js
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 const isSocket = process.env.SOCKET
