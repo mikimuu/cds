@@ -99,38 +99,6 @@ export default function TournamentBracket() {
                 </div>
               </div>
             )}
-            {(next || prev) && (
-              <div className="flex flex-col space-y-4">
-                {prev && (
-                  <div>
-                    <h2 className="text-xs uppercase tracking-wide text-white">
-                      Previous Article
-                    </h2>
-                    <Link href={`/blog/${prev.slug}`} className="text-brblue hover:text-brsoftblue">
-                      {prev.title}
-                    </Link>
-                  </div>
-                )}
-                {next && (
-                  <div>
-                    <h2 className="text-xs uppercase tracking-wide text-white">
-                      Next Article
-                    </h2>
-                    <Link href={`/blog/${next.slug}`} className="text-brblue hover:text-brsoftblue">
-                      {next.title}
-                    </Link>
-                  </div>
-                )}
-              </div>
-            )}
-            <div className="pt-4">
-              <Link
-                href="/blog"
-                className="text-brblue hover:text-brsoftblue"
-              >
-                &larr; Back to the blog
-              </Link>
-            </div>
           </footer>
     </>
   )
