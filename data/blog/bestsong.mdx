@@ -7,15 +7,8 @@ summary: 3回戦終わり、ベスト8が出揃いました・
 ---
 
 import Head from 'next/head'
-import Link from '@/components/Link'
-import PageTitle from '@/components/PageTitle'
-import SectionContainer from '@/components/SectionContainer'
-import { BlogSEO } from '@/components/SEO'
-import Image from '@/components/Image'
+
 import Tag from '@/components/Tag'
-import siteMetadata from '@/data/siteMetadata'
-import Comments from '@/components/comments'
-import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 
 
 export default function TournamentBracket() {
@@ -86,20 +79,7 @@ export default function TournamentBracket() {
         なんか泣けるかどうかで争ってもらっている気がしてきた。ただそう言う気分なので、、、
       </div>
       </div>
-               <footer className="xl:col-start-1 xl:row-start-2 bg-brviolet p-4 rounded-lg shadow-lg mt-6 xl:mt-0">
-            {tags && (
-              <div className="py-4">
-                <h2 className="text-xs uppercase tracking-wide text-white">
-                  Tags
-                </h2>
-                <div className="flex flex-wrap">
-                  {tags.map((tag) => (
-                    <Tag key={tag} text={tag} className="bg-white text-brblue p-1 rounded-md m-1" />
-                  ))}
-                </div>
-              </div>
-            )}
-          </footer>
+
     </>
   )
 }
