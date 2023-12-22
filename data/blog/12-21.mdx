@@ -1,6 +1,6 @@
 ---
 title: 2023 best song tournametn　結果
-date: '2100-12-30'
+date: '2000-12-30'
 tags: ["bestsong"]
 draft: false
 summary: 着々と更新中。2回戦終了。
@@ -237,6 +237,52 @@ export default function TournamentBracket() {
         </div>
         </div>
       </div>
+               <footer className="xl:col-start-1 xl:row-start-2 bg-brviolet p-4 rounded-lg shadow-lg mt-6 xl:mt-0">
+            {tags && (
+              <div className="py-4">
+                <h2 className="text-xs uppercase tracking-wide text-white">
+                  Tags
+                </h2>
+                <div className="flex flex-wrap">
+                  {tags.map((tag) => (
+                    <Tag key={tag} text={tag} className="bg-white text-brblue p-1 rounded-md m-1" />
+                  ))}
+                </div>
+              </div>
+            )}
+            {(next || prev) && (
+              <div className="flex flex-col space-y-4">
+                {prev && (
+                  <div>
+                    <h2 className="text-xs uppercase tracking-wide text-white">
+                      Previous Article
+                    </h2>
+                    <Link href={`/blog/${prev.slug}`} className="text-brblue hover:text-brsoftblue">
+                      {prev.title}
+                    </Link>
+                  </div>
+                )}
+                {next && (
+                  <div>
+                    <h2 className="text-xs uppercase tracking-wide text-white">
+                      Next Article
+                    </h2>
+                    <Link href={`/blog/${next.slug}`} className="text-brblue hover:text-brsoftblue">
+                      {next.title}
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
+            <div className="pt-4">
+              <Link
+                href="/blog"
+                className="text-brblue hover:text-brsoftblue"
+              >
+                &larr; Back to the blog
+              </Link>
+            </div>
+          </footer>
     </>
   )
 }
