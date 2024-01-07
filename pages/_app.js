@@ -12,11 +12,6 @@ import { Analytics } from '@vercel/analytics/react';
 import LayoutWrapper from '@/components/LayoutWrapper'
 import { ClientReload } from '@/components/ClientReload'
 import "video.js/dist/video-js.css"
-import '../styles/globals.css'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import * as gtag from '../lib/gtag'
-
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 const isSocket = process.env.SOCKET
