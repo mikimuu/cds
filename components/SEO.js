@@ -29,8 +29,19 @@ const CommonSEO = ({ title, description, ogType, ogImage, twImage, canonicalUrl 
         rel="canonical"
         href={canonicalUrl ? canonicalUrl : `${siteMetadata.siteUrl}${router.asPath}`}
       />
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7341612625193776"
-     crossorigin="anonymous"></script>
+            <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-8K9S7QHSS2`}
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-8K9S7QHSS2');
+        `}
+      </Script>
     </Head>
   )
 }
