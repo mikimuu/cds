@@ -4,12 +4,12 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 // You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
-  default-src 'self' https://disqus.com https://c.disquscdn.com https://analytics.google.com/　https://www.google-analytics.com https://www.googletagmanager.com;;
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' platform.twitter.com syndication.twitter.com giscus.app vitals.vercel-insights.com https://worthhearing.disqus.com https://analytics.google.com/　https://www.google-analytics.com https://www.googletagmanager.com;;
+  default-src 'self' https://disqus.com https://c.disquscdn.com https://analytics.google.com/　https://www.google-analytics.com https://www.googletagmanager.com;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' platform.twitter.com syndication.twitter.com giscus.app vitals.vercel-insights.com https://worthhearing.disqus.com https://analytics.google.com/　https://www.google-analytics.com https://www.googletagmanager.com;
   style-src 'self' 'unsafe-inline';
-  img-src * blob: data:;
+  img-src * blob: data: www.googletagmanager.com ;
   media-src 'none';
-  connect-src 'self' https://analytics.google.com/ https://www.google-analytics.com https://www.googletagmanager.com;;
+  connect-src 'self' https://analytics.google.com/ https://www.google-analytics.com https://www.googletagmanager.com;
   font-src 'self';
   frame-src 'self' https://note.com https://platform.twitter.com https://open.spotify.com giscus.app https://embed.music.apple.com https://www.youtube.com https://bandcamp.com;
 `;
