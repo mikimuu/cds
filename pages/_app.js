@@ -13,7 +13,8 @@ import LayoutWrapper from '@/components/LayoutWrapper'
 import { ClientReload } from '@/components/ClientReload'
 import "video.js/dist/video-js.css"
 import Analyticss from '@/components/analytics'
-const isDevelopment = process.env.NODE_ENV === 'development'
+
+const isDevelopment = process.env.NODE_ENV === 'production'
 const isSocket = process.env.SOCKET
 
 export default function App({ Component, pageProps }) {
@@ -22,10 +23,11 @@ export default function App({ Component, pageProps }) {
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
        <Analyticss />
+       <Analytics />
       </Head>
       {isDevelopment && isSocket && <ClientReload />}
       <Analytics />
-
+      <Analyticss />
       <LayoutWrapper>
         <Component {...pageProps} />
       </LayoutWrapper>
