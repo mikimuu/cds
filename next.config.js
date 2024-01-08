@@ -9,7 +9,7 @@ const ContentSecurityPolicy = `
   style-src 'self' 'unsafe-inline';
   img-src * blob: data: www.googletagmanager.com ;
   media-src 'none';
-  connect-src 'self' https://analytics.google.com/ https://www.google-analytics.com https://www.googletagmanager.com;
+  connect-src 'self';
   font-src 'self';
   frame-src 'self' https://note.com https://platform.twitter.com https://open.spotify.com giscus.app https://embed.music.apple.com https://www.youtube.com https://bandcamp.com;
 `;
