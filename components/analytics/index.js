@@ -7,7 +7,7 @@ import siteMetadata from '@/data/siteMetadata'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-const Analytics = () => {
+const Analyticss = () => {
   return (
     <>
       {isProduction && siteMetadata.analytics.plausibleDataDomain && <Plausible />}
@@ -19,4 +19,4 @@ const Analytics = () => {
   )
 }
 
-export default Analytics
+export default Analyticss

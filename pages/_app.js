@@ -12,7 +12,7 @@ import { Analytics } from '@vercel/analytics/react';
 import LayoutWrapper from '@/components/LayoutWrapper'
 import { ClientReload } from '@/components/ClientReload'
 import "video.js/dist/video-js.css"
-import Analytics from '@/components/analytics'
+import Analyticss from '@/components/analytics'
 const isDevelopment = process.env.NODE_ENV === 'development'
 const isSocket = process.env.SOCKET
 
@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }) {
        <Analytics/>
       </Head>
       {isDevelopment && isSocket && <ClientReload />}
-      <Analytics />
+      <Analyticss />
 
       <LayoutWrapper>
         <Component {...pageProps} />
