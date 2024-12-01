@@ -63,7 +63,7 @@ const Giscus = () => {
 
   return (
     <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300 rotate-6">
-      {enableLoadComments && <button type="button" class="cursor-pointer" onClick={LoadComments}>コメントする。githubのログイン必要だけどみんなの日記とか書いてください。</button>}
+      {enableLoadComments && <button type="button" className="cursor-pointer" onClick={LoadComments}>コメントする。githubのログイン必要だけどみんなの日記とか書いてください。</button>}
       <div className="giscus" id={COMMENTS_ID} />
     </div>
   )

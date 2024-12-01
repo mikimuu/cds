@@ -1,6 +1,6 @@
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
-import Logo from '@/data/20.svg'
+import Image from 'next/image'
 import Link from './Link'
 import SectionContainer from './SectionContainer'
 import Footer from './Footer'
@@ -15,7 +15,13 @@ const LayoutWrapper = ({ children }) => {
           {siteMetadata.title}
         </h1>
         <div className="my-5">
-         <Logo className="h-full w-full object-cover" />
+          <Image
+            src="/static/images/20.svg"
+            alt="Logo"
+            width={200}
+            height={200}
+            className="h-full w-full object-cover"
+          />
         </div>
         <nav className="flex justify-between">
           {headerNavLinks.map((link) => (
