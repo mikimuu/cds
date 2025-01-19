@@ -3,6 +3,7 @@ import { PageSEO } from '@/components/SEO'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
+import { getNewBlogPosts } from '@/lib/microcms'
 import formatDate from '@/lib/utils/formatDate'
 
 import NewsletterForm from '@/components/NewsletterForm'
@@ -10,9 +11,15 @@ import NewsletterForm from '@/components/NewsletterForm'
 const MAX_DISPLAY = 5
 
 export async function getStaticProps() {
-  const posts = await getAllFilesFrontMatter('blog')
+  const localPosts = await getAllFilesFrontMatter('blog')
+  const cmsPosts = await getNewBlogPosts()
+  
+  // ローカルの記事とCMSの記事を結合してソート
+  const allPosts = [...localPosts, ...cmsPosts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
 
-  return { props: { posts } }
+  return { props: { posts: allPosts } }
 }
 
 export default function Home({ posts }) {
@@ -29,18 +36,26 @@ export default function Home({ posts }) {
         {!posts.length && 'No posts found.'}
         {posts.slice(0, MAX_DISPLAY).map((frontMatter) => {
           const { slug, date, title, summary, tags } = frontMatter
+          const postPath = slug.startsWith('cms/') ? `/blog/${slug}` : `/blog/${slug}`
           return (
             <article key={slug} className="bg-white p-4 border-4 border-black">
               <time dateTime={date} className="text-lg">{formatDate(date)}</time>
               <h2 className="text-2xl font-bold mt-2.5">
-                <Link href={`/blog/${slug}`}>
+                <Link href={postPath}>
                   {title}
                 </Link>
               </h2>
               <p className="text-lg mt-2.5">
                 {summary}
               </p>
-              <Link href={`/blog/${slug}`} className="block mt-4 font-bold text-brorange">
+              {tags && tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2.5">
+                  {tags.map((tag) => (
+                    <Tag key={tag} text={tag} />
+                  ))}
+                </div>
+              )}
+              <Link href={postPath} className="block mt-4 font-bold text-brorange">
                 Read more &rarr;
               </Link>
             </article>

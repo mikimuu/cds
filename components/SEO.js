@@ -149,17 +149,17 @@ export const BlogSEO = ({
         twImage={twImageUrl}
         canonicalUrl={canonicalUrl}
       />
-<Head>
-  {date && <meta property="article:published_time" content={publishedAt} />}
-  {lastmod && <meta property="article:modified_time" content={modifiedAt} />}
-</Head>
-<Script 
-  type="application/ld+json" 
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify(structuredData, null, 2),
-  }}
-/>
+      <Head>
+        {date && <meta property="article:published_time" content={publishedAt} />}
+        {lastmod && <meta property="article:modified_time" content={modifiedAt} />}
+      </Head>
+      <Script
+        id="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData, null, 2),
+        }}
+      />
     </>
   )
 }

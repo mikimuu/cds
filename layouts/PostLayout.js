@@ -7,6 +7,7 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import RelatedPosts from '@/components/RelatedPosts'
 
 const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/blog/${fileName}`
 const discussUrl = (slug) =>
@@ -15,7 +16,7 @@ const discussUrl = (slug) =>
   )}`
 
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-export default function PostLayout({ frontMatter, authorDetails, next, prev, children }) {
+export default function PostLayout({ frontMatter, authorDetails, next, prev, children, allPosts }) {
   const { slug, fileName, date, title, images, tags } = frontMatter
 
   return (
@@ -75,6 +76,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                 {'View on GitHub'}
               </Link>
             </div>
+            <RelatedPosts currentPost={frontMatter} allPosts={allPosts} />
             <Comments frontMatter={frontMatter} />
           </div>
           <footer className="xl:col-start-1 xl:row-start-2 bg-brviolet p-4 rounded-lg shadow-lg mt-6 xl:mt-0">
