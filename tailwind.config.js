@@ -26,13 +26,19 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
-        Klee: [ 'Klee One', "cursive"],
+        sans: ['Inter', ...defaultTheme.fontFamily.sans],
+        mincho: ['Shippori Mincho', 'serif'],
         mono: ['Courier', 'monospace'],
       },
       colors: {
-        primary: colors.teal,
-        gray: colors.neutral,
+        primary: colors.pink,
+        gray: colors.gray,
+        cosmic: {
+          blue: '#4A90E2',
+          lightgray: '#E5E5E5',
+          darkgray: '#4A4A4A',
+          black: '#2C2C2C',
+        },
         'brblue': '#0077b6',
         'brorange':'#ff5733',
         'brgreen': '#40d39c',
@@ -114,7 +120,13 @@ module.exports = {
         },
         dark: {
           css: {
-            color: theme('colors.gray.700'),
+            color: theme('colors.white'),
+            p: {
+              color: theme('colors.white'),
+            },
+            li: {
+              color: theme('colors.white'),
+            },
             a: {
               color: theme('colors.primary.500'),
               '&:hover': {
@@ -125,19 +137,19 @@ module.exports = {
             h1: {
               fontWeight: '700',
               letterSpacing: theme('letterSpacing.tight'),
-              color: theme('colors.gray.700'),
+              color: theme('colors.gray.100'),
             },
             h2: {
               fontWeight: '700',
               letterSpacing: theme('letterSpacing.tight'),
-              color: theme('colors.gray.700'),
+              color: theme('colors.gray.100'),
             },
             h3: {
               fontWeight: '600',
-              color: theme('colors.gray.700'),
+              color: theme('colors.gray.100'),
             },
             'h4,h5,h6': {
-              color: theme('colors.gray.700'),
+              color: theme('colors.gray.100'),
             },
             pre: {
               backgroundColor: theme('colors.gray.800'),
@@ -170,12 +182,36 @@ module.exports = {
             blockquote: {
               color: theme('colors.gray.100'),
               borderLeftColor: theme('colors.gray.700'),
-              
             },
           },
         },
       }),
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        },
+      },
+      animation: {
+        float: 'float 6s ease-in-out infinite',
+      },
+      boxShadow: {
+        'float-lg': '0 8px 30px rgba(0,0,0,0.15)',
+        'glow': '0 0 20px rgba(58,78,140,0.3)',
+      },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('tailwindcss/plugin')(({ addUtilities, theme }) => {
+      addUtilities({
+        '.selection-cosmic': {
+          '::selection': {
+            backgroundColor: `${theme('colors.cosmic.blue')}33`,
+          },
+        },
+      })
+    }),
+  ],
 }

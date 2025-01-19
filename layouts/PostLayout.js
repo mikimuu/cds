@@ -16,116 +16,106 @@ const discussUrl = (slug) =>
   )}`
 
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+
 export default function PostLayout({ frontMatter, authorDetails, next, prev, children, allPosts }) {
   const { slug, fileName, date, title, images, tags } = frontMatter
 
   return (
-    <SectionContainer className="bg-brsky-blue dark:bg-gray-800">
+    <SectionContainer>
       <BlogSEO
         url={`${siteMetadata.siteUrl}/blog/${slug}`}
         authorDetails={authorDetails}
         {...frontMatter}
       />
       <ScrollTopAndComment />
-      <article className="text-brblue dark:text-gray-100">
-        <header className="pt-6 xl:pb-6 text-center border-b-4 border-brgreen">
-          <time dateTime={date} className="text-lg font-bold">
+      <article className="max-w-content mx-auto px-4 relative z-10">
+        <header className="pt-16 pb-10 text-center relative transform transition-transform hover:scale-105">
+          <div className="absolute inset-0 bg-white/80 dark:bg-black/80 backdrop-blur-lg rounded-lg -z-10 shadow-float-lg"></div>
+          <time dateTime={date} className="text-cosmic-gray text-sm">
             {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
           </time>
-          <h1 className="text-5xl font-extrabold mt-4 bg-brorange text-white p-3 inline-block">
+          <h1 className="mt-4 text-h1 font-extrabold leading-tight">
             {title}
           </h1>
+          {tags && tags.length > 0 && (
+            <div className="mt-6 flex justify-center gap-2">
+              {tags.map((tag) => (
+                <Tag key={tag} text={tag} />
+              ))}
+            </div>
+          )}
         </header>
-        <div className="xl:grid xl:grid-cols-4 xl:gap-x-6">
-          <aside className="pt-6 xl:pt-11 bg-brsoftblue p-4">
-            <ul className="flex flex-col space-y-4">
+
+        <div className="prose max-w-none mx-auto leading-relaxed bg-white/80 dark:bg-black/80 backdrop-blur-lg p-8 rounded-lg 
+          shadow-float-lg 
+          animate-float 
+          hover:shadow-2xl 
+          transform transition-all 
+          hover:scale-105">
+          {children}
+        </div>
+
+        <footer className="mt-16 border-t border-cosmic-lightgray pt-8 bg-white/80 dark:bg-black/80 backdrop-blur-lg p-8 rounded-lg shadow-float-lg transform transition-transform hover:scale-105">
+          {/* 著者情報 */}
+          {authorDetails.length > 0 && (
+            <div className="mb-8">
               {authorDetails.map((author) => (
-                <li key={author.name} className="bg-white p-2 rounded-lg shadow-lg">
+                <div key={author.name} className="flex items-center space-x-4">
                   {author.avatar && (
                     <Image
                       src={author.avatar}
-                      width="38px"
-                      height="38px"
                       alt="avatar"
-                      className="h-10 w-10 rounded-full"
+                      width={48}
+                      height={48}
+                      className="rounded-full"
                     />
                   )}
-                  <div className="text-sm font-medium mt-2">
-                    <span className="block font-bold">{author.name}</span>
+                  <div>
+                    <h3 className="text-lg font-bold">{author.name}</h3>
                     {author.twitter && (
                       <Link
                         href={author.twitter}
-                        className="text-brblue hover:text-brsoftblue"
+                        className="text-cosmic-blue hover:opacity-75 transition-opacity"
                       >
                         {author.twitter.replace('https://twitter.com/', '@')}
                       </Link>
                     )}
                   </div>
-                </li>
+                </div>
               ))}
-            </ul>
-          </aside>
-          <div className="xl:col-span-3 bg-white p-5 rounded-lg shadow-lg">
-            <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
-            <div className="pt-6 pb-6 text-sm">
-              <Link href={discussUrl(slug)} rel="nofollow" className="text-brblue hover:text-brsoftblue">
-                {'Discuss on Twitter'}
-              </Link>
-              {` • `}
-              <Link href={editUrl(fileName)} className="text-brblue hover:text-brsoftblue">
-                {'View on GitHub'}
-              </Link>
             </div>
+          )}
+
+          {/* 前後の記事リンク */}
+          <nav className="flex flex-col gap-4 sm:flex-row sm:justify-between text-sm">
+            {prev && (
+              <Link
+                href={`/blog/${prev.slug}`}
+                className="text-cosmic-blue hover:opacity-75 transition-opacity"
+              >
+                ← {prev.title}
+              </Link>
+            )}
+            {next && (
+              <Link
+                href={`/blog/${next.slug}`}
+                className="text-cosmic-blue hover:opacity-75 transition-opacity sm:text-right"
+              >
+                {next.title} →
+              </Link>
+            )}
+          </nav>
+
+          {/* 関連記事 */}
+          <div className="mt-16">
             <RelatedPosts currentPost={frontMatter} allPosts={allPosts} />
+          </div>
+
+          {/* コメント */}
+          <div className="mt-16">
             <Comments frontMatter={frontMatter} />
           </div>
-          <footer className="xl:col-start-1 xl:row-start-2 bg-brviolet p-4 rounded-lg shadow-lg mt-6 xl:mt-0">
-            {tags && (
-              <div className="py-4">
-                <h2 className="text-xs uppercase tracking-wide text-white">
-                  Tags
-                </h2>
-                <div className="flex flex-wrap">
-                  {tags.map((tag) => (
-                    <Tag key={tag} text={tag} className="bg-white text-brblue p-1 rounded-md m-1" />
-                  ))}
-                </div>
-              </div>
-            )}
-            {(next || prev) && (
-              <div className="flex flex-col space-y-4">
-                {prev && (
-                  <div>
-                    <h2 className="text-xs uppercase tracking-wide text-white">
-                      Previous Article
-                    </h2>
-                    <Link href={`/blog/${prev.slug}`} className="text-brblue hover:text-brsoftblue">
-                      {prev.title}
-                    </Link>
-                  </div>
-                )}
-                {next && (
-                  <div>
-                    <h2 className="text-xs uppercase tracking-wide text-white">
-                      Next Article
-                    </h2>
-                    <Link href={`/blog/${next.slug}`} className="text-brblue hover:text-brsoftblue">
-                      {next.title}
-                    </Link>
-                  </div>
-                )}
-              </div>
-            )}
-            <div className="pt-4">
-              <Link
-                href="/blog"
-                className="text-brblue hover:text-brsoftblue"
-              >
-                &larr; Back to the blog
-              </Link>
-            </div>
-          </footer>
-        </div>
+        </footer>
       </article>
     </SectionContainer>
   )

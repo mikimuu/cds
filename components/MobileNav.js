@@ -21,7 +21,7 @@ const MobileNav = () => {
     <div className="sm:hidden">
       <button
         type="button"
-        className="ml-1 mr-1 h-8 w-8 rounded py-1"
+        className="w-8 h-8 flex items-center justify-center"
         aria-label="Toggle Menu"
         onClick={onToggleNav}
       >
@@ -29,7 +29,7 @@ const MobileNav = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          className="text-gray-900 dark:text-gray-100"
+          className="w-5 h-5 text-cosmic-darkgray"
         >
           <path
             fillRule="evenodd"
@@ -39,22 +39,22 @@ const MobileNav = () => {
         </svg>
       </button>
       <div
-        className={`fixed top-0 left-0 z-10 h-full w-full transform bg-gray-200 opacity-95 duration-300 ease-in-out dark:bg-gray-800 ${
+        className={`fixed top-0 left-0 z-50 h-full w-full transform bg-white/95 backdrop-blur-sm transition-transform duration-300 ease-in-out ${
           navShow ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex justify-end">
+        <div className="flex justify-end p-4">
           <button
             type="button"
-            className="mr-5 mt-11 h-8 w-8 rounded"
-            aria-label="Toggle Menu"
+            className="w-8 h-8 flex items-center justify-center"
+            aria-label="Close Menu"
             onClick={onToggleNav}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="text-gray-900 dark:text-gray-100"
+              className="w-5 h-5 text-cosmic-darkgray"
             >
               <path
                 fillRule="evenodd"
@@ -64,15 +64,18 @@ const MobileNav = () => {
             </svg>
           </button>
         </div>
-        <nav className="fixed mt-8 h-full">
+        <nav className="flex flex-col items-center mt-8">
           {headerNavLinks.map((link) => (
-            <div key={link.title} className="px-12 py-4">
+            <div key={link.title} className="py-4">
               <Link
                 href={link.href}
-                className="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
+                className="group relative py-2 inline-block"
                 onClick={onToggleNav}
               >
-                {link.title}
+                <span className="text-xl font-light tracking-wider text-cosmic-darkgray transition-colors duration-500 group-hover:text-cosmic-blue">
+                  {link.title}
+                </span>
+                <span className="absolute bottom-0 left-1/2 w-0 h-px bg-cosmic-blue transition-all duration-500 group-hover:w-full group-hover:left-0"></span>
               </Link>
             </div>
           ))}

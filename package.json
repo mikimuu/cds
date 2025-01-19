@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@fontsource/inter": "4.5.2",
+    "@google/generative-ai": "^0.21.0",
     "@mailchimp/mailchimp_marketing": "^3.0.58",
     "@mdx-js/react": "^3.0.0",
     "@next/bundle-analyzer": "^15.0.0",

@@ -34,6 +34,10 @@ export async function getStaticProps({ params }) {
     })
     const authorDetails = await Promise.all(authorPromise)
 
+    // 記事の生テキストを取得
+    const filePath = `data/blog/${params.slug.join('/')}.mdx`
+    const rawContent = await fs.promises.readFile(filePath, 'utf-8')
+
     // rss
     if (allPosts.length > 0) {
       const rss = generateRss(allPosts)
@@ -46,7 +50,8 @@ export async function getStaticProps({ params }) {
         authorDetails, 
         prev, 
         next,
-        allPosts: allPosts
+        allPosts: allPosts,
+        rawContent
       } 
     }
   } catch (error) {
@@ -57,7 +62,7 @@ export async function getStaticProps({ params }) {
   }
 }
 
-export default function Blog({ post, authorDetails, prev, next, allPosts }) {
+export default function Blog({ post, authorDetails, prev, next, allPosts, rawContent }) {
   const { mdxSource, toc, frontMatter } = post
 
   return (
@@ -72,6 +77,7 @@ export default function Blog({ post, authorDetails, prev, next, allPosts }) {
           prev={prev}
           next={next}
           allPosts={allPosts}
+          rawContent={rawContent}
         />
       ) : (
         <div className="mt-24 text-center">

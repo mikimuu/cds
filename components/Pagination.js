@@ -13,8 +13,11 @@ export default function Pagination({ totalPages, currentPage }) {
           </button>
         )}
         {prevPage && (
-          <Link href={currentPage - 1 === 1 ? `/blog/` : `/blog/page/${currentPage - 1}`}>
-            <button rel="previous">Previous</button>
+          <Link
+            href={currentPage - 1 === 1 ? `/blog/` : `/blog/page/${currentPage - 1}`}
+            className="button"
+          >
+            Previous
           </Link>
         )}
         <span>
@@ -26,8 +29,11 @@ export default function Pagination({ totalPages, currentPage }) {
           </button>
         )}
         {nextPage && (
-          <Link href={`/blog/page/${currentPage + 1}`}>
-            <button rel="next">Next</button>
+          <Link
+            href={`/blog/page/${currentPage + 1}`}
+            className="button"
+          >
+            Next
           </Link>
         )}
       </nav>

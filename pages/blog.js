@@ -1,23 +1,62 @@
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 import siteMetadata from '@/data/siteMetadata'
-import ListLayout from '@/layouts/ListLayout'
 import { PageSEO } from '@/components/SEO'
+import Link from 'next/link'
 
-export const POSTS_PER_PAGE = 5
+export const POSTS_PER_PAGE = 6
 
 export async function getStaticProps() {
   const posts = await getAllFilesFrontMatter('blog')
-  return { props: { posts } }
+  const initialDisplayPosts = posts.slice(0, POSTS_PER_PAGE)
+  const pagination = {
+    currentPage: 1,
+    totalPages: Math.ceil(posts.length / POSTS_PER_PAGE),
+  }
+
+  return { props: { initialDisplayPosts, posts, pagination } }
 }
 
-export default function Blog({ posts }) {
+export default function Blog({ posts, initialDisplayPosts, pagination }) {
   return (
     <>
       <PageSEO title={`Blog - ${siteMetadata.author}`} description={siteMetadata.description} />
-      <ListLayout
-        posts={posts}
-        title="All Posts"
-      />
+      <div className="my-section-y px-4 max-w-content mx-auto">
+        <h1 className="text-h2 mb-12 text-cosmic-black">All Articles</h1>
+        
+        <div className="grid gap-12">
+          {initialDisplayPosts.map((post) => (
+            <article
+              key={post.slug}
+              className="border-b border-cosmic-lightgray pb-8 last:border-b-0"
+            >
+              <h2 className="text-xl font-bold mb-3 text-cosmic-black hover:text-cosmic-blue transition-colors">
+                <Link href={`/blog/${post.slug}`}>
+                  {post.title}
+                </Link>
+              </h2>
+              <p className="text-sm text-cosmic-gray mb-4">{post.date}</p>
+              <p className="text-body text-cosmic-gray leading-relaxed mb-4">{post.summary}</p>
+              <Link 
+                href={`/blog/${post.slug}`}
+                className="text-cosmic-blue hover:opacity-75 transition-opacity text-sm"
+              >
+                続きを読む →
+              </Link>
+            </article>
+          ))}
+        </div>
+
+        {pagination && pagination.totalPages > 1 && (
+          <div className="mt-16 text-center">
+            <Link
+              href={`/blog/page/${pagination.currentPage + 1}`}
+              className="inline-block bg-cosmic-blue text-white px-8 py-3 rounded hover:opacity-90 transition-opacity"
+            >
+              もっと見る
+            </Link>
+          </div>
+        )}
+      </div>
     </>
   )
 }
