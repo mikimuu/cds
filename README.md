@@ -261,3 +261,84 @@ Using the template? Support this effort by giving a star on GitHub, sharing your
 ## Licence
 
 [MIT](https://github.com/timlrx/tailwind-nextjs-starter-blog/blob/master/LICENSE) © [Timothy Lin](https://www.timlrx.com)
+
+# プロジェクト概要
+
+このプロジェクトは、Next.jsとTailwind CSSを使用したブログスターターテンプレートをベースにした、モダンなウェブアプリケーションです。
+
+## 技術スタック
+
+- **フレームワーク**: Next.js 12.1.4
+- **スタイリング**: Tailwind CSS 3.0
+- **コンテンツ管理**: MDX
+- **デプロイ**: Vercel
+- **その他の主要機能**:
+  - Notion API連携
+  - Spotify埋め込み機能
+  - アナリティクス機能
+  - ダークモード対応
+  - 数式表示対応（KaTeX）
+  - シンタックスハイライト
+
+## サイズ最適化のための推奨事項
+
+現在のプロジェクトサイズが250MB以上となっている主な要因と最適化方法：
+
+### 1. 依存パッケージの最適化
+- 未使用の依存パッケージの削除
+  - `react-spotify-player`と`react-spotify-web-playback-sdk`が重複している可能性
+  - 開発依存パッケージ（devDependencies）の見直し
+
+### 2. 画像とメディアファイルの最適化
+- `public`ディレクトリ内の未使用アセットの削除
+- 画像の最適化（WebPフォーマットの使用）
+- 大きな画像ファイルのCDN利用検討
+
+### 3. ビルド出力の最適化
+- `next.config.js`での最適化設定の見直し
+- 不要なページやコンポーネントの削除
+
+### 4. キャッシュとビルドファイルの削除
+- `.next`ディレクトリの定期的なクリーンアップ
+- `node_modules`の定期的な再インストール
+
+## 推奨される即時対応
+
+1. `npm run analyze`を実行してバンドルサイズの詳細分析
+2. 未使用の依存パッケージの特定と削除
+3. 画像アセットの最適化
+4. ビルドキャッシュのクリーンアップ
+
+## 開発環境のセットアップ
+
+```bash
+# 依存パッケージのインストール
+npm install
+
+# 開発サーバーの起動
+npm run dev
+
+# プロダクションビルド
+npm run build
+
+# プロダクションサーバーの起動
+npm run serve
+```
+
+## 環境変数の設定
+
+必要な環境変数は`.env`ファイルに設定してください：
+
+- NEXT_PUBLIC_GISCUS_REPO
+- NEXT_PUBLIC_GISCUS_REPOSITORY_ID
+- NEXT_PUBLIC_GISCUS_CATEGORY
+- NEXT_PUBLIC_GISCUS_CATEGORY_ID
+- SPOTIFY_CLIENT_ID
+- SPOTIFY_CLIENT_SECRET
+- SPOTIFY_REFRESH_TOKEN
+- NOTION_API_KEY
+- NOTION_DATABASE_ID
+
+## ライセンス
+
+このプロジェクトはMITライセンスの下で公開されています。
