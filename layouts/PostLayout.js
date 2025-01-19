@@ -8,6 +8,7 @@ import siteMetadata from '@/data/siteMetadata'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import RelatedPosts from '@/components/RelatedPosts'
+import ArticleChat from '@/components/ArticleChat'
 
 const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/blog/${fileName}`
 const discussUrl = (slug) =>
@@ -17,7 +18,7 @@ const discussUrl = (slug) =>
 
 const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
-export default function PostLayout({ frontMatter, authorDetails, next, prev, children, allPosts }) {
+export default function PostLayout({ frontMatter, authorDetails, next, prev, children, allPosts, rawContent }) {
   const { slug, fileName, date, title, images, tags } = frontMatter
 
   return (
@@ -114,6 +115,11 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
           {/* コメント */}
           <div className="mt-16">
             <Comments frontMatter={frontMatter} />
+          </div>
+
+          {/* チャットボット */}
+          <div className="mt-16">
+            <ArticleChat articleContent={rawContent} />
           </div>
         </footer>
       </article>

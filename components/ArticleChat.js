@@ -4,6 +4,7 @@ export default function ArticleChat({ articleContent }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,6 +13,7 @@ export default function ArticleChat({ articleContent }) {
     const userMessage = input.trim();
     setInput('');
     setIsLoading(true);
+    setError(null);
 
     // ユーザーメッセージを追加
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
@@ -30,13 +32,19 @@ export default function ArticleChat({ articleContent }) {
 
       const data = await response.json();
 
-      if (!response.ok) throw new Error(data.error || 'エラーが発生しました');
+      if (!response.ok) {
+        throw new Error(data.details || data.error || 'エラーが発生しました');
+      }
 
       // AIの応答を追加
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
     } catch (error) {
       console.error('Chat error:', error);
-      setMessages(prev => [...prev, { role: 'assistant', content: 'すみません、エラーが発生しました。もう一度お試しください。' }]);
+      setError(error.message);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: `申し訳ありません。エラーが発生しました：${error.message}` 
+      }]);
     } finally {
       setIsLoading(false);
     }
@@ -46,6 +54,12 @@ export default function ArticleChat({ articleContent }) {
     <div className="mt-8 border rounded-lg p-4 bg-white dark:bg-gray-800">
       <h3 className="text-lg font-bold mb-4">記事について質問する</h3>
       
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-200 rounded-lg">
+          {error}
+        </div>
+      )}
+
       <div className="space-y-4 mb-4 max-h-[400px] overflow-y-auto">
         {messages.map((message, index) => (
           <div
