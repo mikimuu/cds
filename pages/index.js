@@ -3,7 +3,6 @@ import { PageSEO } from '@/components/SEO'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
-import { getNewBlogPosts } from '@/lib/microcms'
 import formatDate from '@/lib/utils/formatDate'
 
 import NewsletterForm from '@/components/NewsletterForm'
@@ -12,10 +11,9 @@ const MAX_DISPLAY = 5
 
 export async function getStaticProps() {
   const localPosts = await getAllFilesFrontMatter('blog')
-  const cmsPosts = await getNewBlogPosts()
   
   // ローカルの記事とCMSの記事を結合してソート
-  const allPosts = [...localPosts, ...cmsPosts].sort(
+  const allPosts = localPosts.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   )
 

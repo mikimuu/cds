@@ -3,7 +3,6 @@ import PageTitle from '@/components/PageTitle'
 import generateRss from '@/lib/generate-rss'
 import { MDXLayoutRenderer } from '@/components/MDXComponents'
 import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/lib/mdx'
-import { getNewBlogPosts } from '@/lib/microcms'
 
 const DEFAULT_LAYOUT = 'PostLayout'
 
@@ -24,22 +23,9 @@ export async function getStaticProps({ params }) {
     // 既存の記事を取得
     const allPosts = await getAllFilesFrontMatter('blog')
     
-    // microCMSの記事を取得（エラー時は空配列を返す）
-    let cmsPosts = []
-    try {
-      cmsPosts = await getNewBlogPosts()
-    } catch (error) {
-      console.error('Failed to fetch CMS posts:', error)
-    }
-    
-    // 全記事を結合
-    const combinedPosts = [...allPosts, ...cmsPosts].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    )
-
-    const postIndex = combinedPosts.findIndex((post) => formatSlug(post.slug) === params.slug.join('/'))
-    const prev = combinedPosts[postIndex + 1] || null
-    const next = combinedPosts[postIndex - 1] || null
+    const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === params.slug.join('/'))
+    const prev = allPosts[postIndex + 1] || null
+    const next = allPosts[postIndex - 1] || null
     const post = await getFileBySlug('blog', params.slug.join('/'))
     const authorList = post.frontMatter.authors || ['default']
     const authorPromise = authorList.map(async (author) => {
@@ -49,8 +35,8 @@ export async function getStaticProps({ params }) {
     const authorDetails = await Promise.all(authorPromise)
 
     // rss
-    if (combinedPosts.length > 0) {
-      const rss = generateRss(combinedPosts)
+    if (allPosts.length > 0) {
+      const rss = generateRss(allPosts)
       fs.writeFileSync('./public/feed.xml', rss)
     }
 
@@ -60,7 +46,7 @@ export async function getStaticProps({ params }) {
         authorDetails, 
         prev, 
         next,
-        allPosts: combinedPosts
+        allPosts: allPosts
       } 
     }
   } catch (error) {
