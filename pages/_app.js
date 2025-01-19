@@ -13,7 +13,7 @@ import LayoutWrapper from '@/components/LayoutWrapper'
 import { ClientReload } from '@/components/ClientReload'
 import "video.js/dist/video-js.css"
 import Analyticss from '@/components/analytics'
-import GAScript from '@/components/analytics/GoogleAnalytics'
+
 const isDevelopment = process.env.NODE_ENV === 'production'
 const isSocket = process.env.SOCKET
 
@@ -24,7 +24,6 @@ export default function App({ Component, pageProps }) {
         <meta content="width=device-width, initial-scale=1" name="viewport" />
        <Analyticss />
        <Analytics />
-       <GAScript />
       </Head>
       {isDevelopment && isSocket && <ClientReload />}
       <Analytics />
