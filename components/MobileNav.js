@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
+import ThemeSwitch from './ThemeSwitch'
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false)
@@ -29,7 +30,7 @@ const MobileNav = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          className="w-5 h-5 text-cosmic-darkgray"
+          className="w-5 h-5 text-cosmic-darkgray dark:text-cosmic-lightgray"
         >
           <path
             fillRule="evenodd"
@@ -39,11 +40,14 @@ const MobileNav = () => {
         </svg>
       </button>
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-full transform bg-white/95 backdrop-blur-sm transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 z-50 h-full w-full transform bg-white/95 dark:bg-black/95 backdrop-blur-sm transition-transform duration-300 ease-in-out ${
           navShow ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex justify-end p-4">
+        <div className="flex justify-between items-center p-4">
+          <div className="flex items-center">
+            <ThemeSwitch />
+          </div>
           <button
             type="button"
             className="w-8 h-8 flex items-center justify-center"
@@ -54,7 +58,7 @@ const MobileNav = () => {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="w-5 h-5 text-cosmic-darkgray"
+              className="w-5 h-5 text-cosmic-darkgray dark:text-cosmic-lightgray"
             >
               <path
                 fillRule="evenodd"
@@ -72,7 +76,7 @@ const MobileNav = () => {
                 className="group relative py-2 inline-block"
                 onClick={onToggleNav}
               >
-                <span className="text-xl font-light tracking-wider text-cosmic-darkgray transition-colors duration-500 group-hover:text-cosmic-blue">
+                <span className="text-xl font-light tracking-wider text-cosmic-darkgray dark:text-cosmic-lightgray transition-colors duration-500 group-hover:text-cosmic-blue">
                   {link.title}
                 </span>
                 <span className="absolute bottom-0 left-1/2 w-0 h-px bg-cosmic-blue transition-all duration-500 group-hover:w-full group-hover:left-0"></span>
