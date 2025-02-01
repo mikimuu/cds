@@ -24,6 +24,8 @@ const nextConfig = {
               "frame-src 'self' https: *.spotify.com *.youtube.com *.google.com",
               "connect-src 'self' *.google-analytics.com *.doubleclick.net",
               "media-src 'self' https:",
+              "worker-src 'self' blob:",
+              "child-src 'self' blob:",
             ].join('; '),
           },
           {
@@ -43,6 +45,12 @@ const nextConfig = {
     ]
   },
   webpack: (config, { dev, isServer }) => {
+    config.module.rules.push({
+      test: /\.(glsl|vs|fs|vert|frag)$/,
+      exclude: /node_modules/,
+      use: ['raw-loader'],
+    })
+
     config.module.rules.push({
       test: /\.mdx?$/,
       use: [

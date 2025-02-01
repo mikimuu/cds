@@ -7,13 +7,17 @@ import siteMetadata from '@/data/siteMetadata'
 import { useEffect, useState } from 'react'
 
 const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false)
   const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY)
+      const scrollPosition = window.scrollY
+      setIsScrolled(scrollPosition > 50)
+      setScrollY(scrollPosition)
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -29,7 +33,7 @@ const Header = () => {
           priority
           className="object-cover brightness-[0.7] transition-transform duration-1000"
           style={{
-            transform: `scale(${1 + scrollY * 0.0003}) translateY(${scrollY * 0.5}px)`,
+            transform: `scale(${1 + scrollY * 0.0001}) translateY(${scrollY * 0.2}px)`,
           }}
         />
 
@@ -38,24 +42,13 @@ const Header = () => {
           className="absolute inset-0 flex flex-col justify-center items-center"
           style={{
             opacity: 1 - scrollY * 0.002,
-            transform: `translateY(${scrollY * 0.3}px)`,
           }}
         >
           <div className="max-w-3xl mx-auto px-8 text-center text-white">
-            <h1 
-              className="text-4xl md:text-6xl font-extralight tracking-[0.2em] mb-8 transition-all duration-1000"
-              style={{
-                transform: `translateY(${scrollY * -0.2}px)`,
-              }}
-            >
+            <h1 className="text-4xl md:text-6xl font-extralight tracking-[0.2em] mb-8">
               {siteMetadata.title}
             </h1>
-            <p 
-              className="text-lg md:text-xl font-light tracking-wider leading-relaxed transition-all duration-1000"
-              style={{
-                transform: `translateY(${scrollY * -0.1}px)`,
-              }}
-            >
+            <p className="text-lg md:text-xl font-light tracking-wider leading-relaxed">
               {siteMetadata.description}
             </p>
           </div>
@@ -69,24 +62,20 @@ const Header = () => {
           }}
         >
           <span className="text-sm font-light mb-4">Scroll to explore</span>
-          <div className="w-px h-16 bg-white/50 relative overflow-hidden">
-            <div 
-              className="absolute top-0 left-0 w-full bg-white animate-scroll-down"
-              style={{ height: '30%' }}
-            ></div>
-          </div>
+          <div className="w-px h-16 bg-white/50"></div>
         </div>
       </div>
 
       {/* ナビゲーションヘッダー */}
-      <header className="fixed top-0 left-0 right-0 z-50">
-        {/* 光の表現: 半透明のグラデーションで空間の広がりを演出 */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/50 dark:from-black/90 dark:via-black/70 dark:to-black/50 backdrop-blur-sm"></div>
-        
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-black/30 backdrop-blur-md' : 'bg-transparent'
+      }`}>
         {/* コンテンツ: 幾何学的な配置と余白の調和 */}
         <div className="relative">
           {/* 上部の装飾的な線: 建築的な直線美 + アニメーション */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cosmic-lightgray to-transparent animate-line-glow"></div>
+          <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent transition-opacity duration-300 ${
+            isScrolled ? 'opacity-100' : 'opacity-0'
+          }`}></div>
 
           {/* メインナビゲーション */}
           <div className="max-w-[1000px] mx-auto px-8">
@@ -96,7 +85,7 @@ const Header = () => {
                 href="/" 
                 className="group relative py-2"
               >
-                <span className="text-xl font-extralight tracking-[0.25em] text-cosmic-black dark:text-white transition-colors duration-500 group-hover:text-cosmic-blue">
+                <span className="text-xl font-extralight tracking-[0.25em] text-white transition-colors duration-500 group-hover:text-cosmic-blue">
                   cosmic dance
                 </span>
                 {/* タイトル下の装飾線: ホバー時に広がる */}
@@ -112,7 +101,7 @@ const Header = () => {
                       href={link.href}
                       className="group relative py-2"
                     >
-                      <span className="text-sm font-light tracking-wider text-cosmic-darkgray dark:text-cosmic-lightgray transition-colors duration-500 group-hover:text-cosmic-blue">
+                      <span className="text-sm font-light tracking-wider text-white/90 transition-colors duration-500 group-hover:text-cosmic-blue">
                         {link.title}
                       </span>
                       {/* ナビリンク下の装飾線: ホバー時に出現 */}
@@ -134,7 +123,9 @@ const Header = () => {
           </div>
 
           {/* 下部の装飾的な線: 建築的な直線美 + アニメーション */}
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cosmic-lightgray to-transparent animate-line-glow"></div>
+          <div className={`absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent transition-opacity duration-300 ${
+            isScrolled ? 'opacity-100' : 'opacity-0'
+          }`}></div>
         </div>
       </header>
     </>
