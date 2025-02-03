@@ -21,7 +21,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: blob: *.google-analytics.com",
               "font-src 'self'",
-              "frame-src 'self' https: *.spotify.com *.youtube.com *.google.com",
+              "frame-src 'self' https: *.spotify.com *.youtube.com *.google.com *.music.apple.com",
               "connect-src 'self' *.google-analytics.com *.doubleclick.net",
               "media-src 'self' https:",
               "worker-src 'self' blob:",
