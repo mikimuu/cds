@@ -60,7 +60,7 @@ export default function ArticleChat({ articleContent }) {
   };
 
   return (
-    <div className="mt-8 border rounded-lg bg-white dark:bg-gray-800 shadow-lg">
+    <div className="chat-container mt-8 border rounded-lg bg-white dark:bg-gray-800 shadow-lg">
       <h3 className="text-lg font-bold p-4 border-b dark:border-gray-700">
         記事について質問する
       </h3>
@@ -71,14 +71,14 @@ export default function ArticleChat({ articleContent }) {
         </div>
       )}
 
-      <div className="space-y-4 p-4 min-h-[200px] max-h-[600px] md:max-h-[800px] overflow-y-auto">
+      <div className="chat-messages space-y-4 p-4">
         {messages.map((message, index) => (
           <div
             key={index}
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`p-3 rounded-lg whitespace-pre-wrap ${
+              className={`chat-message p-3 rounded-lg whitespace-pre-wrap ${
                 message.role === 'user'
                   ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-900 dark:text-blue-100 max-w-[85%] md:max-w-[75%]'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 max-w-[85%] md:max-w-[75%]'
@@ -119,4 +119,4 @@ export default function ArticleChat({ articleContent }) {
       </form>
     </div>
   );
-} 
+}

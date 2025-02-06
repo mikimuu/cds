@@ -210,9 +210,20 @@ html {
 }
 
 /* ===============================
-   カスタムクラス (Tailwind Components)
+   チャットボットのスタイル
 =============================== */
 @layer components {
+  .chat-container {
+    @apply w-full max-w-md mx-auto;
+  }
+
+  .chat-message {
+    @apply text-sm md:text-base;
+  }
+
+  .chat-messages {
+    @apply min-h-[200px] max-h-[400px] md:max-h-[600px] overflow-y-auto;
+  }
   /* セクション間の余白 */
   .my-section-y {
     @apply my-16 md:my-24;
