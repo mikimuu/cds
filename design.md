@@ -1,400 +1,466 @@
-以下に、「コルビジェや伊東豊雄の建築的美学」「ブライアン・イーノ、ビル・エヴァンスの音楽的空間感」を表現しつつ、ミニマルで洗練されたデザインをNext.js + Tailwind CSSで実装するための、めちゃめちゃ詳細な技術的指示書を示します。
+# cosmicdace Blog デザインガイドライン
 
-全体構成・ゴール
-	•	ブログ名: cosmic dance（宇宙的舞踏）
-	•	デザインテーマ:
-	1.	建築的美学（コルビジェ, 伊東豊雄）: 幾何学的・直線的要素 + 余白・光感を重視
-	2.	音楽的空間感（ブライアン・イーノ, ビル・エヴァンス）: 静謐で広がりを感じさせるレイアウト、視線のリズム
-	3.	宇宙的舞踏（cosmic dance）: 大きな余白・伸びやかな空間・舞っているような軽やかさ
-	•	技術スタック:
-	•	Next.js (App Router推奨: app/ディレクトリ構成)
-	•	Tailwind CSS
-	•	実装のポイント:
-	•	余白: とにかく広く、行間やセクション間をゆったり確保
-	•	色: 基本はホワイト/グレー/ブラックのモノトーン。アクセントにブルーやパープル系を1割以下で使用
-	•	タイポグラフィ: 無駄をなくし、読みやすさ優先。行間を1.6〜1.8程度に
-	•	レイアウト: max-width: 1000px前後の固定幅 + 中央寄せ、1カラムまたは2カラム
-	•	装飾: なるべく削ぎ落とし、“線 + 余白”で魅せる。必要に応じてやわらかいshadow
+このドキュメントは、cosmicdace Blog のデザインシステムとガイドラインを定義します。
+宇宙を思わせる大胆なカラーリングとアニメーションを取り入れつつ、可読性やアクセシビリティを重視したモダンなミニマルデザインを目指します。
 
-1. プロジェクトセットアップ
+## 目次
+1. [ブランドアイデンティティ](#ブランドアイデンティティ)
+2. [カラーシステム](#カラーシステム)
+3. [タイポグラフィ](#タイポグラフィ)
+4. [レイアウトとスペーシング](#レイアウトとスペーシング)
+5. [アニメーションと相互作用](#アニメーションと相互作用)
+6. [コンポーネントデザイン](#コンポーネントデザイン)
+7. [レスポンシブデザイン](#レスポンシブデザイン)
+8. [アクセシビリティ](#アクセシビリティ)
+9. [設定ファイルガイド](#設定ファイルガイド)
 
-1-1. 新規Next.jsプロジェクト作成
+## ブランドアイデンティティ
 
-npx create-next-app cosmic-dance
-cd cosmic-dance
+### デザイン哲学
+- コズミックモダン: 宇宙的な色合いやモチーフを、ミニマルデザインに落とし込む
+- ダイナミズム: 惑星の軌道や星の瞬きを想起させる軽やかなアニメーション
+- 日本語・多言語対応: メインの日本語コンテンツは可読性を最優先、英数字はUI的要素と組み合わせやすいスタイル
+- ダークモード対応: 夜空をイメージしたダークテーマはブランドイメージの重要な要素
 
-	•	質問に従ってテンプレートをセットアップ (TypeScript推奨なら --ts を使う)
+### デザイン原則
+1. **シンプリシティ**: 不要な装飾は削ぎ落とし、イメージカラーやアニメーションでポイントを作る
+2. **レジビリティ**: 常に読みやすさが最優先。特にコントラストはしっかり確保
+3. **一貫性**: 色やフォント、ボーダーなどのスタイルを再利用し、どのページでも"cosmicdaceらしさ"を維持
+4. **アクセシビリティ**: 多様なユーザーが利用可能なデザインを提供
 
-1-2. Tailwind CSS導入
+## カラーシステム
 
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+### プライマリカラー
+```css
+primary: '#FF66CC'  /* 宇宙のガス雲をイメージしたネオンピンク */
+```
 
-	•	tailwind.config.js と postcss.config.js が生成される
+### Cosmicテーマカラー
+```css
+cosmic-dark: #1a1a2e     /* 夜空をイメージした深い紺色 */
+cosmic-mid: #16213e      /* 夜明け前の空のようなネイビーブルー */
+cosmic-purple: #533483   /* 宇宙の神秘を表す紫 */
+cosmic-star: #ffdf00     /* 星のきらめきを表すイエロー系ゴールド */
+cosmic-white: #f1f1f1    /* 宇宙の光をイメージした柔らかい白 */
+```
 
-1-3. ディレクトリ構成の最終イメージ
+### ブランドカラー
+```css
+brblue: #00a8ec       /* クールなコズミックブルー */
+brorange: #f7931e     /* 宇宙船の警告灯をイメージしたオレンジ */
+brgreen: #40d39c      /* 成功・完了（酸素豊かな惑星の緑） */
+brviolet: #bc98cb     /* 特別なアクセント（神秘的な紫系） */
+brred: #ff6b6b        /* エラー・重大な警告 */
+bryellow: #fdfd96     /* シグナルやハイライトに */
+brcyan: #a2f5f8       /* 淡い水色（背景や軽いアクセント） */
+brblackhole: #0d0d0d  /* ブラックホールをイメージした漆黒 */
+```
 
-Next.jsのApp Routerを使用する場合:
+### カラーの使用ガイドライン
+- プライマリカラー: 主要ボタンやリンク、重要なUIアクション
+- Cosmicテーマ: 全体の背景やセクション背景、ダークモードのベースカラー
+- ブランドカラー: 状態表示（エラー・警告・成功）、カードやバッジのアクセント、グラフなどの補色
 
-cosmic-dance/
-├─ app/
-│   ├─ layout.tsx       // 全ページ共通レイアウト
-│   ├─ page.tsx         // トップページ
-│   ├─ blog/
-│   │   ├─ page.tsx     // 記事一覧
-│   │   └─ [slug]/
-│   │       └─ page.tsx // 記事詳細
-│   └─ globals.css       // TailwindのグローバルCSS読み込み
-├─ public/
-├─ tailwind.config.js
-├─ postcss.config.js
-├─ package.json
-└─ ...
+## タイポグラフィ
 
-2. Tailwind CSS 設定 (tailwind.config.js)
+### フォントファミリー
 
-tailwind.config.js でテーマ拡張・カラーパレット・フォント設定を行います。
+#### 基本フォント
+```css
+font-family: 'Shippori Mincho', serif;
+```
+- ウェイト: 400 (Regular), 500 (Medium), 600 (SemiBold), 700 (Bold)
+- 用途: 
+  - 本文テキスト
+  - 見出し
+  - ナビゲーション
+  - ボタンテキスト
+  - フォーム要素
 
-/** @type {import('tailwindcss').Config} */
+#### 英数字補助フォント
+```css
+font-family: 'Inter', sans-serif;
+```
+- ウェイト: 100-700
+- 用途: 
+  - 英数字のみのテキスト
+  - 日付表示
+  - バージョン番号
+  - 技術的な表記
+
+#### モノスペース
+```css
+font-family: 'Courier', monospace;
+```
+- 用途: 
+  - コードブロック
+  - コマンドライン表示
+  - 技術的なドキュメント
+
+### テキストスタイル
+
+#### 見出し
+```css
+h1 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: theme('colors.cosmic-white');
+}
+
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: theme('colors.cosmic-purple');
+}
+```
+
+#### 本文
+```css
+body {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: theme('colors.cosmic-mid');
+}
+```
+
+## レイアウトとスペーシング
+
+### セクションスペーシング
+```css
+.section {
+  padding: 4rem 1rem; /* モバイル */
+}
+@media (min-width: 768px) {
+  .section {
+    padding: 6rem 2rem; /* デスクトップ */
+  }
+}
+```
+
+### 行の高さ
+```css
+.line-height-loose {
+  line-height: 1.8;
+}
+.line-height-tight {
+  line-height: 1.4;
+}
+```
+
+### シャドウシステム
+```css
+.shadow-cosmic-lg {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+.shadow-cosmic-glow {
+  box-shadow: 0 0 20px rgba(83,52,131,0.6);
+}
+.shadow-neobrutal-card {
+  box-shadow: 4px 4px 0 0 #000;
+}
+```
+
+## アニメーションと相互作用
+
+### ホバーエフェクト
+```css
+.hover-cosmic {
+  transition: transform 0.4s, box-shadow 0.4s;
+}
+.hover-cosmic:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(255, 102, 204, 0.5);
+}
+```
+
+### スクロール
+```css
+html {
+  scroll-behavior: smooth;
+}
+
+/* スクロールバー */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 102, 204, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 102, 204, 0.6);
+}
+```
+
+### 背景アニメーション
+```css
+@keyframes cosmic-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.bg-cosmic-animate {
+  background: linear-gradient(270deg, #533483, #16213e, #1a1a2e);
+  background-size: 600% 600%;
+  animation: cosmic-gradient 15s ease infinite;
+}
+```
+
+## コンポーネントデザイン
+
+### ボタン
+- プライマリボタン:
+  - 背景色: theme('colors.primary')
+  - テキスト色: #fff
+  - ホバー時: 背景色がより鮮やかに
+  - シャドウ: shadow-cosmic-glow
+  - ボーダー半径: 4px
+
+- セカンダリボタン:
+  - 背景色: transparent
+  - テキスト色: theme('colors.primary')
+  - ボーダー: 2px solid theme('colors.primary')
+  - ホバー時: 背景に10%のプライマリカラー
+
+### フォーム
+- 入力フィールド:
+  - 背景色: theme('colors.cosmic-white')
+  - 境界線: 1px solid #ccc
+  - フォーカス時: プライマリカラーの境界線
+  - ボーダー半径: 4px
+
+- ラベル:
+  - フォントサイズ: 14px
+  - 色: theme('colors.cosmic-mid')
+  - マージン: 0 0 5px
+
+### モーダル
+- 背景:
+  - rgba(26, 26, 46, 0.8)
+  - フィルター: blur(5px)
+- コンテンツ:
+  - 背景色: theme('colors.cosmic-white')
+  - パディング: 20px
+  - ボーダー半径: 8px
+  - 最大幅: 500px
+
+### ネオブルータリズム
+```css
+.neobrutal-container {
+  background-color: #fafafa;
+  color: #000;
+  padding: 20px;
+  border: 4px solid #000;
+}
+```
+
+## レスポンシブデザイン
+
+### ブレイクポイント
+- モバイルファースト
+- md (768px): デスクトップ表示
+
+### テキストサイズ変更
+```css
+.text-h2 {
+  font-size: 1.5rem; /* text-2xl */
+  /* md: 1.875rem (text-3xl) */
+}
+
+.text-body {
+  font-size: 1rem; /* text-base */
+  /* md: 1.125rem (text-lg) */
+}
+```
+
+## アクセシビリティ
+
+### カラーコントラスト
+- テキストと背景のコントラスト比: 4.5:1以上
+- 重要な情報: 7:1以上
+
+### ダークモード対応
+- 夜空をイメージした背景色
+- テキストは高コントラストの色を使用
+- コンポーネントごとの最適化
+
+### フォーカス状態
+- キーボードナビゲーション対応
+- 視覚的なフォーカスインジケータ
+
+## 設定ファイルガイド
+
+このセクションでは、デザインシステムを実装するための各設定ファイルとその役割について説明します。
+
+### 1. デザイン関連ファイル
+
+#### `design.md`
+- デザインシステムとガイドラインを定義する文書
+- 以下の要素を詳細に記述：
+  - ブランドアイデンティティ
+  - カラーシステム
+  - タイポグラフィ
+  - レイアウトとスペーシング
+  - アニメーションと相互作用
+  - コンポーネントデザイン
+  - レスポンシブデザイン
+  - アクセシビリティ
+
+#### `tailwind.config.js`
+```javascript
 module.exports = {
   content: [
-    // App Router使用の場合: appディレクトリ以下を対象に
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    // コンポーネント等があるならここに追記
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    './pages/**/*.js',
+    './components/**/*.js',
+    './layouts/**/*.js',
+    './lib/**/*.js',
+    './data/**/*.mdx',
   ],
   theme: {
     extend: {
       colors: {
-        // メインカラー(モノトーン)
-        'cosmic-black': '#000000',
-        'cosmic-darkgray': '#333333',
-        'cosmic-gray': '#666666',
-        'cosmic-lightgray': '#EEEEEE',
-
-        // アクセントカラー
-        'cosmic-blue': '#3A4E8C',   // cosmicブルー
-        'cosmic-purple': '#A8A0C8', // 淡いパープル(必要なら)
+        primary: colors.pink,
+        cosmic: {
+          blue: '#4A90E2',
+          lightgray: '#E5E5E5',
+          // ...
+        },
+        // ブランドカラー
+        'brblue': '#0077b6',
+        'brorange': '#ff5733',
+        // ...
       },
       fontFamily: {
-        // Tailwindで使えるようにする
-        sans: ['"Noto Sans JP"', 'Hiragino Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        sans: ['Inter', ...defaultTheme.fontFamily.sans],
+        mincho: ['Shippori Mincho', 'serif'],
+        mono: ['Courier', 'monospace'],
       },
-      fontSize: {
-        // デザインの階層に合わせて設定例
-        'h1': ['40px', { lineHeight: '1.3' }],   // TailwindのlineHeight設定
-        'h2': ['28px', { lineHeight: '1.4' }],
-        'body': ['16px', { lineHeight: '1.8' }],
-      },
-      // スペースや余白設定
-      spacing: {
-        'section-y': '3rem', // セクション上下余白例
-      },
-      // maxWidth設定
-      maxWidth: {
-        'content': '1000px',   // メインコンテンツ幅
-      },
-      boxShadow: {
-        // 軽いシャドウ
-        'card': '0 2px 10px rgba(0,0,0,0.05)',
-      },
-    },
-  },
-  plugins: [],
-};
+      // その他の設定...
+    }
+  }
+}
+```
+- Tailwind CSSの設定ファイル
+- 主な設定内容：
+  - カラーパレット（cosmic, brand colors）
+  - フォントファミリー
+  - タイポグラフィ設定
+  - ダークモード設定
+  - アニメーション設定
+  - カスタムユーティリティ
 
-上記は一例ですが、Tailwindのextendを使って最小限のカスタマイズを行っています。
-	•	色名をわかりやすくカスタム (cosmic-darkgray など)
-	•	見出しのフォントサイズをfont-h1, font-h2のように定義してもOK
-	•	lineHeight を特に重要視し、読みやすい行間を確保
+### 2. スタイル関連ファイル
 
-3. グローバルCSS (app/globals.css)
+#### `css/tailwind.css`
+```css
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap');
 
-Tailwindのユーティリティクラスを使うために必ず@tailwindディレクティブを最初に書きます。
-
-/* app/globals.css */
-
-/* tailwindのベース/コンポーネント/ユーティリティを取り込む */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* カスタムリセット的な設定を追記(必要なら) */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* ベースフォント設定 */
+@layer base {
+  html {
+    font-family: 'Shippori Mincho', serif;
+  }
+  .font-en {
+    font-family: 'Inter', sans-serif;
+  }
 }
 
-	•	TailwindではデフォルトでPreflightが効くので、通常のリセットCSSは不要になる場合が多い
-	•	必要に応じて独自スタイルを追加するが、できる限りTailwindのユーティリティクラスでデザインを組み立てる
+/* その他のカスタムスタイル */
+```
+- グローバルCSSファイル
+- 以下の要素を含む：
+  - Tailwindディレクティブ
+  - カスタムフォント読み込み
+  - ベーススタイル
+  - ユーティリティクラス
+  - アニメーション定義
+  - スクロールバーカスタマイズ
 
-4. レイアウト (app/layout.tsx)
+### 3. コンポーネント関連ファイル
 
-全ページ共通のヘッダー・フッターを配置するレイアウトです。
-下記例では、インラインスタイルではなくTailwindクラスを使って構築します。
+#### `components/Card.js`
+- カードコンポーネントの実装
+- ネオブルータリズムデザインの適用
+- レスポンシブ対応
+- 主なスタイリング：
+  - 境界線
+  - シャドウ効果
+  - ホバーアニメーション
 
-// app/layout.tsx
-import './globals.css';
-import { ReactNode } from 'react';
-import { Metadata } from 'next';
+#### `components/CosmicBackground.js`
+- 背景要素の実装
+- アニメーション効果の適用
+- 宇宙的な雰囲気の演出
 
-export const metadata: Metadata = {
-  title: 'cosmic dance',
-  description: 'コルビジェや伊東豊雄、ブライアン・イーノを感じさせる宇宙的舞踏ブログ',
-};
+### 4. その他の設定ファイル
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="ja">
-      <body className="bg-white text-cosmic-darkgray font-sans">
-        {/* ヘッダー */}
-        <header className="py-4">
-          <div className="max-w-content mx-auto px-4 flex items-center justify-between">
-            {/* サイトタイトル */}
-            <h1 className="text-2xl font-bold">cosmic dance</h1>
-            {/* ナビゲーション */}
-            <nav className="space-x-4">
-              <a href="/" className="hover:text-cosmic-blue transition-colors">Home</a>
-              <a href="/blog" className="hover:text-cosmic-blue transition-colors">Blog</a>
-              {/* 必要なら About, Contact など追記 */}
-            </nav>
-          </div>
-        </header>
-
-        {/* メインコンテンツ */}
-        <main>
-          {children}
-        </main>
-
-        {/* フッター */}
-        <footer className="mt-16 py-8 text-center text-sm text-cosmic-gray">
-          <p>© cosmic dance</p>
-        </footer>
-      </body>
-    </html>
-  );
+#### `next.config.js`
+```javascript
+module.exports = {
+  images: {
+    domains: ['...'],
+  },
+  // その他の設定
 }
+```
+- Next.jsの設定ファイル
+- 画像最適化やその他の機能の設定
 
-	•	className="max-w-content mx-auto px-4" で左右に最大幅1000px + 中央寄せ + 両サイド余白を実現
-	•	ヘッダー/フッターともにミニマル & 余白を十分に確保
-	•	アクセントカラー(hover:text-cosmic-blue)を利用し、ホバー時のコントラストを出す
-
-5. トップページ (app/page.tsx)
-
-メインビジュアルや最新記事一覧を配置します。シンプルかつ余白を重要視しましょう。
-
-// app/page.tsx
-export default function HomePage() {
-  return (
-    <div>
-      {/* メインビジュアル的セクション */}
-      <section className="section-home text-center my-section-y px-4">
-        <h2 className="text-h2 mb-4">Welcome to cosmic dance</h2>
-        <p className="max-w-lg mx-auto text-body">
-          宇宙的舞踏のように、無限の余白とリズムを感じられるブログへようこそ。
-        </p>
-      </section>
-
-      {/* 最新記事リストのセクション */}
-      <section className="my-section-y px-4 max-w-content mx-auto">
-        <h2 className="text-h2 mb-8">Latest Articles</h2>
-        
-        {/* 記事カードの例: tailwindでカードっぽく */}
-        <div className="grid gap-8">
-          {/* 1つ目 */}
-          <div className="bg-white border border-cosmic-lightgray rounded shadow-card p-6 transition-transform hover:-translate-y-1">
-            <h3 className="text-lg font-bold mb-2">サンプル記事タイトル</h3>
-            <p className="text-body text-cosmic-gray mb-4">ここに記事の抜粋が入ります...</p>
-            <a href="/blog/sample-article" className="text-cosmic-blue hover:opacity-75">
-              続きを読む
-            </a>
-          </div>
-
-          {/* 2つ目 */}
-          <div className="bg-white border border-cosmic-lightgray rounded shadow-card p-6 transition-transform hover:-translate-y-1">
-            <h3 className="text-lg font-bold mb-2">サンプル記事タイトル2</h3>
-            <p className="text-body text-cosmic-gray mb-4">ここに記事の抜粋が入ります...</p>
-            <a href="/blog/sample-article2" className="text-cosmic-blue hover:opacity-75">
-              続きを読む
-            </a>
-          </div>
-        </div>
-
-        {/* もっと見るボタン */}
-        <div className="mt-8">
-          <a
-            href="/blog"
-            className="inline-block bg-cosmic-blue text-white px-6 py-2 rounded hover:opacity-90 transition"
-          >
-            もっと見る
-          </a>
-        </div>
-      </section>
-    </div>
-  );
+#### `postcss.config.js`
+```javascript
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
 }
+```
+- PostCSSの設定
+- Tailwind CSSの処理設定
 
-	•	.my-section-y などセクション間の大きなマージンを設定（spacing.section-y = 3rem）
-	•	カードデザイン: shadow-card + rounded + transition-transform
-	•	ホバー時に-translate-y-1で少し浮かせる演出
-
-6. 記事一覧ページ (app/blog/page.tsx)
-
-記事一覧をシンプルに並べます。1カラム or 2カラム などレイアウトは好みで。
-
-// app/blog/page.tsx
-export default function BlogListPage() {
-  // 仮データ
-  const articles = [
-    { slug: 'article1', title: '宇宙的舞踏とは何か', excerpt: 'コルビジェの建築思想と...'},
-    { slug: 'article2', title: '光と影のリズムを感じる', excerpt: '伊東豊雄の曲線美から学ぶ...'},
-    // ...
-  ];
-
-  return (
-    <div className="my-section-y px-4 max-w-content mx-auto">
-      <h2 className="text-h2 mb-8">All Articles</h2>
-      
-      <div className="grid gap-8">
-        {articles.map(article => (
-          <div
-            key={article.slug}
-            className="bg-white border border-cosmic-lightgray rounded shadow-card p-6 hover:-translate-y-1 transition-transform"
-          >
-            <h3 className="text-lg font-bold mb-2">{article.title}</h3>
-            <p className="text-body text-cosmic-gray mb-4">{article.excerpt}</p>
-            <a href={`/blog/${article.slug}`} className="text-cosmic-blue hover:opacity-75">
-              続きを読む
-            </a>
-          </div>
-        ))}
-      </div>
-
-      {/* ページネーション or Load More ボタンなど、必要に応じて */}
-      <div className="mt-8 text-center">
-        <button className="bg-cosmic-blue text-white px-6 py-2 rounded hover:opacity-90 transition">
-          Load More
-        </button>
-      </div>
-    </div>
-  );
+#### `tsconfig.json`
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
 }
+```
+- TypeScriptの設定
+- パスエイリアスなどの設定
 
-	•	トップページと同様にカード表示
-	•	Gridで簡易的に縦並び（2カラムにしたい場合は grid-cols-2 + @media で調整）
-	•	将来Paginationを実装するときは、buttonやリンクで対応
+### 設定の適用順序
 
-7. 記事詳細ページ (app/blog/[slug]/page.tsx)
+1. まず`design.md`のガイドラインを参照
+2. `tailwind.config.js`でデザインシステムを実装
+3. `css/tailwind.css`で全体的なスタイルを適用
+4. 各コンポーネントで個別のスタイルを実装
 
-記事タイトルや本文を大きな余白と行間を重視して表示します。
+### 設定ファイルの更新手順
 
-// app/blog/[slug]/page.tsx
-interface Article {
-  title: string;
-  publishedAt: string;
-  content: string;
-}
+1. デザインの変更が必要な場合は、まず`design.md`を更新
+2. 変更に応じて`tailwind.config.js`の設定を修正
+3. 必要に応じて`css/tailwind.css`にカスタムスタイルを追加
+4. コンポーネントの実装を更新
 
-async function getArticleData(slug: string): Promise<Article> {
-  // 実際はデータ取得処理など行う
-  return {
-    title: '宇宙的舞踏とは何か',
-    publishedAt: '2023-01-01',
-    content: `
-      ここに本文が入ります。コルビジェや伊東豊雄の建築的美学と、
-      ブライアン・イーノ、ビル・エヴァンスの音楽的空間感を...
-    `,
-  };
-}
+## 更新履歴
 
-export default async function ArticlePage({ params }: { params: { slug: string } }) {
-  const article = await getArticleData(params.slug);
-
-  return (
-    <div className="my-section-y px-4 max-w-content mx-auto">
-      <h1 className="text-h1 mb-2">{article.title}</h1>
-      <p className="text-sm text-cosmic-gray mb-8">{article.publishedAt}</p>
-
-      {/* MarkdownレンダリングをするならReact Markdown等を利用 */}
-      <div className="prose max-w-none leading-relaxed">
-        {article.content}
-      </div>
-
-      {/* フッター/シェアボタンなど */}
-      <div className="mt-8 flex items-center space-x-4">
-        <button className="bg-cosmic-blue text-white px-4 py-2 rounded hover:opacity-90 transition">
-          Twitterでシェア
-        </button>
-        <button className="bg-cosmic-blue text-white px-4 py-2 rounded hover:opacity-90 transition">
-          Facebookでシェア
-        </button>
-      </div>
-    </div>
-  );
-}
-
-	•	text-h1 を使い大きめのフォントサイズに
-	•	text-sm text-cosmic-gray で日付を小さめ、淡く
-	•	本文はTailwindのtypography plugin（@tailwindcss/typography）を導入すると便利（prose クラス）
-	•	シェアボタンや次の記事リンクなど、用途に応じて配置
-
-8. デザイン・実装の詳細 Tips
-	1.	余白を揃えて秩序感を出す
-	•	my-section-y を全てのセクションに使い、上下のマージンを統一する
-	•	横幅(max-w-content)やmx-autoを徹底して中央寄せ
-	2.	タイポグラフィの階層づけ
-	•	text-h1, text-h2, text-body のように、サイズや行間をTailwind設定で統一
-	•	強調したい箇所に font-bold, text-cosmic-black などで微妙に差をつける
-	3.	カラー運用
-	•	9割を白(#FFFFFF)・黒(#000000)・ダークグレー(#333333)で。
-	•	1割未満でアクセントカラー(cosmic-blueやcosmic-purple)を使う
-	•	リンクやボタンのhover時にtext-cosmic-blueやbg-cosmic-blueを使用
-	4.	装飾は最小限
-	•	背景画像の多用は避け、“線と余白”を活かす
-	•	カードのシャドウはshadow-cardでごく軽めに
-	5.	レスポンシブ対応
-	•	Tailwindのブレイクポイント (md:, lg:など) を使い、デバイス幅に応じた調整
-	•	例: md:grid-cols-2 にして記事カードを2列にするなど
-	6.	運用時の注意
-	•	長文記事でも読みやすいよう行間は1.6〜1.8を維持 (leading-relaxed等)
-	•	広告やバナーを置く場合は枠線だけにするなど、デザイン崩れに注意
-
-9. 拡張: About, Contactページ etc.
-
-その他ページ（app/about/page.tsx や app/contact/page.tsx など）も、同じレイアウト + 同じコンポーネントスタイルを踏襲します。
-
-// app/about/page.tsx
-export default function AboutPage() {
-  return (
-    <div className="my-section-y px-4 max-w-content mx-auto">
-      <h2 className="text-h2 mb-4">About cosmic dance</h2>
-      <p className="text-body leading-relaxed">
-        ここでは、建築的美学や音楽的空間感をテーマに、ブログのコンセプトや運営者について紹介します。
-      </p>
-      {/* 適宜画像やリンクを配置 */}
-    </div>
-  );
-}
-
-10. まとめ
-
-この要件定義およびTailwind+Next.jsの詳細実装手順を踏めば、下記を実現できます。
-	1.	ミニマル + 建築的美学
-	•	幾何学的かつ余白の秩序を保つレイアウト
-	•	最大幅・グリッド・余白設定で、一貫性あるページ構成
-	2.	音楽的空間感
-	•	行間・空白による“広がり”
-	•	リンクやカードホバーなど、視線のリズムやグルーヴを感じさせる演出
-	3.	宇宙的舞踏（cosmic dance）
-	•	白ベースにアクセントカラーを控えめに配置し、要素が“浮遊”しているイメージ
-	•	「大きな余白」「軽やかなシャドウ」で舞踏感を演出
-
-上記の構成サンプルコードをベースにコピペ＆アレンジしながら進めれば、誰でもミニマルデザインのブログを構築可能です。
-	•	さらに発展:
-	•	コメント機能、記事検索、OGP対応、MarkdownレンダラやCMS連携
-	•	広告実装時のデザイン崩れ回避
-	•	2カラムレイアウトでサイドバーを設置する場合も、余白や統一感を忘れずに
-
-ぜひ、コルビジェのモジュロールや音楽的なタイム感を意識しながら、ゆったりした空間をつくり上げてください。
-「cosmic dance（宇宙的舞踏）」にふさわしい、余裕と美に満ちたサイトを完成させましょう。
+- 2024-02-09: 初版作成
+- デザインシステムの基本構造を定義
+- カラーパレットとタイポグラフィの詳細を追加
+- コンポーネントデザインのガイドラインを追加
+- 設定ファイルガイドを追加
+- 2024-02-10: コズミックデザインの統合
+  - カラーパレットを宇宙的な配色に再編
+  - ネオブルータリズムとコズミックアニメーションの組み合わせ
+  - ダークモード前提のアクセシビリティ考慮

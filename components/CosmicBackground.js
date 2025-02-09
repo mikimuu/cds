@@ -114,11 +114,20 @@ class GodRaysPass {
  * - 複数のポストプロセス、カスタムシェーダー、各種オブジェクト群により
  *   宇宙を感じさせる最高のビジュアルを実現
  */
-const CosmicDance = () => {
+const CosmicDance = ({ isReducedMotion, isMobile }) => {
   const containerRef = useRef(null)
 
   useEffect(() => {
     if (!containerRef.current) return
+
+    // パフォーマンス設定の調整
+    const quality = {
+      particleCount: isMobile ? 2500 : 5000,
+      segments: isMobile ? 100 : 200,
+      resolution: isMobile ? 0.5 : 1,
+      bloomStrength: isReducedMotion ? 0.9 : 1.8,
+      animationSpeed: isReducedMotion ? 0.5 : 1
+    }
 
     // ====================================================
     // 1. 基本セットアップ (シーン, カメラ, レンダラー)
@@ -134,9 +143,15 @@ const CosmicDance = () => {
     )
     camera.position.set(0, 0, 800)
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    // レンダラーの設定
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: !isMobile,
+      powerPreference: "high-performance",
+      stencil: false,
+      depth: false
+    })
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, quality.resolution))
     renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     containerRef.current.appendChild(renderer.domElement)
 
@@ -156,7 +171,7 @@ const CosmicDance = () => {
     // UnrealBloomPass
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      1.8,
+      quality.bloomStrength,
       0.5,
       0.85
     )

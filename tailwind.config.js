@@ -26,63 +26,62 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['Inter', ...defaultTheme.fontFamily.sans],
-        mincho: ['Shippori Mincho', 'serif'],
+        sans: ['Shippori Mincho', 'serif'],
+        en: ['Inter', ...defaultTheme.fontFamily.sans],
         mono: ['Courier', 'monospace'],
       },
       colors: {
-        primary: colors.pink,
-        gray: colors.gray,
+        primary: '#FF66CC',
         cosmic: {
-          blue: '#4A90E2',
-          lightgray: '#E5E5E5',
-          darkgray: '#4A4A4A',
-          black: '#2C2C2C',
+          dark: '#1a1a2e',
+          mid: '#16213e',
+          purple: '#533483',
+          star: '#ffdf00',
+          white: '#f1f1f1',
         },
-        'brblue': '#0077b6',
-        'brorange':'#ff5733',
+        'brblue': '#00a8ec',
+        'brorange': '#f7931e',
         'brgreen': '#40d39c',
-        'brsky-blue': '#b9e2f8',
-        'brred': '#ffc5c8',
-        'brviolet':'#bc98cb',
-        'brsoftblue': '#4799ae',
-        'brcyan':'#b9e7de',
-        'bryellow':'#fdfd96',
+        'brviolet': '#bc98cb',
+        'brred': '#ff6b6b',
+        'bryellow': '#fdfd96',
+        'brcyan': '#a2f5f8',
+        'brblackhole': '#0d0d0d',
       },
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            color: theme('colors.gray.700'),
+            color: theme('colors.cosmic.mid'),
             a: {
-              color: theme('colors.primary.500'),
+              color: theme('colors.primary'),
               '&:hover': {
-                color: `${theme('colors.primary.600')} !important`,
+                color: `${theme('colors.primary')} !important`,
               },
-              code: { color: theme('colors.primary.400') },
+              code: { color: theme('colors.primary') },
             },
             h1: {
               fontWeight: '700',
-              letterSpacing: theme('letterSpacing.tight'),
-              color: theme('colors.gray.900'),
+              letterSpacing: '-0.02em',
+              color: theme('colors.cosmic.white'),
             },
             h2: {
               fontWeight: '700',
-              letterSpacing: theme('letterSpacing.tight'),
-              color: theme('colors.gray.900'),
+              letterSpacing: '-0.02em',
+              color: theme('colors.cosmic.purple'),
             },
             h3: {
               fontWeight: '600',
-              color: theme('colors.gray.900'),
+              color: theme('colors.cosmic.white'),
             },
             'h4,h5,h6': {
-              color: theme('colors.gray.900'),
+              color: theme('colors.cosmic.white'),
             },
             pre: {
-              backgroundColor: theme('colors.gray.800'),
+              backgroundColor: theme('colors.cosmic.dark'),
             },
             code: {
-              color: theme('colors.pink.500'),
-              backgroundColor: theme('colors.gray.100'),
+              color: theme('colors.primary'),
+              backgroundColor: theme('colors.cosmic.dark'),
               paddingLeft: '4px',
               paddingRight: '4px',
               paddingTop: '2px',
@@ -96,92 +95,92 @@ module.exports = {
               content: 'none',
             },
             details: {
-              backgroundColor: theme('colors.gray.100'),
+              backgroundColor: theme('colors.cosmic.dark'),
               paddingLeft: '4px',
               paddingRight: '4px',
               paddingTop: '2px',
               paddingBottom: '2px',
               borderRadius: '0.25rem',
             },
-            hr: { borderColor: theme('colors.gray.200') },
+            hr: { borderColor: theme('colors.cosmic.mid') },
             'ol li::marker': {
               fontWeight: '600',
-              color: theme('colors.gray.500'),
+              color: theme('colors.cosmic.purple'),
             },
             'ul li::marker': {
-              backgroundColor: theme('colors.gray.500'),
+              backgroundColor: theme('colors.cosmic.purple'),
             },
-            strong: { color: theme('colors.gray.600') },
+            strong: { color: theme('colors.cosmic.white') },
             blockquote: {
-              color: theme('colors.gray.900'),
-              borderLeftColor: theme('colors.gray.200'),
+              color: theme('colors.cosmic.white'),
+              borderLeftColor: theme('colors.cosmic.purple'),
             },
           },
         },
         dark: {
           css: {
-            color: theme('colors.white'),
+            color: theme('colors.cosmic.white'),
             p: {
-              color: theme('colors.white'),
+              color: theme('colors.cosmic.white'),
             },
             li: {
-              color: theme('colors.white'),
+              color: theme('colors.cosmic.white'),
             },
             a: {
-              color: theme('colors.primary.500'),
+              color: theme('colors.primary'),
               '&:hover': {
-                color: `${theme('colors.primary.400')} !important`,
+                color: `${theme('colors.primary')} !important`,
               },
-              code: { color: theme('colors.primary.400') },
+              code: { color: theme('colors.primary') },
             },
             h1: {
               fontWeight: '700',
-              letterSpacing: theme('letterSpacing.tight'),
-              color: theme('colors.gray.100'),
+              letterSpacing: '-0.02em',
+              color: theme('colors.cosmic.star'),
             },
             h2: {
               fontWeight: '700',
-              letterSpacing: theme('letterSpacing.tight'),
-              color: theme('colors.gray.100'),
+              letterSpacing: '-0.02em',
+              color: theme('colors.cosmic.purple'),
             },
             h3: {
               fontWeight: '600',
-              color: theme('colors.gray.100'),
+              color: theme('colors.cosmic.star'),
             },
             'h4,h5,h6': {
-              color: theme('colors.gray.100'),
+              color: theme('colors.cosmic.star'),
             },
             pre: {
-              backgroundColor: theme('colors.gray.800'),
+              backgroundColor: theme('colors.cosmic.dark'),
             },
             code: {
-              backgroundColor: theme('colors.gray.800'),
+              backgroundColor: theme('colors.cosmic.dark'),
             },
             details: {
-              backgroundColor: theme('colors.gray.800'),
+              backgroundColor: theme('colors.cosmic.dark'),
             },
-            hr: { borderColor: theme('colors.gray.700') },
+            hr: { borderColor: theme('colors.cosmic.mid') },
             'ol li::marker': {
               fontWeight: '600',
-              color: theme('colors.gray.400'),
+              color: theme('colors.cosmic.purple'),
             },
             'ul li::marker': {
-              backgroundColor: theme('colors.gray.400'),
+              backgroundColor: theme('colors.cosmic.purple'),
             },
-            strong: { color: theme('colors.gray.100') },
+            strong: { color: theme('colors.cosmic.star') },
             thead: {
               th: {
-                color: theme('colors.gray.100'),
+                color: theme('colors.cosmic.star'),
               },
             },
             tbody: {
               tr: {
-                borderBottomColor: theme('colors.gray.700'),
+                borderBottomColor: theme('colors.cosmic.mid'),
               },
             },
             blockquote: {
-              color: theme('colors.gray.100'),
-              borderLeftColor: theme('colors.gray.700'),
+              color: theme('colors.cosmic.star'),
+              borderLeftColor: theme('colors.cosmic.purple'),
             },
           },
         },
@@ -191,13 +190,23 @@ module.exports = {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-5px)' },
         },
+        'cosmic-gradient': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
       },
       animation: {
         float: 'float 6s ease-in-out infinite',
+        'cosmic-gradient': 'cosmic-gradient 15s ease infinite',
+      },
+      backgroundSize: {
+        '600%': '600% 600%',
       },
       boxShadow: {
-        'float-lg': '0 8px 30px rgba(0,0,0,0.15)',
-        'glow': '0 0 20px rgba(58,78,140,0.3)',
+        'cosmic-lg': '0 8px 30px rgba(0,0,0,0.3)',
+        'cosmic-glow': '0 0 20px rgba(83,52,131,0.6)',
+        'neobrutal-card': '4px 4px 0 0 #000',
       },
     },
   },
@@ -208,7 +217,7 @@ module.exports = {
       addUtilities({
         '.selection-cosmic': {
           '::selection': {
-            backgroundColor: `${theme('colors.cosmic.blue')}33`,
+            backgroundColor: `${theme('colors.cosmic.purple')}33`,
           },
         },
       })
