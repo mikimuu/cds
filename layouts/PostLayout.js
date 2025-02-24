@@ -31,11 +31,11 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
       <ScrollTopAndComment />
       <article className="max-w-content mx-auto px-4 relative z-10">
         <header className="pt-16 pb-10 text-center relative transform transition-transform hover:scale-105">
-          <div className="absolute inset-0 bg-white/80 dark:bg-black/80 backdrop-blur-lg rounded-lg -z-10 shadow-float-lg"></div>
-          <time dateTime={date} className="text-cosmic-gray text-sm">
+          <div className="absolute inset-0 bg-white backdrop-blur-lg rounded-lg -z-10 shadow-float-lg"></div>
+          <time dateTime={date} className="text-gray-600 text-sm">
             {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
           </time>
-          <h1 className="mt-4 text-h1 font-extrabold leading-tight">
+          <h1 className="mt-4 text-h1 font-extrabold leading-tight text-gray-900">
             {title}
           </h1>
           {tags && tags.length > 0 && (
@@ -47,7 +47,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
           )}
         </header>
 
-        <div className="prose max-w-none mx-auto leading-relaxed bg-white/80 dark:bg-black/80 backdrop-blur-lg p-8 rounded-lg 
+        <div className="prose max-w-none mx-auto leading-relaxed bg-white backdrop-blur-lg p-8 rounded-lg 
           shadow-float-lg 
           animate-float 
           hover:shadow-2xl 
@@ -56,7 +56,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
           {children}
         </div>
 
-        <footer className="mt-16 border-t border-cosmic-lightgray pt-8 bg-white/80 dark:bg-black/80 backdrop-blur-lg p-8 rounded-lg shadow-float-lg transform transition-transform hover:scale-105">
+        <footer className="mt-16 border-t border-cosmic-lightgray pt-8 bg-white backdrop-blur-lg p-8 rounded-lg shadow-float-lg transform transition-transform hover:scale-105">
           {/* 著者情報 */}
           {authorDetails.length > 0 && (
             <div className="mb-8">
@@ -72,7 +72,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                     />
                   )}
                   <div>
-                    <h3 className="text-lg font-bold">{author.name}</h3>
+                    <h3 className="text-lg font-bold text-gray-900">{author.name}</h3>
                     {author.twitter && (
                       <Link
                         href={author.twitter}
