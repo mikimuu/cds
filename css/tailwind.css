@@ -121,7 +121,6 @@ input:-webkit-autofill:focus {
 
 /* スムーズスクロール */
 html {
-  scroll-behavior: smooth;
   @apply selection-cosmic;
 }
 
