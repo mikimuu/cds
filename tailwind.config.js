@@ -112,7 +112,7 @@ module.exports = {
             },
             strong: { color: theme('colors.cosmic.white') },
             blockquote: {
-              color: theme('colors.cosmic.white'),
+              color: theme('colors.cosmic.dark'),
               borderLeftColor: theme('colors.cosmic.purple'),
             },
           },
@@ -179,7 +179,7 @@ module.exports = {
               },
             },
             blockquote: {
-              color: theme('colors.cosmic.star'),
+              color: theme('colors.cosmic.white'),
               borderLeftColor: theme('colors.cosmic.purple'),
             },
           },
