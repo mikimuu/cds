@@ -19,50 +19,42 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  try {
-    // 既存の記事を取得
-    const allPosts = await getAllFilesFrontMatter('blog')
-    
-    const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === params.slug.join('/'))
-    const prev = allPosts[postIndex + 1] || null
-    const next = allPosts[postIndex - 1] || null
-    const post = await getFileBySlug('blog', params.slug.join('/'))
-    const authorList = post.frontMatter.authors || ['default']
-    const authorPromise = authorList.map(async (author) => {
-      const authorResults = await getFileBySlug('authors', [author])
-      return authorResults.frontMatter
-    })
-    const authorDetails = await Promise.all(authorPromise)
-
-    // 記事の生テキストを取得
-    const filePath = `data/blog/${params.slug.join('/')}.mdx`
-    const rawContent = await fs.promises.readFile(filePath, 'utf-8')
-
-    // rss
-    if (allPosts.length > 0) {
-      const rss = generateRss(allPosts)
-      fs.writeFileSync('./public/feed.xml', rss)
+  const allPosts = await getAllFilesFrontMatter('blog')
+  const postSlug = params.slug.join('/')
+  const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === postSlug)
+  const prev = allPosts[postIndex + 1] || null
+  const next = allPosts[postIndex - 1] || null
+  const post = await getFileBySlug('blog', postSlug)
+  const authorList = post.frontMatter.authors || ['default']
+  const authorPromise = authorList.map(async (author) => {
+    try {
+      const authorData = await getFileBySlug('authors', [author])
+      return authorData.frontMatter
+    } catch {
+      console.warn(`Author ${author} not found`)
+      return null
     }
+  })
+  const authorDetails = await Promise.all(authorPromise)
 
-    return { 
-      props: { 
-        post, 
-        authorDetails, 
-        prev, 
-        next,
-        allPosts: allPosts,
-        rawContent
-      } 
-    }
-  } catch (error) {
-    console.error('Error in getStaticProps:', error)
-    return {
-      notFound: true // 404ページを表示
-    }
+  // rss
+  if (allPosts.length > 0) {
+    const rss = generateRss(allPosts)
+    fs.writeFileSync('./public/feed.xml', rss)
+  }
+
+  return {
+    props: {
+      post,
+      authorDetails: authorDetails.filter(Boolean),
+      prev,
+      next,
+      allPosts,
+    },
   }
 }
 
-export default function Blog({ post, authorDetails, prev, next, allPosts, rawContent }) {
+export default function Blog({ post, authorDetails, prev, next, allPosts }) {
   const { mdxSource, toc, frontMatter } = post
 
   return (
@@ -77,7 +69,6 @@ export default function Blog({ post, authorDetails, prev, next, allPosts, rawCon
           prev={prev}
           next={next}
           allPosts={allPosts}
-          rawContent={rawContent}
         />
       ) : (
         <div className="mt-24 text-center">

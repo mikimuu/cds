@@ -21,7 +21,7 @@ function calculateSimilarity(post1, post2) {
 }
 
 export default function RelatedPosts({ currentPost, allPosts = [], maxPosts = 3 }) {
-  if (!allPosts || !Array.isArray(allPosts) || !currentPost || !currentPost.frontMatter) {
+  if (!allPosts || !Array.isArray(allPosts) || !currentPost) {
     console.warn('RelatedPosts: Invalid props', { currentPost, allPosts });
     return null;
   }
@@ -30,14 +30,16 @@ export default function RelatedPosts({ currentPost, allPosts = [], maxPosts = 3 
   const relatedPosts = allPosts
     .filter(post => {
       return post && 
-             post.frontMatter && 
-             post.frontMatter.slug && 
-             currentPost.frontMatter.slug && 
-             post.frontMatter.slug !== currentPost.frontMatter.slug;
+             post.slug && 
+             currentPost.slug && 
+             post.slug !== currentPost.slug;
     })
     .map(post => ({
       ...post,
-      similarity: calculateSimilarity(currentPost, post)
+      similarity: calculateSimilarity(
+        { frontMatter: currentPost },
+        { frontMatter: post }
+      )
     }))
     .sort((a, b) => b.similarity - a.similarity)
     .slice(0, maxPosts)
@@ -49,25 +51,24 @@ export default function RelatedPosts({ currentPost, allPosts = [], maxPosts = 3 
       <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">関連記事</h2>
       <div className="grid gap-4 md:grid-cols-3">
         {relatedPosts.map((post) => {
-          const { frontMatter } = post;
-          if (!frontMatter) return null;
+          if (!post) return null;
 
           return (
             <div
-              key={frontMatter.slug}
+              key={post.slug}
               className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg transition-shadow"
             >
               <time className="text-sm text-gray-500 dark:text-gray-400">
-                {new Date(frontMatter.date).toLocaleDateString('ja-JP')}
+                {new Date(post.date).toLocaleDateString('ja-JP')}
               </time>
               <h3 className="text-lg font-semibold mt-2 text-gray-900 dark:text-gray-100">
-                <Link href={`/blog/${frontMatter.slug}`} className="hover:text-primary-500">
-                  {frontMatter.title}
+                <Link href={`/blog/${post.slug}`} className="hover:text-primary-500">
+                  {post.title}
                 </Link>
               </h3>
-              {frontMatter.tags && frontMatter.tags.length > 0 && (
+              {post.tags && post.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {frontMatter.tags.map(tag => (
+                  {post.tags.map(tag => (
                     <span
                       key={tag}
                       className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded"
@@ -77,9 +78,9 @@ export default function RelatedPosts({ currentPost, allPosts = [], maxPosts = 3 
                   ))}
                 </div>
               )}
-              {frontMatter.summary && (
+              {post.summary && (
                 <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                  {frontMatter.summary}
+                  {post.summary}
                 </p>
               )}
             </div>
