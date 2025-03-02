@@ -81,11 +81,15 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
       alpha: true,
-      antialias: !isMobile,
+      antialias: false, // アンチエイリアスを無効化
       powerPreference: "high-performance",
+      precision: isMobile ? "mediump" : "highp", // モバイルデバイスでは精度を下げる
     })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    
+    // 解像度の調整（低めに設定）
+    const resolution = isMobile ? 0.5 : 0.75
+    renderer.setSize(window.innerWidth * resolution, window.innerHeight * resolution)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5))
     rendererRef.current = renderer
     
     // 背景画像のテクスチャ読み込み
@@ -99,48 +103,56 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
       const mesh = new THREE.Mesh(geometry, material)
       scene.add(mesh)
       
-      // エフェクトコンポーザーの設定
+      // エフェクトコンポーザーの設定（簡略版）
       const composer = new EffectComposer(renderer)
       composerRef.current = composer
       
-      // レンダーパス
+      // 基本レンダーパス
       const renderPass = new RenderPass(scene, camera)
       composer.addPass(renderPass)
       
-      // コズミックエフェクトパス
+      // コズミックエフェクトパス（シンプル化）
       const cosmicPass = new ShaderPass(CosmicEffectShader)
-      cosmicPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight)
+      cosmicPass.uniforms.intensity.value = 0
       cosmicPassRef.current = cosmicPass
       composer.addPass(cosmicPass)
       
-      // レンズ歪みエフェクトパス
+      // レンズ歪みパス（シンプル化）
       const lensPass = new ShaderPass(LensDistortionShader)
+      lensPass.uniforms.distortion.value = 0.3
+      lensPass.renderToScreen = true
       lensPassRef.current = lensPass
       composer.addPass(lensPass)
       
-      // アニメーション開始
+      // アニメーションスタート
       animate(0)
     })
     
     // アニメーションループ
     const animate = (time) => {
-      time *= 0.001 // 秒単位に変換
+      if (!composerRef.current) return
       
+      // モバイルの場合は毎フレーム描画しない（最適化）
+      if (isMobile && Math.floor(time / 60) % 2 !== 0) {
+        animationFrameRef.current = requestAnimationFrame(animate)
+        return
+      }
+      
+      // コズミックエフェクトの強度更新
       if (cosmicPassRef.current) {
-        cosmicPassRef.current.uniforms.time.value = time
-        cosmicPassRef.current.uniforms.intensity.value = cosmicIntensity * 0.8
-        cosmicPassRef.current.uniforms.scrollY.value = scrollY
+        cosmicPassRef.current.uniforms.intensity.value = cosmicIntensity
+        cosmicPassRef.current.uniforms.time.value = time * 0.0005
       }
       
+      // レンズ歪みエフェクトの更新
       if (lensPassRef.current) {
-        lensPassRef.current.uniforms.time.value = time
-        lensPassRef.current.uniforms.distortion.value = 0.1 + cosmicIntensity * 0.2
+        lensPassRef.current.uniforms.time.value = time * 0.0002
       }
       
-      if (composerRef.current) {
-        composerRef.current.render()
-      }
+      // レンダリング
+      composerRef.current.render()
       
+      // 次のフレーム
       animationFrameRef.current = requestAnimationFrame(animate)
     }
     
@@ -203,7 +215,7 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
       
       {/* ヒーロー内テキスト */}
       <div
-        className="absolute inset-0 flex flex-col justify-center items-center px-4 sm:px-6 md:px-8 z-20"
+        className="absolute inset-0 flex flex-col justify-center items-center px-2 xs:px-3 sm:px-6 md:px-8 z-20 pt-16"
         style={{
           opacity: Math.max(0, 1 - cosmicIntensity * 0.3),
           transform: `
@@ -212,11 +224,11 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
           `
         }}
       >
-        <div className="max-w-3xl mx-auto text-center text-white">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6 md:mb-8 animate-star-twinkle">
+        <div className="max-w-[280px] xs:max-w-xs sm:max-w-sm md:max-w-2xl lg:max-w-3xl mx-auto text-center text-white">
+          <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extralight tracking-[0.08em] xs:tracking-[0.1em] sm:tracking-[0.15em] md:tracking-[0.2em] mb-2 xs:mb-3 sm:mb-4 md:mb-6 lg:mb-8 animate-star-twinkle">
             {title}
           </h1>
-          <p className="text-base sm:text-lg md:text-xl font-light tracking-wide sm:tracking-wider leading-relaxed px-4 sm:px-0">
+          <p className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-light tracking-wide sm:tracking-wider leading-relaxed px-1 xs:px-2 sm:px-4 md:px-0">
             {description}
           </p>
         </div>
@@ -233,9 +245,9 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
         <span className="text-xs sm:text-sm font-light mb-2 sm:mb-4 text-cosmic-star">
           ✦ {scrollIndicatorText} ✦
         </span>
-        <div className="relative h-16 sm:h-24 md:h-32 w-px">
+        <div className="relative h-10 xs:h-12 sm:h-16 md:h-24 lg:h-32 w-px">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-cosmic-purple/50 to-transparent"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-primary rounded-full shadow-glow"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1 xs:w-1.5 sm:w-2 h-1 xs:h-1.5 sm:h-2 bg-primary rounded-full shadow-glow"></div>
         </div>
       </div>
     </div>

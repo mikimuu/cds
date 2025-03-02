@@ -70,10 +70,10 @@ const MobileNav = () => {
         </div>
         <nav className="flex flex-col items-center mt-8">
           {headerNavLinks.map((link) => (
-            <div key={link.title} className="py-4">
+            <div key={link.title} className="py-5">
               <Link
                 href={link.href}
-                className="group relative py-2 inline-block"
+                className="group relative py-2 px-4 inline-block"
                 onClick={onToggleNav}
               >
                 <span className="text-xl font-light tracking-wider text-cosmic-darkgray dark:text-cosmic-lightgray transition-colors duration-500 group-hover:text-cosmic-blue">
