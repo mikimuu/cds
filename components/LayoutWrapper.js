@@ -13,6 +13,7 @@ import Header from './Header'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import CosmicDance from './CosmicBackground'
+import EnhancedHero from './EnhancedHero'
 
 const LayoutWrapper = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false)
@@ -55,27 +56,12 @@ const LayoutWrapper = ({ children }) => {
         <Header transparent />
 
         <main className="flex-grow">
-          {/* ヒーローセクション：背景に夜のイメージが溶け込むよう、グラデーションを追加 */}
-          <div className="relative w-full h-[60vh] md:h-screen">
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-transparent pointer-events-none" />
-            <div className="absolute inset-0 flex flex-col justify-center items-center px-4 md:px-8 text-white">
-              <div className="max-w-3xl mx-auto text-center">
-                <h1 className="text-3xl md:text-6xl font-extralight tracking-[0.2em] mb-4 md:mb-8">
-                  {siteMetadata.title}
-                </h1>
-                <p className="text-base md:text-xl font-light tracking-wider leading-relaxed">
-                  {siteMetadata.description}
-                </p>
-              </div>
-            </div>
-
-            {!isMobile && (
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-white">
-                <span className="text-sm font-light mb-4">Scroll to explore</span>
-                <div className="w-px h-16 bg-white/50"></div>
-              </div>
-            )}
-          </div>
+          {/* 拡張ヒーローセクション */}
+          <EnhancedHero 
+            title={siteMetadata.title}
+            description={siteMetadata.description}
+            scrollIndicatorText="Scroll to the Cosmos"
+          />
 
           {/* コンテンツ部分：背景を透過させ、Header の夜のイメージを全面に */}
           <div className="relative max-w-[1000px] mx-auto px-4 md:px-8 mb-16 mt-8">

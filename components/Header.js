@@ -77,66 +77,6 @@ const Header = ({ transparent }) => {
 
   return (
     <>
-      {/* ヒーローセクション */}
-      <div className="relative w-full h-[100svh] overflow-hidden">
-        {/* 背景画像 (夜の街 -> 宇宙のパノラマ) */}
-        <Image
-          src="/static/images/home.jpg"
-          alt="Cosmic Dance"
-          fill
-          priority
-          className="object-cover brightness-[0.7] cosmic-dance"
-          style={{
-            transform: `
-              perspective(1200px)
-              scale(${1 + cosmicIntensity * 0.15 + 0.03 * Math.sin(scrollY * 0.0015)})
-              rotateY(${Math.sin(scrollY * 0.001) * cosmicIntensity * 5}deg)
-              rotateZ(${cosmicIntensity * 3}deg)
-              translateY(${Math.cos(scrollY * 0.004) * cosmicIntensity * 18}px)
-              translateX(${Math.cos(scrollY * 0.003) * cosmicIntensity * 8}px)
-            `,
-          }}
-        />
-
-        {/* ヒーロー内テキスト */}
-        <div
-          className="absolute inset-0 flex flex-col justify-center items-center cosmic-dance px-4 sm:px-6 md:px-8"
-          style={{
-            opacity: Math.max(0, 1 - cosmicIntensity * 0.3),
-            transform: `
-              translateY(${Math.sin(scrollY * 0.003) * cosmicIntensity * 3}px)
-              rotate(${Math.sin(scrollY * 0.002) * cosmicIntensity}deg)
-            `
-          }}
-        >
-          <div className="max-w-3xl mx-auto text-center text-white cosmic-float">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extralight tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6 md:mb-8 animate-star-twinkle">
-              {siteMetadata.title}
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl font-light tracking-wide sm:tracking-wider leading-relaxed px-4 sm:px-0">
-              {siteMetadata.description}
-            </p>
-          </div>
-        </div>
-
-        {/* 宇宙的なスクロールインジケーター */}
-        <div
-          className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center cosmic-dance"
-          style={{
-            opacity: Math.max(0, 1 - cosmicIntensity * 0.4),
-            transform: `translateY(${Math.sin(scrollY * 0.005) * cosmicIntensity * 3}px)`
-          }}
-        >
-          <span className="text-xs sm:text-sm font-light mb-2 sm:mb-4 cosmic-pulse text-cosmic-star">
-            ✦ Scroll to the Cosmos ✦
-          </span>
-          <div className="relative h-16 sm:h-24 md:h-32 w-px">
-            <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-cosmic-purple/50 to-transparent cosmic-float"></div>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-primary rounded-full animate-star-twinkle shadow-glow"></div>
-          </div>
-        </div>
-      </div>
-
       {/* 銀河系ナビゲーションヘッダー */}
       <header
         style={{ backgroundColor: transparent ? 'transparent' : undefined }}

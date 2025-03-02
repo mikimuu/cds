@@ -243,3 +243,75 @@ html {
     @apply text-gray-600 dark:text-gray-200;
   }
 }
+
+/* ===============================
+   宇宙的なアニメーション効果
+=============================== */
+@keyframes star-twinkle {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.7; filter: brightness(0.8); }
+}
+
+.animate-star-twinkle {
+  animation: star-twinkle 3s ease-in-out infinite;
+}
+
+@keyframes cosmic-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.cosmic-float {
+  animation: cosmic-float 6s ease-in-out infinite;
+}
+
+@keyframes cosmic-pulse {
+  0%, 100% { opacity: 0.8; filter: brightness(1); }
+  50% { opacity: 1; filter: brightness(1.2); }
+}
+
+.cosmic-pulse {
+  animation: cosmic-pulse 4s ease-in-out infinite;
+}
+
+@keyframes cosmic-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.bg-600\% {
+  background-size: 600% 600%;
+}
+
+.animate-cosmic-gradient {
+  animation: cosmic-gradient 15s ease infinite;
+}
+
+@keyframes cosmic-shift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-2px); }
+}
+
+.animate-cosmic-shift {
+  animation: cosmic-shift 0.5s ease-out forwards;
+}
+
+@keyframes energy-pulse {
+  0%, 100% { opacity: 0.7; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+.animate-energy-pulse {
+  animation: energy-pulse 3s ease-in-out infinite;
+}
+
+/* 宇宙的な影効果 */
+.shadow-galaxy {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 
+              0 0 30px rgba(120, 0, 255, 0.3);
+}
