@@ -116,44 +116,54 @@ class GodRaysPass {
  */
 const CosmicDance = ({ isReducedMotion, isMobile }) => {
   const containerRef = useRef(null)
+  const rendererRef = useRef(null)
+  const sceneRef = useRef(null)
+  const cameraRef = useRef(null)
+  const composerRef = useRef(null)
+  const animationFrameRef = useRef(null)
+  const timeRef = useRef(0)
+  const particleSystemRef = useRef(null)
+  const hypercubeRef = useRef(null)
+  const orbitsRef = useRef([])
 
   useEffect(() => {
     if (!containerRef.current) return
 
-    // パフォーマンス設定の調整
+    // パフォーマンス設定
     const quality = {
-      particleCount: isMobile ? 2500 : 5000,
-      segments: isMobile ? 100 : 200,
-      resolution: isMobile ? 0.5 : 1,
-      bloomStrength: isReducedMotion ? 0.9 : 1.8,
-      animationSpeed: isReducedMotion ? 0.5 : 1
+      particleCount: isMobile ? 1000 : 2000, // パーティクル数を削減（元: 3000-5000）
+      spiralCount: isMobile ? 3 : 5,         // 渦巻きの数を削減（元: 5-8）
+      resolution: isMobile ? 0.5 : 0.75,     // 解像度を下げる（元: 0.75-1.0）
+      bloomStrength: isMobile ? 0.5 : 0.75,  // ブルームエフェクトを弱める
+      samples: isMobile ? 2 : 4              // サンプル数を減らす
     }
 
     // ====================================================
     // 1. 基本セットアップ (シーン, カメラ, レンダラー)
     // ====================================================
     const scene = new THREE.Scene()
-    scene.fog = new THREE.FogExp2(0x000000, 0.0005)
+    scene.background = new THREE.Color(0x000510)
+    sceneRef.current = scene
 
     const camera = new THREE.PerspectiveCamera(
-      75,
+      60,
       window.innerWidth / window.innerHeight,
-      0.1,
-      30000
+      1,
+      2000
     )
-    camera.position.set(0, 0, 800)
+    camera.position.z = 800
+    camera.position.y = 50
+    cameraRef.current = camera
 
-    // レンダラーの設定
-    const renderer = new THREE.WebGLRenderer({ 
+    const renderer = new THREE.WebGLRenderer({
       antialias: !isMobile,
       powerPreference: "high-performance",
-      stencil: false,
-      depth: false
+      precision: isMobile ? "mediump" : "highp", // モバイルでは精度を下げる
     })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, quality.resolution))
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.outputColorSpace = THREE.SRGBColorSpace
+    renderer.setSize(window.innerWidth * quality.resolution, window.innerHeight * quality.resolution)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 2)) // ピクセル比を制限
     containerRef.current.appendChild(renderer.domElement)
+    rendererRef.current = renderer
 
     // ====================================================
     // 2. コントロール (OrbitControls)
@@ -437,7 +447,7 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
     // 6. 量子粒子システム
     // ====================================================
     class QuantumParticleSystem {
-      constructor(count = 5000) {
+      constructor(count = 2000) { // パーティクル数を削減
         this.particles = new THREE.BufferGeometry()
         this.positions = new Float32Array(count * 3)
         this.entangledPairs = new Map()
@@ -782,27 +792,33 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
     const clock = new THREE.Clock()
 
     function animate() {
-      const delta = clock.getDelta()
-      const elapsed = clock.getElapsedTime()
+      const time = timeRef.current
+      timeRef.current += 0.005 * (isReducedMotion ? 0.3 : 1.0)
+      
+      // 描画のスキップ（さらなる最適化として、毎フレーム描画しない）
+      if (isMobile && timeRef.current % 2 === 0) {
+        animationFrameRef.current = requestAnimationFrame(animate)
+        return
+      }
 
       // 背景更新
-      bgMaterial.uniforms.time.value = elapsed
+      bgMaterial.uniforms.time.value = time
 
       // 各シェーダー更新
-      chromaPass.uniforms.time.value = elapsed
-      nebulaUniforms.time.value = elapsed
-      enhancedLensDistortionPass.uniforms.time.value = elapsed
+      chromaPass.uniforms.time.value = time
+      nebulaUniforms.time.value = time
+      enhancedLensDistortionPass.uniforms.time.value = time
 
       // 量子粒子更新
-      quantumParticles.update(elapsed)
+      quantumParticles.update(time)
 
       // 中央パルスオブジェクト更新
-      centralMaterial.uniforms.time.value = elapsed
+      centralMaterial.uniforms.time.value = time
       centralMaterial.uniforms.cameraPosition.value.copy(camera.position)
 
       // 螺旋アーム更新
       arms.forEach(arm => {
-        const newPoints = generateSpiralPoints(elapsed, arm.armIndex)
+        const newPoints = generateSpiralPoints(time, arm.armIndex)
         arm.curve.points = newPoints
         const newTubeGeom = new THREE.TubeGeometry(arm.curve, 400, 2, 16, false)
         arm.mesh.geometry.dispose()
@@ -814,7 +830,7 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
       starField.rotation.y += 0.0005
 
       // N体シミュレーション更新
-      updateNBody(delta)
+      updateNBody(clock.getDelta())
 
       // GodRays 用のシルエットレンダリング
       blackHoleOcclusion.position.copy(blackHole.position)

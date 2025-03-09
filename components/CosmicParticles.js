@@ -19,10 +19,10 @@ const CosmicParticles = ({ isReducedMotion, isMobile, scrollY }) => {
 
     // パフォーマンス設定
     const quality = {
-      particleCount: isMobile ? 1000 : 2000,
-      meteorCount: isMobile ? 3 : 7,
-      resolution: isMobile ? 0.5 : 1,
-      animationSpeed: isReducedMotion ? 0.5 : 1
+      particleCount: isMobile ? 500 : 1000,
+      meteorCount: isMobile ? 2 : 4,
+      resolution: isMobile ? 0.5 : 0.75,
+      animationSpeed: isReducedMotion ? 0.3 : 0.7
     }
 
     // シーン、カメラ、レンダラーの初期化
@@ -33,18 +33,19 @@ const CosmicParticles = ({ isReducedMotion, isMobile, scrollY }) => {
       75,
       window.innerWidth / window.innerHeight,
       0.1,
-      2000
+      1000
     )
     camera.position.z = 500
     cameraRef.current = camera
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: !isMobile,
+      antialias: false,
       powerPreference: "high-performance",
+      precision: isMobile ? "mediump" : "highp",
     })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setSize(window.innerWidth * quality.resolution, window.innerHeight * quality.resolution)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5))
     containerRef.current.appendChild(renderer.domElement)
     rendererRef.current = renderer
 
@@ -62,8 +63,6 @@ const CosmicParticles = ({ isReducedMotion, isMobile, scrollY }) => {
         new THREE.Color(0xFFFFFF), // 白
         new THREE.Color(0xCCCCFF), // 青白
         new THREE.Color(0xFFCCAA), // 橙
-        new THREE.Color(0xAAFFFF), // 水色
-        new THREE.Color(0xFFAACC)  // ピンク
       ]
 
       for (let i = 0; i < quality.particleCount; i++) {
@@ -254,6 +253,12 @@ const CosmicParticles = ({ isReducedMotion, isMobile, scrollY }) => {
 
     // アニメーションループ
     const animate = (time) => {
+      // モバイルの場合は毎フレーム描画しない（2フレームに1回）
+      if (isMobile && Math.floor(time * 20) % 2 !== 0) {
+        animationFrameRef.current = requestAnimationFrame(animate)
+        return
+      }
+
       time *= 0.001 * quality.animationSpeed // 秒単位に変換
 
       // 星のアニメーション
@@ -300,6 +305,10 @@ const CosmicParticles = ({ isReducedMotion, isMobile, scrollY }) => {
           )
         }
       })
+
+      // スクロール位置に応じたカメラの移動（処理を軽く）
+      const targetZ = 500 - scrollY * 0.1
+      camera.position.z += (targetZ - camera.position.z) * 0.05
 
       // レンダリング
       renderer.render(scene, camera)
