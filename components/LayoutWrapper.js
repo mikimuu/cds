@@ -12,18 +12,15 @@ import Footer from './Footer'
 import Header from './Header'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-
-// 動的インポートで遅延ロード
-const CosmicDance = dynamic(() => import('./CosmicBackground'), { ssr: false })
-const EnhancedHero = dynamic(() => import('./EnhancedHero'), { ssr: false })
+import CosmicBackground from './CosmicBackground'
+import EnhancedHero from './EnhancedHero'
 
 const LayoutWrapper = ({ children }) => {
   const router = useRouter()
   const [isMobile, setIsMobile] = useState(false)
   const [isReducedMotion, setIsReducedMotion] = useState(false)
-  const [performanceMode, setPerformanceMode] = useState('auto') // 'high', 'medium', 'low', 'auto'
+  const [performanceMode, setPerformanceMode] = useState('medium') // 'high', 'medium', 'low', 'auto'
   const [isHomepage, setIsHomepage] = useState(false)
 
   useEffect(() => {
@@ -31,7 +28,7 @@ const LayoutWrapper = ({ children }) => {
     setIsHomepage(router.pathname === '/')
 
     // ローカルストレージからパフォーマンス設定を取得
-    const savedPerformanceMode = localStorage.getItem('performanceMode') || 'auto'
+    const savedPerformanceMode = localStorage.getItem('performanceMode') || 'medium'
     setPerformanceMode(savedPerformanceMode)
 
     const checkMobile = () => {
@@ -98,7 +95,7 @@ const LayoutWrapper = ({ children }) => {
           aria-hidden="true"
           role="presentation"
         >
-          <CosmicDance isReducedMotion={isReducedMotion} isMobile={isMobile} />
+          <CosmicBackground isReducedMotion={isReducedMotion} isMobile={isMobile} />
         </div>
       )}
 

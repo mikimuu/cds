@@ -51,7 +51,7 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            color: theme('colors.cosmic.mid'),
+            color: theme('colors.gray.900'),
             a: {
               color: theme('colors.primary'),
               '&:hover': {
@@ -112,14 +112,16 @@ module.exports = {
             },
             strong: { color: theme('colors.cosmic.white') },
             blockquote: {
-              color: theme('colors.cosmic.dark'),
+              color: theme('colors.gray.900'),
               borderLeftColor: theme('colors.cosmic.purple'),
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              padding: '1rem',
             },
           },
         },
         dark: {
           css: {
-            color: theme('colors.cosmic.white'),
+            color: theme('colors.gray.100'),
             p: {
               color: theme('colors.cosmic.white'),
             },
@@ -179,8 +181,10 @@ module.exports = {
               },
             },
             blockquote: {
-              color: theme('colors.cosmic.white'),
+              color: theme('colors.gray.100'),
               borderLeftColor: theme('colors.cosmic.purple'),
+              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              padding: '1rem',
             },
           },
         },

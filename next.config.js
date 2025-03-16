@@ -45,12 +45,14 @@ const nextConfig = {
     ]
   },
   webpack: (config, { dev, isServer }) => {
+    // Shader files loader
     config.module.rules.push({
       test: /\.(glsl|vs|fs|vert|frag)$/,
       exclude: /node_modules/,
       use: ['raw-loader'],
     })
 
+    // MDX optimization
     config.module.rules.push({
       test: /\.mdx?$/,
       use: [
@@ -58,18 +60,30 @@ const nextConfig = {
           loader: '@mdx-js/loader',
           options: {
             providerImportSource: '@mdx-js/react',
+            // Remove direct requires of ESM modules
+            remarkPlugins: [],
+            rehypePlugins: [],
           },
         },
       ],
     })
 
     if (!dev && !isServer) {
+      // Preact in production
       Object.assign(config.resolve.alias, {
         'react/jsx-runtime.js': 'preact/compat/jsx-runtime',
         react: 'preact/compat',
         'react-dom/test-utils': 'preact/test-utils',
         'react-dom': 'preact/compat',
       })
+
+      // Additional production optimizations
+      config.optimization = {
+        ...config.optimization,
+        moduleIds: 'deterministic',
+        innerGraph: true,
+        concatenateModules: true,
+      }
     }
 
     return config

@@ -46,9 +46,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               </div>
             </div>
           </header>
-          <div
-            className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-6 xs:pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0"
-          >
+          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-6 xs:pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0">
             <dl className="pb-6 xs:pb-10 pt-4 xs:pt-6 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
               <dt className="sr-only">Authors</dt>
               <dd>
@@ -85,8 +83,10 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               </dd>
             </dl>
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pb-6 xs:pb-8 pt-6 xs:pt-10 dark:prose-dark">{children}</div>
-              <div className="pb-4 xs:pb-6 pt-4 xs:pt-6 text-xs xs:text-sm text-gray-700 dark:text-gray-300">
+              <div className="prose max-w-none pb-6 xs:pb-8 pt-6 xs:pt-10 dark:prose-dark bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 xs:p-6 rounded-lg shadow-lg">
+                {children}
+              </div>
+              <div className="pb-4 xs:pb-6 pt-4 xs:pt-6 text-xs xs:text-sm text-gray-800 dark:text-gray-200 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 rounded-lg mt-4">
                 <Link href={discussUrl(slug)} rel="nofollow">
                   {'Discuss on Twitter'}
                 </Link>
@@ -94,22 +94,19 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                 <Link href={editUrl(fileName)}>{'View on GitHub'}</Link>
               </div>
               {siteMetadata.comments && (
-                <div
-                  className="pb-4 xs:pb-6 pt-4 xs:pt-6 text-center text-gray-700 dark:text-gray-300"
-                  id="comment"
-                >
+                <div className="pb-4 xs:pb-6 pt-4 xs:pt-6 text-center text-gray-800 dark:text-gray-200 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 rounded-lg mt-4" id="comment">
                   <Comments frontMatter={frontMatter} />
                 </div>
               )}
             </div>
             <footer>
-              <div className="divide-gray-200 text-xs xs:text-sm font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y">
+              <div className="divide-gray-200 text-xs xs:text-sm font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 rounded-lg">
                 {tags && (
                   <div className="py-3 xs:py-4 xl:py-8">
                     <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                       Tags
                     </h2>
-                    <div className="flex flex-wrap">
+                    <div className="flex flex-wrap gap-2">
                       {tags.map((tag) => (
                         <Tag key={tag} text={tag} />
                       ))}
@@ -151,7 +148,7 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                 </Link>
               </div>
               {/* 関連記事セクション */}
-              <div className="mt-6 xs:mt-10 pt-6 xs:pt-10 border-t border-gray-200 dark:border-gray-700">
+              <div className="mt-6 xs:mt-10 pt-6 xs:pt-10 border-t border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 rounded-lg">
                 <RelatedPosts currentPost={frontMatter} allPosts={allPosts} />
               </div>
             </footer>

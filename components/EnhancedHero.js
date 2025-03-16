@@ -56,15 +56,34 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
     return () => mediaQuery.removeEventListener('change', handleReducedMotionChange)
   }, [])
   
-  // モバイル検出
+  // モバイル検出とデバイス性能の監視
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+    const checkDevice = () => {
+      const width = window.innerWidth
+      // より細かなブレークポイントでのモバイル判定
+      const isMobileSize = width < 768
+      // デバイスのピクセル比を考慮
+      const hasHighDPI = window.devicePixelRatio > 1.5
+      // CPU/GPUの性能を推測（一般的なモバイルデバイスの特徴）
+      const hasLowPerformance = navigator.hardwareConcurrency <= 4
+
+      // これらの要素を総合的に判断
+      setIsMobile(isMobileSize || (hasHighDPI && hasLowPerformance))
     }
     
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    checkDevice()
+    // パフォーマンスを考慮してリサイズイベントをデバウンス
+    let resizeTimer
+    const handleResize = () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(checkDevice, 250)
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(resizeTimer)
+    }
   }, [])
   
   // シェーダーエフェクトの初期化
@@ -75,32 +94,94 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
     const scene = new THREE.Scene()
     sceneRef.current = scene
     
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+    // カメラの設定を画面アスペクト比に合わせて調整
+    const aspect = window.innerWidth / window.innerHeight
+    const camera = new THREE.OrthographicCamera(
+      -aspect,  // left
+      aspect,   // right
+      1,        // top
+      -1,       // bottom
+      0,        // near
+      1         // far
+    )
     cameraRef.current = camera
     
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
       alpha: true,
-      antialias: false, // アンチエイリアスを無効化
+      antialias: false,
       powerPreference: "high-performance",
-      precision: isMobile ? "mediump" : "highp", // モバイルデバイスでは精度を下げる
+      precision: isMobile ? "mediump" : "highp",
     })
     
-    // 解像度の調整（低めに設定）
-    const resolution = isMobile ? 0.5 : 0.75
-    renderer.setSize(window.innerWidth * resolution, window.innerHeight * resolution)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5))
+    // デバイスに応じた品質設定
+    const getOptimalSettings = () => {
+      const width = window.innerWidth
+      const height = window.innerHeight
+      const hasLowPerformance = navigator.hardwareConcurrency <= 4
+      const hasHighDPI = window.devicePixelRatio > 1.5
+      const isSmallScreen = width < 768
+      
+      // 大画面では常にフル解像度
+      const isLargeScreen = width >= 1280
+      
+      return {
+        // 大画面ではフルサイズ、それ以外はデバイス性能に応じて調整
+        resolution: isLargeScreen ? 1.0 :
+                   isSmallScreen ? 0.5 :
+                   hasLowPerformance ? 0.75 : 0.9,
+        // 大画面では常にネイティブピクセル比を使用
+        pixelRatio: isLargeScreen ? window.devicePixelRatio :
+                   isSmallScreen ? 1 :
+                   (hasHighDPI && hasLowPerformance) ? 1.5 :
+                   Math.min(window.devicePixelRatio, 2),
+        frameSkip: isSmallScreen ? 2 :
+                  hasLowPerformance ? 1 : 0
+      }
+    }
+
+    const settings = getOptimalSettings()
+    const width = window.innerWidth
+    const height = window.innerHeight
+    
+    renderer.setSize(
+      Math.round(width * settings.resolution),
+      Math.round(height * settings.resolution)
+    )
+    renderer.setPixelRatio(settings.pixelRatio)
     rendererRef.current = renderer
+    rendererRef.current.frameSkip = settings.frameSkip
     
     // 背景画像のテクスチャ読み込み
     const textureLoader = new THREE.TextureLoader()
-    textureLoader.load('/static/images/home.jpg', (texture) => {
+    textureLoader.load('/static/images/hero.jpg', (texture) => {
       textureRef.current = texture
       
-      // 平面ジオメトリの作成
-      const geometry = new THREE.PlaneGeometry(2, 2)
-      const material = new THREE.MeshBasicMaterial({ map: texture })
+      // テクスチャのアスペクト比を計算
+      const imageAspect = texture.image.width / texture.image.height
+      const screenAspect = window.innerWidth / window.innerHeight
+      
+      // 画面を完全に覆うようにスケーリング
+      let scaleX, scaleY
+      if (screenAspect > imageAspect) {
+        // 画面の方が横長: 幅に合わせる
+        scaleX = aspect * 2
+        scaleY = (aspect * 2) * (imageAspect / screenAspect)
+      } else {
+        // 画面の方が縦長: 高さに合わせる
+        scaleX = 2 * (screenAspect / imageAspect)
+        scaleY = 2
+      }
+      
+      // 画面を完全に覆う平面ジオメトリの作成
+      const geometry = new THREE.PlaneGeometry(scaleX, scaleY)
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+      })
+      
       const mesh = new THREE.Mesh(geometry, material)
+      // 中心に配置
+      mesh.position.z = 0
       scene.add(mesh)
       
       // エフェクトコンポーザーの設定（簡略版）
@@ -132,10 +213,22 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
     const animate = (time) => {
       if (!composerRef.current) return
       
-      // モバイルの場合は毎フレーム描画しない（最適化）
-      if (isMobile && Math.floor(time / 60) % 2 !== 0) {
+      // フレームスキップによる最適化
+      if (rendererRef.current?.frameSkip > 0 && 
+          Math.floor(time / 60) % rendererRef.current.frameSkip !== 0) {
         animationFrameRef.current = requestAnimationFrame(animate)
         return
+      }
+
+      // パフォーマンス監視（Chrome Performance API）
+      if ('performance' in window && 'memory' in performance) {
+        const memory = performance.memory
+        if (memory.usedJSHeapSize > memory.jsHeapSizeLimit * 0.8) {
+          // メモリ使用量が高い場合、エフェクトを簡略化
+          if (cosmicPassRef.current) {
+            cosmicPassRef.current.enabled = false
+          }
+        }
       }
       
       // コズミックエフェクトの強度更新
@@ -158,16 +251,48 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
     
     // リサイズハンドラ
     const handleResize = () => {
-      if (!rendererRef.current || !composerRef.current || !cosmicPassRef.current) return
+      if (!rendererRef.current || !composerRef.current || !cosmicPassRef.current || !cameraRef.current) return
       
-      const width = window.innerWidth
-      const height = window.innerHeight
+      const viewWidth = window.innerWidth
+      const viewHeight = window.innerHeight
+      const aspect = viewWidth / viewHeight
       
-      rendererRef.current.setSize(width, height)
-      composerRef.current.setSize(width, height)
+      // カメラのアスペクト比を更新
+      const camera = cameraRef.current
+      camera.left = -aspect
+      camera.right = aspect
+      camera.updateProjectionMatrix()
+      
+      // レンダラーとコンポーザーのサイズを更新
+      const settings = getOptimalSettings()
+      
+      // 新しいサイズを計算
+      const newWidth = Math.round(viewWidth * settings.resolution)
+      const newHeight = Math.round(viewHeight * settings.resolution)
+      
+      rendererRef.current.setSize(newWidth, newHeight)
+      composerRef.current.setSize(newWidth, newHeight)
+      
+      // メッシュのスケールを更新
+      if (sceneRef.current) {
+        sceneRef.current.traverse((object) => {
+          if (object.isMesh) {
+            if (textureRef.current) {
+              const imageAspect = textureRef.current.image.width / textureRef.current.image.height
+              const screenAspect = viewWidth / viewHeight
+              
+              if (screenAspect > imageAspect) {
+                object.scale.set(aspect * 2, (aspect * 2) * (imageAspect / screenAspect), 1)
+              } else {
+                object.scale.set(2 * (screenAspect / imageAspect), 2, 1)
+              }
+            }
+          }
+        })
+      }
       
       if (cosmicPassRef.current) {
-        cosmicPassRef.current.uniforms.resolution.value.set(width, height)
+        cosmicPassRef.current.uniforms.resolution.value.set(viewWidth, viewHeight)
       }
     }
     
@@ -204,6 +329,7 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full object-cover z-0"
+        aria-hidden="true"
       />
       
       {/* パーティクルシステム */}
@@ -215,20 +341,51 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
       
       {/* ヒーロー内テキスト */}
       <div
-        className="absolute inset-0 flex flex-col justify-center items-center px-2 xs:px-3 sm:px-6 md:px-8 z-20 pt-16"
+        className="absolute inset-0 flex flex-col justify-center items-center z-20 
+          px-4 sm:px-6 md:px-8 lg:px-12
+          pt-16 sm:pt-20 md:pt-24 lg:pt-28
+          pb-24 sm:pb-28 md:pb-32 lg:pb-36"
         style={{
           opacity: Math.max(0, 1 - cosmicIntensity * 0.3),
           transform: `
             translateY(${Math.sin(scrollY * 0.003) * cosmicIntensity * 3}px)
             rotate(${Math.sin(scrollY * 0.002) * cosmicIntensity}deg)
-          `
+          `,
+          transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
-        <div className="max-w-[280px] xs:max-w-xs sm:max-w-sm md:max-w-2xl lg:max-w-3xl mx-auto text-center text-white">
-          <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extralight tracking-[0.08em] xs:tracking-[0.1em] sm:tracking-[0.15em] md:tracking-[0.2em] mb-2 xs:mb-3 sm:mb-4 md:mb-6 lg:mb-8 animate-star-twinkle">
-            {title}
-          </h1>
-          <p className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-light tracking-wide sm:tracking-wider leading-relaxed px-1 xs:px-2 sm:px-4 md:px-0">
+        <div className="w-full max-w-[min(90vw,theme(width.4xl))] mx-auto text-center">
+          <div className="relative">
+            <h1 className="
+              text-white font-extralight
+              text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl
+              tracking-[0.08em] xs:tracking-[0.1em] sm:tracking-[0.12em] md:tracking-[0.15em]
+              leading-[1.2] xs:leading-[1.3] sm:leading-[1.4]
+              mb-4 xs:mb-5 sm:mb-6 md:mb-8 lg:mb-10
+              animate-star-twinkle
+              [text-wrap:balance]
+            ">
+              {title}
+            </h1>
+            <div className="
+              absolute -inset-x-6 sm:-inset-x-8 md:-inset-x-10 top-1/2 -translate-y-1/2 
+              h-full max-h-24 sm:max-h-32 md:max-h-40
+              bg-gradient-to-r from-transparent via-white/5 to-transparent 
+              opacity-0 group-hover:opacity-100
+              blur-2xl
+              transition-opacity duration-1000
+              pointer-events-none
+            " />
+          </div>
+          
+          <p className="
+            text-white/90 font-light
+            text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl
+            tracking-wide sm:tracking-wider
+            leading-relaxed sm:leading-relaxed
+            max-w-prose mx-auto
+            [text-wrap:pretty]
+          ">
             {description}
           </p>
         </div>
@@ -236,18 +393,48 @@ const EnhancedHero = ({ title, description, scrollIndicatorText = "Scroll to the
 
       {/* スクロールインジケーター */}
       <div
-        className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-20"
+        className="
+          absolute left-1/2 -translate-x-1/2
+          bottom-6 xs:bottom-8 sm:bottom-10 md:bottom-12 lg:bottom-16
+          flex flex-col items-center z-20
+          transition-all duration-700 ease-out
+        "
         style={{
           opacity: Math.max(0, 1 - cosmicIntensity * 0.4),
           transform: `translateY(${Math.sin(scrollY * 0.005) * cosmicIntensity * 3}px)`
         }}
       >
-        <span className="text-xs sm:text-sm font-light mb-2 sm:mb-4 text-cosmic-star">
-          ✦ {scrollIndicatorText} ✦
+        <span className="
+          text-cosmic-star
+          text-sm sm:text-base md:text-lg
+          font-light
+          tracking-wider
+          mb-3 sm:mb-4 md:mb-5
+          flex items-center gap-2 sm:gap-3
+        ">
+          <span className="animate-pulse-slow">✦</span>
+          {scrollIndicatorText}
+          <span className="animate-pulse-slow">✦</span>
         </span>
-        <div className="relative h-10 xs:h-12 sm:h-16 md:h-24 lg:h-32 w-px">
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-cosmic-purple/50 to-transparent"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1 xs:w-1.5 sm:w-2 h-1 xs:h-1.5 sm:h-2 bg-primary rounded-full shadow-glow"></div>
+        
+        <div className="
+          relative
+          h-12 xs:h-16 sm:h-20 md:h-24 lg:h-32
+          w-px
+        ">
+          <div className="
+            absolute inset-0
+            bg-gradient-to-b from-primary/90 via-cosmic-purple/60 to-transparent
+            animate-pulse-slow
+          " />
+          <div className="
+            absolute top-0 left-1/2 -translate-x-1/2
+            w-1.5 sm:w-2 md:w-2.5
+            h-1.5 sm:h-2 md:h-2.5
+            bg-primary rounded-full
+            shadow-glow
+            animate-bounce-slow
+          " />
         </div>
       </div>
     </div>

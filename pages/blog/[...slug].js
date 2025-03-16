@@ -4,8 +4,6 @@ import generateRss from '@/lib/generate-rss'
 import { MDXLayoutRenderer } from '@/components/MDXComponents'
 import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/lib/mdx'
 
-const DEFAULT_LAYOUT = 'PostLayout'
-
 export async function getStaticPaths() {
   const posts = getFiles('blog')
   return {
@@ -14,26 +12,21 @@ export async function getStaticPaths() {
         slug: formatSlug(p).split('/'),
       },
     })),
-    fallback: false,
+    // Enable ISR for blog posts
+    fallback: 'blocking',
   }
 }
 
 export async function getStaticProps({ params }) {
   const allPosts = await getAllFilesFrontMatter('blog')
-  const postSlug = params.slug.join('/')
-  const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === postSlug)
+  const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === params.slug.join('/'))
   const prev = allPosts[postIndex + 1] || null
   const next = allPosts[postIndex - 1] || null
-  const post = await getFileBySlug('blog', postSlug)
+  const post = await getFileBySlug('blog', params.slug.join('/'))
   const authorList = post.frontMatter.authors || ['default']
   const authorPromise = authorList.map(async (author) => {
-    try {
-      const authorData = await getFileBySlug('authors', [author])
-      return authorData.frontMatter
-    } catch {
-      console.warn(`Author ${author} not found`)
-      return null
-    }
+    const authorResults = await getFileBySlug('authors', [author])
+    return authorResults.frontMatter
   })
   const authorDetails = await Promise.all(authorPromise)
 
@@ -46,11 +39,13 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       post,
-      authorDetails: authorDetails.filter(Boolean),
+      authorDetails,
       prev,
       next,
       allPosts,
     },
+    // Enable revalidation every hour
+    revalidate: 3600,
   }
 }
 
@@ -61,7 +56,7 @@ export default function Blog({ post, authorDetails, prev, next, allPosts }) {
     <>
       {frontMatter.draft !== true ? (
         <MDXLayoutRenderer
-          layout={frontMatter.layout || DEFAULT_LAYOUT}
+          layout={frontMatter.layout || 'PostLayout'}
           toc={toc}
           mdxSource={mdxSource}
           frontMatter={frontMatter}
