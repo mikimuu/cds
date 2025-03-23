@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import { useMemo } from 'react'
-import { getMDXComponent } from 'mdx-bundler/client'
+import dynamic from 'next/dynamic'
 import Image from './Image'
 import CustomLink from './Link'
 import TOCInline from './TOCInline'
@@ -19,15 +19,23 @@ export const MDXComponents = {
   },
 }
 
-export const MDXLayoutRenderer = ({ layout, mdxSource, rawContent, ...rest }) => {
-  const MDXLayout = useMemo(() => getMDXComponent(mdxSource), [mdxSource])
+// クライアントサイドでのみMDXコンポーネントを読み込む
+const MDXLayoutRenderer = dynamic(
+  async () => {
+    const { getMDXComponent } = await import('mdx-bundler/client')
+    return function MDXLayoutRenderer({ layout, mdxSource, rawContent, ...rest }) {
+      const MDXLayout = useMemo(() => getMDXComponent(mdxSource), [mdxSource])
+      return (
+        <MDXLayout
+          layout={layout}
+          components={MDXComponents}
+          rawContent={rawContent}
+          {...rest}
+        />
+      )
+    }
+  },
+  { ssr: false }
+)
 
-  return (
-    <MDXLayout
-      layout={layout}
-      components={MDXComponents}
-      rawContent={rawContent}
-      {...rest}
-    />
-  )
-}
+export { MDXLayoutRenderer }
