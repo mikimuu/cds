@@ -86,6 +86,10 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
               <div className="prose max-w-none pb-6 xs:pb-8 pt-6 xs:pt-10 dark:prose-dark bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 xs:p-6 rounded-lg shadow-lg">
                 {children}
               </div>
+              {/* 記事に関するチャットコンポーネント */}
+              <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300">
+                <ArticleChat articleContent={rawContent} />
+              </div>
               <div className="pb-4 xs:pb-6 pt-4 xs:pt-6 text-xs xs:text-sm text-gray-800 dark:text-gray-200 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 rounded-lg mt-4">
                 <Link href={discussUrl(slug)} rel="nofollow">
                   {'Discuss on Twitter'}

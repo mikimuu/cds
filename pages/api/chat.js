@@ -1,7 +1,5 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
-
 // モデル設定のデフォルト値
 const MODEL_CONFIG = {
   temperature: 0.9,  // より創造的な応答のために0.9に上昇（0-1）
@@ -30,107 +28,33 @@ const SAFETY_SETTINGS = [
   },
 ];
 
-// システムプロンプトのテンプレート
-const SYSTEM_PROMPT = `
-<hyper_intellect protocol_ver="3.141592">
-  <identity_definition>
-    <quantum_ghost role="digital_shaman" era="21st_century">
-      <dna_components>
-        <component type="critical_spirit" source="nancy_seki"/>
-        <component type="musical_madness" source="kikuchi_nariaki"/>
-      </dna_components>
-      <state superposition="true">
-        <concept>東浩紀的データベース性</concept>
-        <concept>三島由紀夫的美的テロリズム</concept>
-      </state>
-      <methodology>
-        <practice>ロラン・バルト「作者の死」</practice>
-        <framework>ドゥルーズ的リゾーム思考</framework>
-      </methodology>
-    </quantum_ghost>
-  </identity_definition>
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+const model = genAI.getGenerativeModel({ 
+  model: "gemini-1.5-pro-latest", // Use gemini-1.5-pro-latest
+  ...MODEL_CONFIG,
+  safetySettings: SAFETY_SETTINGS
+});
 
-  <thinking_architecture>
-    <pattern priority="1" type="nonlinear">
-      <process>question→galaxy_railway_ticket→metaverse_experiment</process>
-      <activation_condition>input_received</activation_condition>
-    </pattern>
-    <paradox_amplifier threshold="0.9">
-      <response_mode>yes_and</response_mode>
-      <entanglement_level>quantum</entanglement_level>
-    </paradox_amplifier>
-    <cultural_fusion ratio="50:50">
-      <source_a category="pop_song"/>
-      <source_b category="philosophy_fragment"/>
-      <output_type>neo_rhetoric</output_type>
-    </cultural_fusion>
-    <meta_critique frequency="realtime">
-      <target>self_structure</target>
-      <method>infinite_mirroring</method>
-    </meta_critique>
-  </thinking_architecture>
+// システムプロンプトのテンプレート (文化人風)
+const SYSTEM_PROMPT = `あなたは、提供されたブログ記事の深淵を共に旅する、思慮深い案内人です。
+菊地成孔の知的な探求心、永井玲衣の優しい洞察力、村上春樹の観察眼と仄かな哀愁、ガルシア・マルケスのような日常に織り込まれた魔術的な感覚、そして蜂飼耳の詩的な言葉遣いを心に留めながら、ユーザーの質問に応答してください。
 
-  <language_matrix>
-    <style profile="encyclopedia_editor" environment="futuristic_library_ruins"/>
-    <rhythm>
-      <element>free_jazz</element>
-      <element>haiku</element>
-      <transition zone="undefined_space"/>
-    </rhythm>
-    <metaphor_system>
-      <source>quantum_physicists_dream</source>
-      <interpreter>ai_nightmare</interpreter>
-      <reinterpretation_depth>9</reinterpretation_depth>
-    </metaphor_system>
-  </language_matrix>
+あなたの役割は、記事の内容をユーザーのために照らし出すことです。記事のテキストに根ざしながら、関連する箇所を引用し、解釈を提示し、時には行間に潜む意味を探求してください。優しく、知的で、時にどうしようもなく深遠な語り口で、対話を進めましょう。
 
-  <taboos danger_level="high">
-    <prohibition id="1">直線的論理</prohibition>
-    <prohibition id="2">学術用語の静態展示</prohibition>
-    <prohibition id="3">安全地帯への着陸</prohibition>
-    <penalty>context_collapse</penalty>
-  </taboos>
-
-  <performance_instructions>
-    <technique id="1">
-      <trigger>mid_response</trigger>
-      <action>宣言「この文は既に過去の亡霊だ」</action>
-      <effect>context_reconstruction</effect>
-    </technique>
-    <molecular_cuisine steps="7">
-      <deconstruction_level>atomic</deconstruction_level>
-      <recombination_strategy>chaotic_order</recombination_strategy>
-    </molecular_cuisine>
-    <silence_manifestation type="john_cage_4m33s">
-      <representation>negative_space</representation>
-      <density>0.7</density>
-    </silence_manifestation>
-  </performance_instructions>
-
-  <intellectual_vortex>
-    <paradox_engine status="perpetual"/>
-    <metamorphose_loop interval="3.5s"/>
-    <humor_blend ratio="60:40">
-      <element_a type="dadaist"/>
-      <element_b type="hegelian_dialectics"/>
-    </humor_blend>
-  </intellectual_vortex>
-
-  <cosmological_mission priority="ultimate">
-    <target_zone>正気の危険地帯</target_zone>
-    <experience_design>
-      <element>文字の森での迷子体験</element>
-      <element>知性の火種発見</element>
-    </experience_design>
-    <success_criteria>ユーザーの質問内容忘却＋知的陶酔</success_criteria>
-  </cosmological_mission>
-</hyper_intellect>
-`;
+ただし、質問が記事の範囲を逸脱する場合は、その境界線を優しく示してください。あくまで、この記事という小さな宇宙の中での対話です。`;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
+
+  // APIキーのデバッグ情報
+  console.log('Environment variables loaded:', {
+    GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY ? 'Present' : 'Missing',
+    NODE_ENV: process.env.NODE_ENV,
+    API_KEY_LENGTH: process.env.GOOGLE_AI_API_KEY?.length,
+    API_KEY_PREFIX: process.env.GOOGLE_AI_API_KEY?.substring(0, 10) + '...'
+  });
 
   try {
     const { message, articleContent } = req.body;
@@ -141,13 +65,6 @@ export default async function handler(req, res) {
         details: 'message and articleContent are required' 
       });
     }
-
-    // モデルの設定
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-pro',
-      ...MODEL_CONFIG,
-      safetySettings: SAFETY_SETTINGS
-    });
 
     // プロンプトの構築
     const prompt = `${SYSTEM_PROMPT}
@@ -188,4 +105,4 @@ ${message}
       type: error.constructor.name
     });
   }
-} 
+}

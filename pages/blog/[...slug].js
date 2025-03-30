@@ -43,13 +43,14 @@ export async function getStaticProps({ params }) {
       prev,
       next,
       allPosts,
+      rawContent: post.rawContent, // Pass raw content to props
     },
     // Enable revalidation every hour
     revalidate: 3600,
   }
 }
 
-export default function Blog({ post, authorDetails, prev, next, allPosts }) {
+export default function Blog({ post, authorDetails, prev, next, allPosts, rawContent }) { // Add rawContent here
   const { mdxSource, toc, frontMatter } = post
 
   return (
@@ -64,6 +65,7 @@ export default function Blog({ post, authorDetails, prev, next, allPosts }) {
           prev={prev}
           next={next}
           allPosts={allPosts}
+          rawContent={rawContent} // Pass rawContent to MDXLayoutRenderer
         />
       ) : (
         <div className="mt-24 text-center">
