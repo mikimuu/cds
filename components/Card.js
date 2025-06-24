@@ -5,17 +5,15 @@ import Image from './Image'
 import formatDate from '@/lib/utils/formatDate'
 
 const Card = ({ title, description, imgSrc, href, date, tags }) => (
-  <div className="p-2 xs:p-3 sm:p-4 w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/3 group" style={{ maxWidth: '544px' }}>
+  <div className="p-2 xs:p-3 sm:p-4 w-full md:w-1/2 lg:w-1/3" style={{ maxWidth: '100%' }}>
     <div
       className={`${
         imgSrc && 'h-full'
-      } overflow-hidden rounded-lg bg-white/80 dark:bg-black/80 backdrop-blur-lg 
-      shadow-float-lg hover:shadow-2xl hover:shadow-glow
+      } overflow-hidden rounded-lg bg-black/60 backdrop-blur-md 
+      shadow-md hover:shadow-lg
       transition-all duration-300 
-      animate-float
-      hover:scale-105 transform
-      border border-transparent hover:border-primary-500/30 dark:hover:border-primary-400/30 
-      relative z-10`}
+      hover:translate-y-[-4px] transform
+      border border-white/10 hover:border-white/20`}
     >
       {imgSrc &&
         (href ? (
@@ -23,55 +21,67 @@ const Card = ({ title, description, imgSrc, href, date, tags }) => (
             <Image
               alt={title}
               src={imgSrc}
-              className="object-cover object-center h-40 xs:h-44 sm:h-36 md:h-40 lg:h-48 w-full transition-transform duration-300 group-hover:scale-105"
+              className="object-cover object-center h-48 w-full"
               width={544}
               height={306}
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 544px"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
             />
           </Link>
         ) : (
           <Image
             alt={title}
             src={imgSrc}
-            className="object-cover object-center h-40 xs:h-44 sm:h-36 md:h-40 lg:h-48 w-full transition-transform duration-300 group-hover:scale-105"
+            className="object-cover object-center h-48 w-full"
             width={544}
             height={306}
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 544px"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
           />
         ))}
-      <div className="p-3 xs:p-4 sm:p-6 backdrop-blur-sm bg-white/40 dark:bg-black/40">
-        <h2 className="mb-2 xs:mb-3 text-lg xs:text-xl sm:text-2xl font-bold leading-tight xs:leading-8 tracking-tight text-gray-900 dark:text-gray-100 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300">
+      <div className="p-4">
+        {date && (
+          <div className="mb-2">
+            <time dateTime={date} className="text-xs font-medium text-white/70">
+              {formatDate(date)}
+            </time>
+          </div>
+        )}
+        <h2 className="mb-2 text-lg font-bold leading-tight tracking-tight text-white">
           {href ? (
-            <Link href={href} aria-label={`Link to ${title}`} className="text-gray-900 dark:text-gray-100">
+            <Link href={href} aria-label={`Link to ${title}`}>
               {title}
             </Link>
           ) : (
             title
           )}
         </h2>
-        <div className="flex flex-wrap">
-          {tags.map((tag) => (
-            <Tag key={tag} text={tag} />
-          ))}
+        <p className="mb-3 text-sm text-white/80 leading-relaxed line-clamp-3">{description}</p>
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            {tags.map((tag) => (
+              <Tag key={tag} text={tag} />
+            ))}
+          </div>
+        )}
+        <div className="flex items-center justify-between">
+          {href && (
+            <Link
+              href={href}
+              className="text-sm font-medium text-cosmic-blue hover:opacity-80 inline-flex items-center gap-1"
+              aria-label={`Link to ${title}`}
+            >
+              続きを読む <span>&rarr;</span>
+            </Link>
+          )}
+          {href && href.startsWith('/blog/') && process.env.NODE_ENV === 'development' && (
+            <Link
+              href={`/blog/edit/${href.replace('/blog/', '')}`}
+              className="text-xs text-cosmic-star hover:opacity-80 inline-flex items-center gap-1 px-2 py-1 bg-cosmic-purple/20 rounded-full"
+              aria-label={`Edit ${title}`}
+            >
+              ✏️ 編集
+            </Link>
+          )}
         </div>
-        <p className="prose mb-3 max-w-none text-sm xs:text-base text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-3">{description}</p>
-        {date && (
-          <dl>
-            <dt className="sr-only">Published on</dt>
-            <dd className="text-xs xs:text-sm font-medium leading-6 text-gray-500 dark:text-gray-400">
-              <time dateTime={date}>{formatDate(date)}</time>
-            </dd>
-          </dl>
-        )}
-        {href && (
-          <Link
-            href={href}
-            className="text-sm xs:text-base font-medium leading-6 text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 inline-flex items-center gap-1 transition-all duration-300 hover:gap-2"
-            aria-label={`Link to ${title}`}
-          >
-            Learn more <span className="transition-transform duration-300">&rarr;</span>
-          </Link>
-        )}
       </div>
     </div>
   </div>

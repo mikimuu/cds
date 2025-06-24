@@ -7,12 +7,8 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
 import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass'
-import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass'
-import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import { CopyShader } from 'three/examples/jsm/shaders/CopyShader'
-import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader'
-import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry'
 
 /**
  * CosmicDance コンポーネント
@@ -32,11 +28,11 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
   const lastTimeRef = useRef(performance.now())
   const fpsRef = useRef(60)
   const qualityRef = useRef({
-    resolution: isMobile ? 0.5 : 0.75,
-    particleCount: isMobile ? 1000 : 2000,
-    spiralCount: isMobile ? 3 : 5,
-    bloomStrength: isMobile ? 0.5 : 0.75,
-    samples: isMobile ? 2 : 4
+    resolution: isMobile ? 0.3 : 0.6,
+    particleCount: isMobile ? 500 : 1500,
+    spiralCount: isMobile ? 2 : 4,
+    bloomStrength: isMobile ? 0.4 : 0.6,
+    samples: isMobile ? 1 : 2
   })
 
   useEffect(() => {
@@ -53,16 +49,13 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
         lastTimeRef.current = now
 
         // 動的解像度スケーリング
-        if (fpsRef.current < 30 && qualityRef.current.resolution > 0.5) {
-          qualityRef.current.resolution = Math.max(0.5, qualityRef.current.resolution - 0.1)
+        if (fpsRef.current < 25 && qualityRef.current.resolution > 0.3) {
+          qualityRef.current.resolution = Math.max(0.3, qualityRef.current.resolution - 0.1)
           onResize()
-        } else if (fpsRef.current > 50 && qualityRef.current.resolution < (isMobile ? 0.75 : 1.0)) {
-          qualityRef.current.resolution = Math.min(isMobile ? 0.75 : 1.0, qualityRef.current.resolution + 0.1)
+        } else if (fpsRef.current > 45 && qualityRef.current.resolution < (isMobile ? 0.5 : 0.8)) {
+          qualityRef.current.resolution = Math.min(isMobile ? 0.5 : 0.8, qualityRef.current.resolution + 0.05)
           onResize()
         }
-
-        // デバッグ表示
-        console.log(`FPS: ${fpsRef.current}, Resolution Scale: ${qualityRef.current.resolution.toFixed(2)}`)
       }
     }
 
@@ -77,10 +70,10 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
       60,
       window.innerWidth / window.innerHeight,
       1,
-      2000
+      1000
     )
-    camera.position.z = 800
-    camera.position.y = 50
+    camera.position.z = 500
+    camera.position.y = 0
     cameraRef.current = camera
 
     const renderer = new THREE.WebGLRenderer({
@@ -88,7 +81,7 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
       powerPreference: "high-performance",
       precision: "mediump",
       stencil: false,
-      depth: true,
+      depth: false,
       logarithmicDepthBuffer: false
     })
     renderer.setSize(
@@ -96,7 +89,7 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
       window.innerHeight * qualityRef.current.resolution,
       false
     )
-    renderer.setPixelRatio(1)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5))
     containerRef.current.appendChild(renderer.domElement)
     rendererRef.current = renderer
 
@@ -107,7 +100,7 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
     controls.enableDamping = true
     controls.enableZoom = false
     controls.autoRotate = true
-    controls.autoRotateSpeed = 0.5
+    controls.autoRotateSpeed = 0.2
 
     // ====================================================
     // 3. ポストプロセッシングの設定
@@ -128,10 +121,10 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
     )
     composer.addPass(bloomPass)
 
-    // 最適化: 必要最小限のポストプロセスエフェクト
+    // デスクトップのみ追加エフェクト
     if (!isMobile) {
       // FilmPass (デスクトップのみ)
-      composer.addPass(new FilmPass(0.35, 0.5, 2048, false))
+      composer.addPass(new FilmPass(0.2, 0.2, 648, false))
     }
 
     // ====================================================
@@ -142,17 +135,17 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
     const positions = new Float32Array(particleCount * 3)
 
     for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 2000
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 2000
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 2000
+      positions[i * 3] = (Math.random() - 0.5) * 1500
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 1500
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 1500
     }
 
     particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     const particleMaterial = new THREE.PointsMaterial({
-      size: 2,
+      size: isMobile ? 1.5 : 2,
       color: 0xffffff,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.7,
       blending: THREE.AdditiveBlending
     })
 
@@ -162,7 +155,7 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
     // ====================================================
     // 5. アンビエントライト
     // ====================================================
-    scene.add(new THREE.AmbientLight(0x404040))
+    scene.add(new THREE.AmbientLight(0x202040))
 
     // ====================================================
     // 6. アニメーションループ
@@ -174,10 +167,10 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
       updateFPS()
 
       // スキップフレーム（モバイル最適化）
-      if (isMobile && frameCountRef.current % 2 !== 0) return
+      if (isMobile && frameCountRef.current % 3 !== 0) return
 
       // パーティクルアニメーション
-      particleSystem.rotation.y += 0.0002
+      particleSystem.rotation.y += 0.0001
 
       // コントロール更新
       controls.update()
@@ -227,6 +220,11 @@ const CosmicDance = ({ isReducedMotion, isMobile }) => {
 
       renderer.dispose()
       composer.dispose()
+      
+      // DOM要素のクリーンアップ
+      if (containerRef.current && containerRef.current.contains(renderer.domElement)) {
+        containerRef.current.removeChild(renderer.domElement)
+      }
     }
   }, [isReducedMotion, isMobile])
 

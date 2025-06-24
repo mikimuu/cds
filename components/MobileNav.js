@@ -1,36 +1,56 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
 import ThemeSwitch from './ThemeSwitch'
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false)
+  const [animationComplete, setAnimationComplete] = useState(true)
 
+  // モバイルナビゲーションの開閉処理
   const onToggleNav = () => {
-    setNavShow((status) => {
-      if (status) {
-        document.body.style.overflow = 'auto'
-      } else {
-        // Prevent scrolling
-        document.body.style.overflow = 'hidden'
-      }
-      return !status
-    })
+    if (animationComplete) {
+      setAnimationComplete(false)
+      setNavShow((status) => {
+        if (status) {
+          document.body.style.overflow = 'auto'
+        } else {
+          // スクロール防止
+          document.body.style.overflow = 'hidden'
+        }
+        return !status
+      })
+      // アニメーション完了後にフラグをリセット
+      setTimeout(() => setAnimationComplete(true), 300)
+    }
   }
+
+  // ESCキーでメニューを閉じる機能
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape' && navShow) {
+        onToggleNav()
+      }
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => {
+      window.removeEventListener('keydown', handleEsc)
+    }
+  }, [navShow])
 
   return (
     <div className="sm:hidden">
       <button
         type="button"
-        className="w-8 h-8 flex items-center justify-center"
-        aria-label="Toggle Menu"
+        className="w-12 h-12 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md shadow-lg active:scale-95 transition-transform"
+        aria-label="メニューを開く"
         onClick={onToggleNav}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          className="w-5 h-5 text-cosmic-darkgray dark:text-cosmic-lightgray"
+          className="w-7 h-7 text-white"
         >
           <path
             fillRule="evenodd"
@@ -40,25 +60,25 @@ const MobileNav = () => {
         </svg>
       </button>
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-full transform bg-white/95 dark:bg-black/95 backdrop-blur-sm transition-transform duration-300 ease-in-out ${
-          navShow ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed top-0 left-0 z-50 h-full w-full transform bg-black/90 backdrop-blur-lg transition-all duration-300 ease-in-out ${
+          navShow ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
         }`}
       >
-        <div className="flex justify-between items-center p-4">
+        <div className="flex justify-between items-center p-5">
           <div className="flex items-center">
             <ThemeSwitch />
           </div>
           <button
             type="button"
-            className="w-8 h-8 flex items-center justify-center"
-            aria-label="Close Menu"
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 active:bg-white/20 transition-colors active:scale-95 transition-transform"
+            aria-label="メニューを閉じる"
             onClick={onToggleNav}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="w-5 h-5 text-cosmic-darkgray dark:text-cosmic-lightgray"
+              className="w-7 h-7 text-white"
             >
               <path
                 fillRule="evenodd"
@@ -68,23 +88,39 @@ const MobileNav = () => {
             </svg>
           </button>
         </div>
-        <nav className="flex flex-col items-center mt-8">
-          {headerNavLinks.map((link) => (
-            <div key={link.title} className="py-5">
+        <nav className="flex flex-col items-center mt-10 px-6">
+          {headerNavLinks.map((link, index) => (
+            <div 
+              key={link.title} 
+              className="py-5 w-full border-b border-white/10"
+              style={{ 
+                animationDelay: navShow ? `${index * 0.1}s` : '0s', 
+                animation: navShow ? 'fadeInUp 0.4s forwards' : 'none' 
+              }}
+            >
               <Link
                 href={link.href}
-                className="group relative py-2 px-4 inline-block"
+                className="block text-center text-xl font-medium tracking-wide text-white transition-colors duration-200 hover:text-cosmic-blue active:text-cosmic-blue/80 transform active:scale-98"
                 onClick={onToggleNav}
               >
-                <span className="text-xl font-light tracking-wider text-cosmic-darkgray dark:text-cosmic-lightgray transition-colors duration-500 group-hover:text-cosmic-blue">
-                  {link.title}
-                </span>
-                <span className="absolute bottom-0 left-1/2 w-0 h-px bg-cosmic-blue transition-all duration-500 group-hover:w-full group-hover:left-0"></span>
+                {link.title}
               </Link>
             </div>
           ))}
         </nav>
       </div>
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   )
 }

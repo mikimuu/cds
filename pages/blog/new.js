@@ -1,26 +1,56 @@
-import BlogPostForm from '@/components/BlogPostForm'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
+import EnhancedBlogEditor from '@/components/EnhancedBlogEditor'
 
 export default function NewPost() {
+  const router = useRouter()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (formData) => {
+    setIsSubmitting(true)
+
+    try {
+      const res = await fetch('/api/blog/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        router.push('/blog')
+      } else {
+        throw new Error(data.message || '投稿に失敗しました')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      throw error
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleCancel = () => {
+    router.push('/blog')
+  }
+
   return (
     <>
       <PageSEO
         title={`新規投稿 - ${siteMetadata.title}`}
         description="新しいブログ記事を投稿する"
       />
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            新規投稿
-          </h1>
-        </div>
-        <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
-          <div className="prose max-w-none pt-8 pb-8 dark:prose-dark xl:col-span-3">
-            <BlogPostForm />
-          </div>
-        </div>
-      </div>
+      <EnhancedBlogEditor
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        submitButtonText="記事を投稿"
+        isLoading={isSubmitting}
+      />
     </>
   )
 } 

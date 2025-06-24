@@ -1,335 +1,519 @@
-@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap');
+/* 🎨 KASHIWA-LEVEL TYPOGRAPHY SYSTEM - デザイン作品として */
+
+/* 佐藤可士和スタイル：究極に洗練されたフォント選択 */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100;0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;300;400;500;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ===============================
-   ベースフォント設定
+   🌟 MODERN BASE LAYER
 =============================== */
 @layer base {
+  /* 完璧なスムーススクロール */
   html {
-    font-family: 'Shippori Mincho', serif;
-    background-color: theme('colors.cosmic.white');
-    color: theme('colors.cosmic.mid');
+    scroll-behavior: smooth;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  /* 英数字はInterフォントを使用 */
-  .font-en {
-    font-family: 'Inter', sans-serif;
-    @apply text-cosmic-mid dark:text-cosmic-white;
+
+  /* 佐藤可士和レベルのタイポグラフィ設計 */
+  body {
+    font-family: 'DM Sans', 'M PLUS 1p', -apple-system, 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+    font-size: clamp(0.875rem, 0.5vw + 0.75rem, 1rem);
+    line-height: 1.7;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    color: theme('colors.stone.800');
+    background: theme('colors.stone.50');
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-feature-settings: "kern" 1, "liga" 1, "clig" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-}
 
-/* ===============================
-   リスト、フットノート等ベース
-=============================== */
-.task-list-item::before {
-  @apply hidden;
-}
-.task-list-item {
-  @apply list-none;
-}
-
-.footnotes {
-  @apply pt-8 mt-12 border-t border-cosmic-mid dark:border-cosmic-purple;
-}
-
-.data-footnote-backref {
-  @apply no-underline;
-}
-
-.csl-entry {
-  @apply my-5;
-}
-
-/* 修正: autofill背景問題 */
-input:-webkit-autofill,
-input:-webkit-autofill:focus {
-  transition: background-color 600000s 0s, color 600000s 0s;
-}
-
-/* ===============================
-   テキストグラデ & ネオブルータリズム
-=============================== */
-.text-gradient {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  background-image: linear-gradient(45deg, theme('colors.cosmic.purple'), theme('colors.primary'));
-}
-
-/* --- ネオブルータリズム系クラス --- */
-.neobrutal-container {
-  background-color: theme('colors.cosmic.white');
-  color: theme('colors.cosmic.dark');
-  padding: 20px;
-  border: 4px solid theme('colors.cosmic.dark');
-}
-.dark .neobrutal-container {
-  background-color: theme('colors.cosmic.dark');
-  color: theme('colors.cosmic.white');
-  border-color: theme('colors.cosmic.white');
-}
-
-.neobrutal-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: theme('colors.primary');
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.neobrutal-description {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-}
-
-.neobrutal-posts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-/* 記事カード */
-.neobrutal-post {
-  background-color: theme('colors.cosmic.white');
-  color: theme('colors.cosmic.dark');
-  padding: 15px;
-  border: 3px solid theme('colors.cosmic.dark');
-}
-.dark .neobrutal-post {
-  background-color: theme('colors.cosmic.dark');
-  color: theme('colors.cosmic.white');
-  border-color: theme('colors.cosmic.white');
-}
-
-/* ===============================
-   スクロールアニメーション
-=============================== */
-@keyframes scroll-down {
-  0% {
-    transform: translateY(-100%);
+  /* ダークモード対応 */
+  .dark body {
+    color: theme('colors.stone.200');
+    background: theme('colors.stone.900');
   }
-  100% {
-    transform: translateY(400%);
+
+  /* 佐藤可士和スタイル：見出しの美学 */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'M PLUS 1p', sans-serif;
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    color: theme('colors.stone.900');
+    font-feature-settings: "ss01" 1, "cv01" 1, "cv02" 1;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* 特別な見出し（ディスプレイ用） */
+  .heading-display {
+    font-family: 'Space Grotesk', 'M PLUS 1p', sans-serif;
+    font-weight: 200;
+    letter-spacing: -0.06em;
+    line-height: 0.85;
+  }
+
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: theme('colors.stone.100');
+  }
+
+  /* リンクのベーススタイル */
+  a {
+    color: theme('colors.sapphire.600');
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: theme('colors.sapphire.700');
+  }
+
+  .dark a {
+    color: theme('colors.sapphire.400');
+  }
+
+  .dark a:hover {
+    color: theme('colors.sapphire.300');
+  }
+
+  /* セレクション */
+  ::selection {
+    background: theme('colors.sapphire.100');
+    color: theme('colors.sapphire.900');
+  }
+
+  .dark ::selection {
+    background: theme('colors.sapphire.800');
+    color: theme('colors.sapphire.100');
+  }
+
+  /* フォーカス可視性の向上 */
+  :focus {
+    outline: 2px solid theme('colors.sapphire.500');
+    outline-offset: 2px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
   }
 }
-.animate-scroll-down {
-  animation: scroll-down 2s cubic-bezier(0.76, 0, 0.24, 1) infinite;
-}
-
-/* スムーズスクロール */
-html {
-  @apply selection-cosmic;
-}
-
-/* カスタムスクロールバー */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-primary/30 rounded-full transition-colors duration-300;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-primary/50;
-}
 
 /* ===============================
-   ホバーリフト & 装飾線のグロー
-=============================== */
-.hover-cosmic {
-  @apply transition-all duration-500;
-}
-.hover-cosmic:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px theme('colors.primary');
-}
-
-@keyframes line-glow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-.animate-line-glow {
-  animation: line-glow 3s ease-in-out infinite;
-}
-
-/* ===============================
-   チャットボットのスタイル
+   🎭 MODERN COMPONENTS
 =============================== */
 @layer components {
-  .chat-container {
-    @apply w-full max-w-md mx-auto;
+  /* 佐藤可士和マスターレベル：タイポグラフィの極致 */
+  .text-kashiwa-hero {
+    font-family: 'Space Grotesk', 'M PLUS 1p', sans-serif;
+    font-weight: 100;
+    font-size: clamp(4rem, 12vw, 16rem);
+    letter-spacing: -0.08em;
+    line-height: 0.75;
+    font-feature-settings: "cv01" 1, "cv02" 1, "ss01" 1, "kern" 1;
+    text-rendering: optimizeLegibility;
   }
 
-  .chat-message {
-    @apply text-sm md:text-base;
+  .text-kashiwa-hero-accent {
+    font-family: 'Space Grotesk', 'M PLUS 1p', sans-serif;
+    font-weight: 400;
+    font-size: clamp(4rem, 12vw, 16rem);
+    letter-spacing: -0.06em;
+    line-height: 0.75;
   }
 
-  .chat-messages {
-    @apply min-h-[200px] max-h-[400px] md:max-h-[600px] overflow-y-auto;
+  .text-kashiwa-subtitle {
+    font-family: 'DM Sans', 'M PLUS 1p', sans-serif;
+    font-weight: 200;
+    font-size: clamp(0.75rem, 1vw, 1rem);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-feature-settings: "case" 1, "c2sc" 1;
   }
 
-  /* セクション間の余白 */
-  .section {
-    @apply py-16 px-4 md:py-24 md:px-8;
+  .text-kashiwa-body {
+    font-family: 'DM Sans', 'M PLUS 1p', sans-serif;
+    font-weight: 300;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    line-height: 1.8;
+    letter-spacing: 0.02em;
   }
 
-  /* 見出しスタイル */
-  .text-h2 {
-    @apply text-2xl md:text-3xl font-light tracking-wider text-cosmic-purple dark:text-cosmic-star;
+  .text-kashiwa-caption {
+    font-family: 'DM Sans', 'M PLUS 1p', sans-serif;
+    font-weight: 400;
+    font-size: clamp(0.625rem, 0.8vw, 0.75rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
   }
 
-  /* 本文スタイル */
-  .text-body {
-    @apply text-base md:text-lg text-cosmic-mid dark:text-cosmic-white;
+  /* 日本語専用の美しいスタイリング */
+  .text-japanese {
+    font-family: 'M PLUS 1p', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+    font-feature-settings: "palt" 1, "pkna" 1;
   }
 
-  /* カードシャドウ */
-  .shadow-card {
-    @apply shadow-cosmic-lg dark:shadow-cosmic-glow;
+  /* セリフ体（特別な場面用） */
+  .text-serif {
+    font-family: 'Crimson Text', 'Times New Roman', serif;
+    font-feature-settings: "liga" 1, "kern" 1, "onum" 1;
   }
 
-  /* ダークモード時のテキストカラー調整 */
-  .dark-text-bright {
-    @apply text-cosmic-mid dark:text-cosmic-white;
+  /* Navigation */
+  .nav-modern {
+    @apply fixed top-0 left-0 right-0 z-50 transition-all duration-300;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
 
-  /* ダークモード時のセカンダリーテキスト */
-  .dark-text-secondary {
-    @apply text-cosmic-purple dark:text-cosmic-star;
+  .dark .nav-modern {
+    background: rgba(31, 41, 55, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-scrolled {
+    @apply shadow-medium;
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .dark .nav-scrolled {
+    background: rgba(31, 41, 55, 0.95);
+  }
+
+  /* Card System */
+  .card-editorial {
+    @apply bg-white rounded-2xl p-6 shadow-soft border border-stone-200 transition-all duration-300 hover:shadow-medium hover:-translate-y-1;
+  }
+
+  .dark .card-editorial {
+    @apply bg-stone-800 border-stone-700;
+  }
+
+  .card-featured {
+    @apply relative bg-gradient-to-br from-sapphire-50 to-teal-50 border-2 border-sapphire-200;
+  }
+
+  .dark .card-featured {
+    @apply from-sapphire-900/20 to-teal-900/20 border-sapphire-700;
+  }
+
+  /* 佐藤可士和レベル：タイポグラフィスケール */
+  .text-mega {
+    font-size: clamp(6rem, 15vw, 24rem);
+    line-height: 0.7;
+    letter-spacing: -0.1em;
+  }
+
+  .text-hero {
+    font-size: clamp(3rem, 8vw, 12rem);
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+  }
+
+  .text-display {
+    font-size: clamp(2rem, 5vw, 6rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+
+  .text-headline {
+    font-size: clamp(1.5rem, 3vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .text-lead {
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+
+  .text-eyebrow {
+    font-size: clamp(0.625rem, 1vw, 0.875rem);
+    line-height: 1.4;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  /* Kashiwa-style Interactive Elements */
+  .btn-kashiwa {
+    @apply relative inline-flex items-center justify-center overflow-hidden transition-all duration-500 ease-out;
+    font-feature-settings: "case" 1;
+    letter-spacing: 0.1em;
+  }
+
+  .btn-kashiwa-primary {
+    @apply btn-kashiwa border border-white/30 text-white hover:border-white/60 hover:bg-white/5 backdrop-blur-sm;
+  }
+
+  .btn-kashiwa-primary::before {
+    content: '';
+    @apply absolute inset-0 bg-white/0 transition-all duration-500 ease-out;
+  }
+
+  .btn-kashiwa-primary:hover::before {
+    @apply bg-white/10;
+  }
+
+  /* Form Elements */
+  .input-modern {
+    @apply w-full px-4 py-3 bg-white border border-stone-300 rounded-xl text-stone-900 placeholder-stone-500 transition-all duration-200 focus:border-sapphire-500 focus:ring-4 focus:ring-sapphire-500 focus:ring-opacity-20;
+  }
+
+  .dark .input-modern {
+    @apply bg-stone-800 border-stone-600 text-stone-100 placeholder-stone-400 focus:border-sapphire-400;
+  }
+
+  /* 佐藤可士和スタイル：読みやすさの極致 */
+  .prose-kashiwa {
+    @apply prose prose-lg max-w-none;
+    font-family: 'DM Sans', 'M PLUS 1p', sans-serif;
+    --tw-prose-body: theme('colors.stone.700');
+    --tw-prose-headings: theme('colors.stone.900');
+    --tw-prose-lead: theme('colors.stone.600');
+    --tw-prose-links: theme('colors.stone.900');
+    --tw-prose-bold: theme('colors.stone.900');
+    --tw-prose-counters: theme('colors.stone.400');
+    --tw-prose-bullets: theme('colors.stone.300');
+    --tw-prose-hr: theme('colors.stone.200');
+    --tw-prose-quotes: theme('colors.stone.900');
+    --tw-prose-quote-borders: theme('colors.stone.300');
+    --tw-prose-captions: theme('colors.stone.500');
+    --tw-prose-code: theme('colors.stone.700');
+    --tw-prose-pre-code: theme('colors.stone.200');
+    --tw-prose-pre-bg: theme('colors.stone.900');
+    --tw-prose-th-borders: theme('colors.stone.200');
+    --tw-prose-td-borders: theme('colors.stone.100');
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+  }
+
+  .prose-kashiwa h1, .prose-kashiwa h2, .prose-kashiwa h3 {
+    font-family: 'Space Grotesk', 'M PLUS 1p', sans-serif;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+  }
+
+  .prose-kashiwa p {
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .dark .prose-modern {
+    --tw-prose-body: theme('colors.stone.300');
+    --tw-prose-headings: theme('colors.stone.100');
+    --tw-prose-lead: theme('colors.stone.400');
+    --tw-prose-links: theme('colors.sapphire.400');
+    --tw-prose-bold: theme('colors.stone.100');
+    --tw-prose-counters: theme('colors.stone.400');
+    --tw-prose-bullets: theme('colors.stone.600');
+    --tw-prose-hr: theme('colors.stone.700');
+    --tw-prose-quotes: theme('colors.stone.100');
+    --tw-prose-quote-borders: theme('colors.stone.700');
+    --tw-prose-captions: theme('colors.stone.400');
+    --tw-prose-code: theme('colors.sapphire.400');
+    --tw-prose-pre-code: theme('colors.stone.300');
+    --tw-prose-pre-bg: theme('colors.stone.900');
+    --tw-prose-th-borders: theme('colors.stone.600');
+    --tw-prose-td-borders: theme('colors.stone.700');
   }
 }
 
 /* ===============================
-   コズミック背景アニメーション
+   ✨ MODERN UTILITIES
 =============================== */
-.bg-cosmic-animate {
-  @apply bg-gradient-to-r from-cosmic-purple via-cosmic-mid to-cosmic-dark bg-600% animate-cosmic-gradient;
-}
-
-/* ===============================
-   星空エフェクト
-=============================== */
-@keyframes twinkle {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-.star {
-  @apply absolute rounded-full bg-cosmic-star;
-  animation: twinkle 2s ease-in-out infinite;
-}
-
-.star:nth-child(2n) {
-  animation-delay: 0.5s;
-}
-
-.star:nth-child(3n) {
-  animation-delay: 1s;
-}
-
-.star:nth-child(4n) {
-  animation-delay: 1.5s;
-}
-
-/* ===============================
-   オーロラエフェクト
-=============================== */
-@keyframes aurora {
-  0% { transform: translate(0, 0) rotate(0); }
-  100% { transform: translate(100px, 50px) rotate(10deg); }
-}
-
-.aurora {
-  @apply absolute inset-0 opacity-30 blur-3xl;
-  background: linear-gradient(45deg, theme('colors.cosmic.purple'), theme('colors.primary'));
-  animation: aurora 20s ease infinite alternate;
-}
-
-/* ===============================
-   惑星軌道エフェクト
-=============================== */
-@keyframes orbit {
-  from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
-}
-
-.planet {
-  @apply absolute w-4 h-4 rounded-full;
-  animation: orbit 20s linear infinite;
-}
-
-.planet-1 {
-  background: theme('colors.primary');
-  animation-duration: 15s;
-}
-
-.planet-2 {
-  background: theme('colors.cosmic.purple');
-  animation-duration: 25s;
-}
-
-.planet-3 {
-  background: theme('colors.cosmic.star');
-  animation-duration: 35s;
-}
-
 @layer utilities {
-  .cosmic-dance {
-    @apply transition-all duration-500 ease-out will-change-transform;
+  /* Layout Utilities */
+  .section-modern {
+    @apply py-16 lg:py-24 px-6 lg:px-8;
   }
-  
-  .cosmic-pulse {
-    animation: cosmicPulse 4s ease-in-out infinite;
+
+  .container-content {
+    @apply max-w-7xl mx-auto;
   }
-  
-  .cosmic-float {
-    animation: cosmicFloat 8s ease-in-out infinite;
+
+  .container-text {
+    @apply max-w-4xl mx-auto;
+  }
+
+  .container-narrow {
+    @apply max-w-2xl mx-auto;
+  }
+
+  /* Spacing Utilities */
+  .space-section {
+    @apply space-y-16 lg:space-y-24;
+  }
+
+  .space-content {
+    @apply space-y-8 lg:space-y-12;
+  }
+
+  .space-elements {
+    @apply space-y-4 lg:space-y-6;
+  }
+
+  /* Interactive States */
+  .hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-1;
+  }
+
+  .hover-glow {
+    @apply transition-shadow duration-300 hover:shadow-glow-brand;
+  }
+
+  .focus-ring {
+    @apply focus:ring-4 focus:ring-sapphire-500 focus:ring-opacity-50 focus:outline-none;
+  }
+
+  /* Animation Delays */
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+  .animate-delay-700 { animation-delay: 700ms; }
+
+  /* Modern Scrollbar */
+  .scrollbar-modern {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.sapphire.300') theme('colors.stone.100');
+  }
+
+  .scrollbar-modern::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-modern::-webkit-scrollbar-track {
+    background: theme('colors.stone.100');
+    border-radius: 3px;
+  }
+
+  .scrollbar-modern::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, theme('colors.sapphire.500'), theme('colors.teal.500'));
+    border-radius: 3px;
+  }
+
+  .scrollbar-modern::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, theme('colors.sapphire.600'), theme('colors.teal.600'));
+  }
+
+  .dark .scrollbar-modern {
+    scrollbar-color: theme('colors.sapphire.600') theme('colors.stone.800');
+  }
+
+  .dark .scrollbar-modern::-webkit-scrollbar-track {
+    background: theme('colors.stone.800');
   }
 }
 
-@keyframes cosmicPulse {
-  0%, 100% {
-    opacity: 0.8;
+/* ===============================
+   🎨 MODERN KEYFRAMES
+=============================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
     transform: scale(1);
   }
-  50% {
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
     opacity: 1;
-    transform: scale(1.05);
+    transform: translateX(0);
   }
 }
 
-@keyframes cosmicFloat {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes subtlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Animation Classes */
+.animate-fade-in-up { animation: fadeInUp 0.6s ease-out; }
+.animate-fade-in-scale { animation: fadeInScale 0.5s ease-out; }
+.animate-slide-in-right { animation: slideInRight 0.6s ease-out; }
+.animate-gradient-shift { animation: gradientShift 4s ease infinite; }
+.animate-subtle-pulse { animation: subtlePulse 3s ease-in-out infinite; }
+.animate-gentle-float { animation: gentleFloat 4s ease-in-out infinite; }
+
+/* ===============================
+   📱 RESPONSIVE IMPROVEMENTS
+=============================== */
+@media (max-width: 640px) {
+  .text-display {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    line-height: 1.1;
   }
-  25% {
-    transform: translateY(-5px) rotate(0.5deg);
+  
+  .text-heading {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    line-height: 1.2;
   }
-  75% {
-    transform: translateY(5px) rotate(-0.5deg);
+  
+  .section-modern {
+    @apply py-12 px-4;
   }
 }
 
-@keyframes starTwinkle {
-  0%, 100% {
-    opacity: 1;
-    filter: blur(0px);
-  }
-  50% {
-    opacity: 0.7;
-    filter: blur(1px);
-  }
+/* ===============================
+   🌙 ENHANCED DARK MODE
+=============================== */
+.dark {
+  color-scheme: dark;
 }
 
-.animate-star-twinkle {
-  animation: starTwinkle 3s ease-in-out infinite;
+/* Smooth transitions for theme switching */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

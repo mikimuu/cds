@@ -22,27 +22,18 @@ const Header = ({ transparent }) => {
 
   // スクロールハンドラーの最適化
   const handleScroll = useCallback(() => {
-    if (!window.requestAnimationFrame) {
-      const scrollPosition = window.scrollY
-      setIsScrolled(scrollPosition > 50)
-      setScrollY(scrollPosition)
-      return
-    }
-
-    window.requestAnimationFrame(() => {
-      const scrollPosition = window.scrollY
-      setIsScrolled(scrollPosition > 50)
-      setScrollY(Math.min(scrollPosition, 1000)) // スクロール量に上限を設定
-    })
+    const scrollPosition = window.scrollY
+    setIsScrolled(scrollPosition > 20)
+    setScrollY(Math.min(scrollPosition, 500))
   }, [])
 
-  // アニメーションの強度を計算：宇宙のエネルギー強度をシミュレート
+  // アニメーションの強度を計算：減衰するように調整
   const calculateAnimationIntensity = useCallback((scroll) => {
-    const threshold = 300
+    const threshold = 200
     const intensity = scroll <= threshold
       ? scroll / threshold
-      : 1 + Math.log10((scroll - threshold) / threshold)
-    return Math.min(intensity, 1.5)
+      : 1
+    return Math.min(intensity, 1)
   }, [])
 
   // 宇宙エネルギーの強度（cosmicIntensity）を取得
@@ -53,6 +44,7 @@ const Header = ({ transparent }) => {
       setIsMobile(window.innerWidth < 768)
     }
 
+    // スクロールイベントを最適化
     let scrollTimeout
     const throttledScroll = () => {
       if (!scrollTimeout) {
@@ -77,50 +69,43 @@ const Header = ({ transparent }) => {
 
   return (
     <>
-      {/* 銀河系ナビゲーションヘッダー */}
+      {/* ナビゲーションヘッダー */}
       <header
         style={{ backgroundColor: transparent ? 'transparent' : undefined }}
-        className={`fixed top-0 left-0 right-0 z-50 cosmic-dance ${isScrolled ? 'bg-cosmic-dark/90 backdrop-blur-lg shadow-galaxy animate-cosmic-shift' : 'bg-transparent'}`}
+        className={`fixed top-0 left-0 right-0 z-50 ${isScrolled ? 'bg-black/80 backdrop-blur-md shadow-md' : 'bg-transparent'}`}
       >
         <div className="relative">
-          {/* 宇宙のエネルギー波 */}
-          <div
-            className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-cosmic-purple to-cosmic-star animate-energy-pulse ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
-          ></div>
+          {/* 上部のアクセントライン */}
+          {isScrolled && (
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-cosmic-purple to-cosmic-star"></div>
+          )}
 
           {/* メインナビゲーション */}
-          <div className="max-w-[1000px] lg:max-w-[1200px] xl:max-w-[1400px] mx-auto px-2 xs:px-3 sm:px-6 md:px-8">
-            <div className="flex items-center justify-between h-14 sm:h-16 md:h-18 lg:h-20">
-              {/* 銀河のタイトル */}
-              <Link href="/" className="group relative py-2 transform transition-all duration-700 hover:scale-105">
-                <span className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-extralight tracking-[0.1em] xs:tracking-[0.12em] sm:tracking-[0.15em] md:tracking-[0.2em] text-cosmic-star drop-shadow-neon transition-all duration-500 ease-out group-hover:text-primary group-hover:tracking-[0.15em] sm:group-hover:tracking-[0.2em] md:group-hover:tracking-[0.25em]">
+          <div className="max-w-6xl mx-auto px-3 xs:px-4 sm:px-6">
+            <div className="flex items-center justify-between h-14 sm:h-16 md:h-18">
+              {/* サイトタイトル */}
+              <Link href="/" className="flex items-center py-2">
+                <span className="text-sm xs:text-base sm:text-lg font-light tracking-wider text-white">
                   COSMIC DANCE
                 </span>
-                <span className="absolute bottom-0 left-1/2 w-0 h-px bg-gradient-to-r from-primary to-cosmic-purple transition-all duration-700 ease-in-out group-hover:w-full group-hover:left-0 group-hover:shadow-glow"></span>
               </Link>
 
-              {/* 惑星軌道ナビゲーション */}
-              <nav className="hidden md:flex items-center space-x-2 lg:space-x-4">
-                <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-8 xl:space-x-12 relative">
+              {/* デスクトップナビゲーション */}
+              <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4">
                   {headerNavLinks.map((link) => (
                     <Link
                       key={link.title}
                       href={link.href}
-                      className="group relative py-2 px-3 sm:px-4 cosmic-hover-orbit"
+                      className="py-2 px-2 sm:px-3 text-sm font-light text-white/90 hover:text-white transition-colors duration-200"
                     >
-                      <span className="text-xs sm:text-sm font-light tracking-wide sm:tracking-wider text-cosmic-white/90 transition-all duration-500 ease-out group-hover:text-cosmic-star group-hover:drop-shadow-neon">
-                        {link.title}
-                      </span>
-                      <div className="absolute inset-0 border-2 border-cosmic-purple/30 rounded-full scale-0 group-hover:scale-100 transition-transform duration-700 ease-out-circ"></div>
-                      <div className="absolute -bottom-2 left-1/2 w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 animate-planet-blink"></div>
+                      {link.title}
                     </Link>
                   ))}
                 </div>
-                {/* テーマスイッチ（超新星バージョン） */}
-                <div className="ml-4 lg:ml-6 xl:ml-12 border-l border-cosmic-purple/30 pl-4 lg:pl-8 h-6 sm:h-8 flex items-center">
-                  <div className="cosmic-switch-container hover:rotate-[30deg] transition-transform duration-500">
-                    <ThemeSwitch />
-                  </div>
+                {/* テーマスイッチ */}
+                <div className="ml-2 sm:ml-4 border-l border-white/20 pl-2 sm:pl-4 h-6 flex items-center">
+                  <ThemeSwitch />
                 </div>
               </nav>
 
@@ -131,10 +116,10 @@ const Header = ({ transparent }) => {
             </div>
           </div>
 
-          {/* 下部の装飾的な線: 建築的な直線美 + 宇宙的な瞬き */}
-          <div
-            className={`absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent transition-all duration-500 ease-out ${isScrolled ? 'opacity-100' : 'opacity-0'}`}
-          ></div>
+          {/* 下部の装飾的な線 */}
+          {isScrolled && (
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10"></div>
+          )}
         </div>
       </header>
     </>

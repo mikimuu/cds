@@ -3,6 +3,7 @@ import Tag from '@/components/Tag'
 import { useState } from 'react'
 import Pagination from '@/components/Pagination'
 import formatDate from '@/lib/utils/formatDate'
+import KashiwaArticleCard from '@/components/KashiwaArticleCard'
 
 export default function ListLayout({ posts, title, initialDisplayPosts = [], pagination }) {
   const [searchValue, setSearchValue] = useState('')
@@ -16,22 +17,28 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
     initialDisplayPosts.length > 0 && !searchValue ? initialDisplayPosts : filteredBlogPosts
 
   return (
-    <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+    <section className="section-modern bg-white dark:bg-stone-900">
+      <div className="container-content">
+        {/* ヘッダーセクション */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl lg:text-5xl font-bold text-stone-900 dark:text-stone-100 mb-6">
             {title}
           </h1>
-          <div className="relative max-w-lg">
+          <p className="text-xl text-stone-600 dark:text-stone-300 max-w-2xl mx-auto mb-8">
+            記事を検索して、興味のあるトピックを見つけてください
+          </p>
+          
+          {/* 検索ボックス */}
+          <div className="relative max-w-md mx-auto">
             <input
-              aria-label="Search articles"
+              aria-label="記事を検索"
               type="text"
               onChange={(e) => setSearchValue(e.target.value)}
-              placeholder="Search articles"
-              className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
+              placeholder="記事を検索..."
+              className="input-modern pl-10"
             />
             <svg
-              className="absolute right-3 top-3 h-5 w-5 text-gray-400 dark:text-gray-300"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-stone-400 dark:text-stone-500"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -45,46 +52,67 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
               />
             </svg>
           </div>
+          
+          {searchValue && (
+            <div className="mt-4 text-sm text-stone-500 dark:text-stone-400">
+              「{searchValue}」の検索結果: {filteredBlogPosts.length}件
+            </div>
+          )}
         </div>
-        <ul>
-          {!filteredBlogPosts.length && 'No posts found.'}
-          {displayPosts.map((frontMatter) => {
-            const { slug, date, title, summary, tags } = frontMatter
+
+        {/* 記事一覧 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+          {!filteredBlogPosts.length && (
+            <div className="col-span-full text-center py-16">
+              <div className="space-y-4">
+                <svg className="w-16 h-16 mx-auto text-stone-300 dark:text-stone-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <p className="text-lg font-medium text-stone-500 dark:text-stone-400">
+                  {searchValue ? '検索結果が見つかりませんでした' : '記事が見つかりません'}
+                </p>
+                {searchValue && (
+                  <button
+                    onClick={() => setSearchValue('')}
+                    className="text-sapphire-600 dark:text-sapphire-400 hover:text-sapphire-700 dark:hover:text-sapphire-300 font-medium transition-colors"
+                  >
+                    検索をクリア
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+          {displayPosts.map((frontMatter, index) => {
+            const { slug, date, title, summary, tags, images } = frontMatter
+            const postPath = `/blog/${slug}`
+            
             return (
-              <li key={slug} className="py-4">
-                <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                  <dl>
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                      <time dateTime={date}>{formatDate(date)}</time>
-                    </dd>
-                  </dl>
-                  <div className="space-y-3 xl:col-span-3">
-                    <div>
-                      <h3 className="text-2xl font-bold leading-8 tracking-tight">
-                        <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
-                          {title}
-                        </Link>
-                      </h3>
-                      <div className="flex flex-wrap">
-                        {(tags || []).map((tag) => (
-                          <Tag key={tag} text={tag} />
-                        ))}
-                      </div>
-                    </div>
-                    <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                      {summary}
-                    </div>
-                  </div>
-                </article>
-              </li>
+              <div 
+                key={slug}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <KashiwaArticleCard
+                  title={title}
+                  description={summary}
+                  imgSrc={images?.[0] || null}
+                  href={postPath}
+                  date={date}
+                  tags={tags}
+                  variant="default"
+                />
+              </div>
             )
           })}
-        </ul>
+        </div>
+
+        {/* ページネーション */}
+        {pagination && pagination.totalPages > 1 && !searchValue && (
+          <div className="mt-16">
+            <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+          </div>
+        )}
       </div>
-      {pagination && pagination.totalPages > 1 && !searchValue && (
-        <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
-      )}
-    </>
+    </section>
   )
 }

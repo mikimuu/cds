@@ -1,14 +1,13 @@
 import Link from '@/components/Link'
-import PageTitle from '@/components/PageTitle'
-import SectionContainer from '@/components/SectionContainer'
 import { BlogSEO } from '@/components/SEO'
 import Image from '@/components/Image'
-import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import RelatedPosts from '@/components/RelatedPosts'
 import ArticleChat from '@/components/ArticleChat'
+import { useEffect, useState } from 'react'
+import formatDate from '@/lib/utils/formatDate'
 
 const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/blog/${fileName}`
 const discussUrl = (slug) =>
@@ -16,149 +15,196 @@ const discussUrl = (slug) =>
     `${siteMetadata.siteUrl}/blog/${slug}`
   )}`
 
-const postDateTemplate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
 export default function PostLayout({ frontMatter, authorDetails, next, prev, children, allPosts, rawContent }) {
   const { slug, fileName, date, title, images, tags } = frontMatter
 
   return (
-    <SectionContainer>
+    <>
       <BlogSEO
         url={`${siteMetadata.siteUrl}/blog/${slug}`}
         authorDetails={authorDetails}
         {...frontMatter}
       />
       <ScrollTopAndComment />
-      <article>
-        <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
-          <header className="pt-4 xs:pt-6 xl:pb-6">
-            <div className="space-y-1 text-center">
-              <dl className="space-y-6 xs:space-y-10">
-                <div>
-                  <dt className="sr-only">Published on</dt>
-                  <dd className="text-sm xs:text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>{new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}</time>
-                  </dd>
-                </div>
-              </dl>
-              <div>
-                <PageTitle>{title}</PageTitle>
+      
+      {/* DESIGN MASTERS: 4人の巨匠の統合哲学 */}
+      <article className="m-article">
+        <div className="m-container">
+          
+          {/* ヘッダー - ポール・ランドの明快な情報階層 */}
+          <header className="m-article-header">
+            <div className="m-grid">
+              <div className="m-sidebar">
+                <div className="m-divider m-divider-lg" />
               </div>
-            </div>
-          </header>
-          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-6 xs:pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0">
-            <dl className="pb-6 xs:pb-10 pt-4 xs:pt-6 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
-              <dt className="sr-only">Authors</dt>
-              <dd>
-                <ul className="flex flex-wrap justify-center gap-3 xs:gap-4 sm:space-x-8 xl:block xl:space-x-0 xl:space-y-8">
-                  {authorDetails.map((author) => (
-                    <li className="flex items-center space-x-2" key={author.name}>
-                      {author.avatar && (
-                        <Image
-                          src={author.avatar}
-                          width={38}
-                          height={38}
-                          alt="avatar"
-                          className="h-8 w-8 xs:h-10 xs:w-10 rounded-full"
-                        />
-                      )}
-                      <dl className="whitespace-nowrap text-xs xs:text-sm font-medium leading-5">
-                        <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">Twitter</dt>
-                        <dd>
-                          {author.twitter && (
-                            <Link
-                              href={author.twitter}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            >
-                              {author.twitter.replace('https://twitter.com/', '@')}
-                            </Link>
+              
+              <div className="m-content">
+                {/* 情報階層 1: メタデータ */}
+                <div className="m-block">
+                  <div className="m-caption m-text-light">
+                    <time dateTime={date}>{formatDate(date)}</time>
+                  </div>
+                </div>
+                
+                {/* 情報階層 2: タイトル */}
+                <div className="m-block">
+                  <h1 className="m-article-title">
+                    {title}
+                  </h1>
+                </div>
+                
+                {/* 情報階層 3: 著者情報 - ウィリアム・モリスの丁寧さ */}
+                {authorDetails && authorDetails.length > 0 && (
+                  <div className="m-block">
+                    <div className="m-author-info">
+                      {authorDetails.map((author) => (
+                        <div key={author.name} className="m-author">
+                          {author.avatar && (
+                            <Image
+                              src={author.avatar}
+                              width={40}
+                              height={40}
+                              alt={author.name}
+                              className="m-author-avatar"
+                            />
                           )}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
-                </ul>
-              </dd>
-            </dl>
-            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pb-6 xs:pb-8 pt-6 xs:pt-10 dark:prose-dark bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 xs:p-6 rounded-lg shadow-lg">
-                {children}
-              </div>
-              {/* 記事に関するチャットコンポーネント */}
-              <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300">
-                <ArticleChat articleContent={rawContent} />
-              </div>
-              <div className="pb-4 xs:pb-6 pt-4 xs:pt-6 text-xs xs:text-sm text-gray-800 dark:text-gray-200 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 rounded-lg mt-4">
-                <Link href={discussUrl(slug)} rel="nofollow">
-                  {'Discuss on Twitter'}
-                </Link>
-                {` • `}
-                <Link href={editUrl(fileName)}>{'View on GitHub'}</Link>
-              </div>
-              {siteMetadata.comments && (
-                <div className="pb-4 xs:pb-6 pt-4 xs:pt-6 text-center text-gray-800 dark:text-gray-200 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 rounded-lg mt-4" id="comment">
-                  <Comments frontMatter={frontMatter} />
-                </div>
-              )}
-            </div>
-            <footer>
-              <div className="divide-gray-200 text-xs xs:text-sm font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 rounded-lg">
-                {tags && (
-                  <div className="py-3 xs:py-4 xl:py-8">
-                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                      Tags
-                    </h2>
-                    <div className="flex flex-wrap gap-2">
-                      {tags.map((tag) => (
-                        <Tag key={tag} text={tag} />
+                          <div className="m-author-details">
+                            <div className="m-caption">
+                              {author.name}
+                            </div>
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>
                 )}
-                {(next || prev) && (
-                  <div className="flex justify-between py-3 xs:py-4 xl:block xl:space-y-8 xl:py-8">
-                    {prev && (
-                      <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                          Previous Article
-                        </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/blog/${prev.slug}`}>{prev.title}</Link>
-                        </div>
-                      </div>
+              </div>
+              
+              <div className="m-accent" />
+            </div>
+          </header>
+          {/* メインコンテンツ - ディーター・ラムスの読みやすさ設計 */}
+          <main className="m-article-main">
+            <div className="m-grid">
+              <div className="m-sidebar" />
+              
+              <div className="m-content">
+                {/* 記事本文 - 4人の巨匠の統合タイポグラフィ */}
+                <div className="m-article-content">
+                  {children}
+                </div>
+                
+                {/* 記事チャット */}
+                <div className="m-block">
+                  <ArticleChat articleContent={rawContent} />
+                </div>
+                
+                {/* 記事アクション */}
+                <div className="m-block">
+                  <div className="m-article-actions">
+                    {process.env.NODE_ENV === 'development' && (
+                      <Link href={`/blog/edit/${slug}`} className="m-action-link">
+                        記事を編集
+                      </Link>
                     )}
-                    {next && (
-                      <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                          Next Article
-                        </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/blog/${next.slug}`}>{next.title}</Link>
-                        </div>
-                      </div>
-                    )}
+                    <Link href={discussUrl(slug)} rel="nofollow" className="m-action-link">
+                      Twitterで議論
+                    </Link>
+                    <Link href={editUrl(fileName)} className="m-action-link">
+                      GitHubで表示
+                    </Link>
+                  </div>
+                </div>
+                
+                {/* コメント */}
+                {siteMetadata.comments && (
+                  <div className="m-block" id="comment">
+                    <Comments frontMatter={frontMatter} />
                   </div>
                 )}
               </div>
-              <div className="pt-3 xs:pt-4 xl:pt-8">
-                <Link
-                  href="/blog"
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 text-sm"
-                  aria-label="Back to the blog"
-                >
-                  &larr; Back to the blog
-                </Link>
+              
+              <div className="m-accent" />
+            </div>
+          </main>
+          {/* フッター - 4人の巨匠の統合情報整理 */}
+          <footer className="m-article-footer">
+            <div className="m-grid">
+              <div className="m-sidebar">
+                <div className="m-divider m-divider-md" />
               </div>
-              {/* 関連記事セクション */}
-              <div className="mt-6 xs:mt-10 pt-6 xs:pt-10 border-t border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg p-4 rounded-lg">
-                <RelatedPosts currentPost={frontMatter} allPosts={allPosts} />
+              
+              <div className="m-content">
+                {/* タグ */}
+                {tags && tags.length > 0 && (
+                  <div className="m-block">
+                    <div className="m-caption m-text-light m-mb-2">
+                      Tags
+                    </div>
+                    <div className="m-tags">
+                      {tags.map((tag) => (
+                        <Link
+                          key={tag}
+                          href={`/tags/${tag}`}
+                          className="m-tag"
+                        >
+                          {tag}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* ナビゲーション */}
+                {(next || prev) && (
+                  <div className="m-block">
+                    <div className="m-article-nav">
+                      {prev && (
+                        <div className="m-nav-item">
+                          <div className="m-caption m-text-light m-mb-1">
+                            Previous
+                          </div>
+                          <Link href={`/blog/${prev.slug}`} className="m-nav-link">
+                            {prev.title}
+                          </Link>
+                        </div>
+                      )}
+                      {next && (
+                        <div className="m-nav-item">
+                          <div className="m-caption m-text-light m-mb-1">
+                            Next
+                          </div>
+                          <Link href={`/blog/${next.slug}`} className="m-nav-link">
+                            {next.title}
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                {/* 戻るリンク */}
+                <div className="m-block">
+                  <Link href="/blog" className="m-back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    記事一覧に戻る
+                  </Link>
+                </div>
+                
+                {/* 関連記事 */}
+                <div className="m-block">
+                  <RelatedPosts currentPost={frontMatter} allPosts={allPosts} />
+                </div>
               </div>
-            </footer>
-          </div>
+              
+              <div className="m-accent" />
+            </div>
+          </footer>
         </div>
       </article>
-    </SectionContainer>
+    </>
   )
 }

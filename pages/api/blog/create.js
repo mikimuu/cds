@@ -3,6 +3,11 @@ import path from 'path'
 import matter from 'gray-matter'
 
 export default async function handler(req, res) {
+  // 本番環境では編集機能を無効化
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(403).json({ message: 'Blog editing is disabled in production environment' })
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' })
   }

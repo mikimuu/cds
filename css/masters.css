@@ -1,0 +1,723 @@
+/* DESIGN MASTERS - 4人の巨匠の哲学統合 */
+/* Paul Rand + Dieter Rams + William Morris + Kashiwa Sato */
+
+/* 基本設定：ディーター・ラムス "Less, but better" */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ベース：機能美の追求 */
+body {
+  font-family: 'Inter', -apple-system, 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: 0;
+  color: #2c2c2c;
+  background: #ffffff;
+}
+
+.dark body {
+  color: #d4d4d4;
+  background: #0f0f0f;
+}
+
+/* ポール・ランド：明快な階層構造 */
+
+.m-display {
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.m-title {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.m-subtitle {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.m-body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.m-caption {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.m-micro {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ディーター・ラムス：機能的余白システム */
+
+.m-space-xxl { margin: 120px 0; }
+.m-space-xl  { margin: 80px 0; }
+.m-space-lg  { margin: 60px 0; }
+.m-space-md  { margin: 40px 0; }
+.m-space-sm  { margin: 24px 0; }
+.m-space-xs  { margin: 16px 0; }
+.m-space-xxs { margin: 8px 0; }
+
+/* ウィリアム・モリス：丁寧な構造設計 */
+
+.m-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.m-section {
+  padding: 80px 0;
+}
+
+.m-grid {
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.m-content {
+  grid-column: 2;
+}
+
+.m-sidebar {
+  grid-column: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.m-accent {
+  grid-column: 3;
+  display: flex;
+  justify-content: center;
+}
+
+/* 佐藤可士和：情報ブロック */
+
+.m-block {
+  margin-bottom: 48px;
+}
+
+.m-block:last-child {
+  margin-bottom: 0;
+}
+
+.m-header {
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.dark .m-header {
+  border-bottom-color: #2a2a2a;
+}
+
+/* ポール・ランド：明快な視覚要素 */
+
+.m-divider {
+  width: 2px;
+  background: #e8e8e8;
+  margin: 0 auto;
+}
+
+.m-divider-sm  { height: 40px; }
+.m-divider-md  { height: 60px; }
+.m-divider-lg  { height: 80px; }
+.m-divider-xl  { height: 120px; }
+
+.dark .m-divider {
+  background: #2a2a2a;
+}
+
+/* ディーター・ラムス：機能的コンポーネント */
+
+.m-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  background: #2c2c2c;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.m-button:hover {
+  background: #404040;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.m-button-outline {
+  background: transparent;
+  color: #2c2c2c;
+  border: 1px solid #2c2c2c;
+}
+
+.m-button-outline:hover {
+  background: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark .m-button-outline {
+  color: #d4d4d4;
+  border-color: #d4d4d4;
+}
+
+.dark .m-button-outline:hover {
+  background: #d4d4d4;
+  color: #0f0f0f;
+}
+
+/* ウィリアム・モリス：丁寧なカードシステム */
+
+.m-card {
+  background: #ffffff;
+  padding: 32px;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.dark .m-card {
+  background: #1a1a1a;
+  border-color: #2a2a2a;
+}
+
+.m-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.dark .m-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.m-card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  margin-bottom: 24px;
+}
+
+.m-card-content {
+  padding: 0;
+}
+
+.m-card-title {
+  margin-bottom: 12px;
+}
+
+.m-card-meta {
+  margin-bottom: 16px;
+  color: #666666;
+}
+
+.m-card-excerpt {
+  margin-bottom: 20px;
+  color: #555555;
+}
+
+.dark .m-card-meta {
+  color: #888888;
+}
+
+.dark .m-card-excerpt {
+  color: #aaaaaa;
+}
+
+/* 4人の統合：ヘッダーシステム */
+
+.m-site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 100;
+}
+
+.dark .m-site-header {
+  background: rgba(15, 15, 15, 0.98);
+  border-bottom-color: #2a2a2a;
+}
+
+.m-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.m-logo {
+  font-size: 20px;
+  font-weight: 500;
+  color: #2c2c2c;
+  text-decoration: none;
+}
+
+.dark .m-logo {
+  color: #ffffff;
+}
+
+/* ポール・ランド：ナビゲーション明快性 */
+
+.m-nav {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.m-nav-item {
+  color: #2c2c2c;
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.m-nav-item:hover {
+  color: #000000;
+}
+
+.dark .m-nav-item {
+  color: #d4d4d4;
+}
+
+.dark .m-nav-item:hover {
+  color: #ffffff;
+}
+
+/* ディーター・ラムス：ヒーロー機能美 */
+
+.m-hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.m-hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.m-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+
+.m-hero-content {
+  position: relative;
+  z-index: 3;
+  color: #ffffff;
+}
+
+.m-hero-title {
+  font-size: 56px;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.m-hero-subtitle {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 40px;
+  opacity: 0.95;
+  max-width: 600px;
+}
+
+/* ウィリアム・モリス：記事システム */
+
+.m-article {
+  padding-top: 72px;
+}
+
+.m-article-header {
+  padding: 80px 0 48px;
+}
+
+.m-article-title {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.m-article-main {
+  padding: 48px 0;
+}
+
+.m-article-content {
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+
+.m-article-content h1,
+.m-article-content h2,
+.m-article-content h3,
+.m-article-content h4 {
+  font-weight: 500;
+  margin: 48px 0 20px;
+  line-height: 1.3;
+}
+
+.m-article-content h1 { font-size: 36px; }
+.m-article-content h2 { font-size: 28px; }
+.m-article-content h3 { font-size: 22px; }
+.m-article-content h4 { font-size: 18px; }
+
+.m-article-content p {
+  margin: 20px 0;
+}
+
+.m-article-content ul,
+.m-article-content ol {
+  margin: 20px 0;
+  padding-left: 28px;
+}
+
+.m-article-content li {
+  margin: 10px 0;
+}
+
+.m-article-content a {
+  color: inherit;
+  border-bottom: 1px solid currentColor;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.m-article-content a:hover {
+  opacity: 0.7;
+}
+
+.m-article-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 32px 0;
+}
+
+.m-article-content blockquote {
+  margin: 32px 0;
+  padding: 24px 32px;
+  border-left: 3px solid #e8e8e8;
+  background: #f8f8f8;
+  font-style: italic;
+}
+
+.dark .m-article-content blockquote {
+  border-left-color: #2a2a2a;
+  background: #1a1a1a;
+}
+
+.m-article-content code {
+  background: #f5f5f5;
+  padding: 3px 8px;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 15px;
+  border-radius: 3px;
+}
+
+.dark .m-article-content code {
+  background: #2a2a2a;
+  color: #d4d4d4;
+}
+
+.m-article-content pre {
+  background: #f8f8f8;
+  padding: 24px;
+  overflow-x: auto;
+  margin: 32px 0;
+  border-radius: 6px;
+}
+
+.dark .m-article-content pre {
+  background: #1a1a1a;
+  color: #d4d4d4;
+}
+
+/* 4人統合：フッターシステム */
+
+.m-article-footer {
+  padding: 80px 0;
+}
+
+.m-author-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.m-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.m-author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.m-article-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid #e8e8e8;
+}
+
+.dark .m-article-actions {
+  border-top-color: #2a2a2a;
+}
+
+.m-action-link {
+  color: #666666;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.2s ease;
+}
+
+.m-action-link:hover {
+  color: #2c2c2c;
+}
+
+.dark .m-action-link {
+  color: #888888;
+}
+
+.dark .m-action-link:hover {
+  color: #d4d4d4;
+}
+
+.m-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.m-tag {
+  color: #666666;
+  text-decoration: none;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+}
+
+.m-tag:hover {
+  color: #2c2c2c;
+}
+
+.dark .m-tag {
+  color: #888888;
+}
+
+.dark .m-tag:hover {
+  color: #d4d4d4;
+}
+
+.m-article-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+.m-nav-item:last-child {
+  text-align: right;
+}
+
+.m-nav-link {
+  color: inherit;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 400;
+  transition: opacity 0.2s ease;
+}
+
+.m-nav-link:hover {
+  opacity: 0.7;
+}
+
+.m-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #666666;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.2s ease;
+}
+
+.m-back-link:hover {
+  color: #2c2c2c;
+}
+
+.dark .m-back-link {
+  color: #888888;
+}
+
+.dark .m-back-link:hover {
+  color: #d4d4d4;
+}
+
+/* ウィリアム・モリス：記事グリッド */
+
+.m-grid-articles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 48px;
+}
+
+/* ディーター・ラムス：レスポンシブ機能性 */
+
+@media (max-width: 768px) {
+  .m-container {
+    padding: 0 20px;
+  }
+  
+  .m-section {
+    padding: 60px 0;
+  }
+  
+  .m-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .m-grid-articles {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .m-hero-title {
+    font-size: 40px;
+  }
+  
+  .m-article-title {
+    font-size: 32px;
+  }
+  
+  .m-display {
+    font-size: 48px;
+  }
+  
+  .m-article-nav {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .m-nav-item:last-child {
+    text-align: left;
+  }
+  
+  .m-article-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .m-space-xxl { margin: 80px 0; }
+  .m-space-xl  { margin: 60px 0; }
+  .m-space-lg  { margin: 40px 0; }
+  .m-space-md  { margin: 32px 0; }
+}
+
+/* ポール・ランド：アニメーション明快性 */
+
+.m-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: mFadeIn 0.8s ease-out forwards;
+}
+
+@keyframes mFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 4人統合：ユーティリティ */
+
+.m-text-center { text-align: center; }
+.m-text-left { text-align: left; }
+.m-text-right { text-align: right; }
+
+.m-hidden { display: none; }
+.m-block { display: block; }
+.m-flex { display: flex; }
+
+.m-w-full { width: 100%; }
+.m-h-full { height: 100%; }
+
+.m-mb-0 { margin-bottom: 0; }
+.m-mb-1 { margin-bottom: 12px; }
+.m-mb-2 { margin-bottom: 20px; }
+.m-mb-3 { margin-bottom: 32px; }
+.m-mb-4 { margin-bottom: 48px; }
+
+.m-text-gray { color: #666666; }
+.m-text-light { color: #888888; }
+.m-text-dark { color: #2c2c2c; }
+
+.dark .m-text-gray { color: #888888; }
+.dark .m-text-light { color: #666666; }
+.dark .m-text-dark { color: #d4d4d4; }
