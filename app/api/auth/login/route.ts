@@ -53,7 +53,6 @@ export async function POST(request: NextRequest) {
 
     return response
   } catch (error) {
-    console.error('Login error:', error)
     return createErrorResponse(500, '内部サーバーエラーが発生しました')
   }
 }

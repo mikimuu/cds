@@ -21,7 +21,6 @@ export async function POST() {
 
     return response
   } catch (error) {
-    console.error('Logout error:', error)
     return new Response(
       JSON.stringify({ 
         success: false, 

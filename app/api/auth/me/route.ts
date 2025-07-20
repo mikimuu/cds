@@ -19,7 +19,6 @@ export async function GET(request: NextRequest) {
       '認証状態を確認しました'
     )
   } catch (error) {
-    console.error('Auth check error:', error)
     return createErrorResponse(500, '認証状態の確認に失敗しました')
   }
 }

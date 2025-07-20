@@ -80,19 +80,7 @@ export default function RootLayout({
   return (
     <html lang="ja" className={`${mPlus1p.variable} ${notoSansJP.variable} ${jetBrainsMono.variable}`}>
       <head>
-        {/* Phase 2: フォント最適化プリロード */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link 
-          rel="preload" 
-          href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500;700&display=swap&subset=japanese" 
-          as="style"
-        />
-        <link 
-          rel="preload" 
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap&subset=japanese" 
-          as="style"
-        />
+        {/* Font optimization handled by next/font/google */}
       </head>
       <body className="min-h-screen bg-white text-typography-primary antialiased font-sans">
         <div className="flex min-h-screen flex-col">

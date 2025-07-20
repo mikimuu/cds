@@ -71,7 +71,6 @@ export async function GET(request: NextRequest) {
 
     return createSuccessResponse(response, 'ブログポスト一覧を取得しました')
   } catch (error) {
-    console.error('Error fetching blog posts:', error)
     return createErrorResponse(500, 'ブログポストの取得に失敗しました')
   }
 }
@@ -102,7 +101,6 @@ export const POST = requireAuth(async (request: NextRequest) => {
       201
     )
   } catch (error) {
-    console.error('Error creating blog post:', error)
     
     if (error instanceof Error) {
       return createErrorResponse(400, error.message)

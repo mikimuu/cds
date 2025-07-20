@@ -114,7 +114,6 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       wordCount,
     }
   } catch (error) {
-    console.error(`Error reading post ${slug}:`, error)
     return null
   }
 }

@@ -38,7 +38,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
       }
     } catch (error) {
-      console.error('Auth check failed:', error)
     } finally {
       setIsLoading(false)
     }
@@ -77,7 +76,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         credentials: 'include',
       })
     } catch (error) {
-      console.error('Logout failed:', error)
     } finally {
       setUser(null)
     }

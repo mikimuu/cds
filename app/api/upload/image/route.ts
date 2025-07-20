@@ -58,8 +58,6 @@ export const POST = requireAuth(async (request: NextRequest) => {
       201
     )
   } catch (error) {
-    console.error('Error uploading image:', error)
-    
     if (error instanceof Error) {
       return createErrorResponse(400, error.message)
     }

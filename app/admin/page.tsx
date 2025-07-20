@@ -6,10 +6,11 @@ import Button from '@/components/ui/Button'
 import { MarkdownEditor } from '@/components/ui/MarkdownEditor'
 import { FrontmatterEditor } from '@/components/ui/FrontmatterEditor'
 import { ImageUpload } from '@/components/ui/ImageUpload'
+import { GitHubConnectionTest } from '@/components/ui/GitHubConnectionTest'
 
 function AdminDashboard() {
   const { user, logout } = useAuth()
-  const [activeTab, setActiveTab] = useState<'posts' | 'new' | 'images'>('posts')
+  const [activeTab, setActiveTab] = useState<'posts' | 'new' | 'images' | 'github'>('posts')
   const [posts] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -89,6 +90,7 @@ function AdminDashboard() {
     { id: 'posts', label: '投稿一覧' },
     { id: 'new', label: '新規投稿' },
     { id: 'images', label: '画像管理' },
+    { id: 'github', label: 'GitHub連携' },
   ]
 
   return (
@@ -189,6 +191,15 @@ function AdminDashboard() {
                 onUpload={handleImageUpload}
                 onError={(error) => alert(`エラー: ${error}`)}
               />
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'github' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900">GitHub連携テスト</h2>
+            <div className="bg-white rounded-lg shadow p-6">
+              <GitHubConnectionTest />
             </div>
           </div>
         )}

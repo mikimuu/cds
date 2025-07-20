@@ -178,7 +178,6 @@ export async function getBlogPostsFromGitHub(
 
         return createBlogPostFromMDX(mdxFile, githubInfo)
       } catch (error) {
-        console.error(`Error processing file ${file.path}:`, error)
         return null
       }
     })
@@ -197,7 +196,6 @@ export async function getBlogPostsFromGitHub(
 
     return validPosts
   } catch (error) {
-    console.error('Error fetching blog posts from GitHub:', error)
     throw new Error('ブログポストの取得に失敗しました')
   }
 }
@@ -229,7 +227,6 @@ export async function getBlogPostFromGitHub(
 
     return createBlogPostFromMDX(mdxFile, githubInfo)
   } catch (error) {
-    console.error(`Error fetching blog post ${slug}:`, error)
     return null
   }
 }

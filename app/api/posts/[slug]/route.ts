@@ -41,7 +41,6 @@ export async function GET(
 
     return createSuccessResponse(post, 'ブログポストを取得しました')
   } catch (error) {
-    console.error(`Error fetching blog post ${params.slug}:`, error)
     return createErrorResponse(500, 'ブログポストの取得に失敗しました')
   }
 }
@@ -87,7 +86,6 @@ export const PUT = requireAuth(async (
       'ブログポストを更新しました'
     )
   } catch (error) {
-    console.error(`Error updating blog post:`, error)
     
     if (error instanceof Error) {
       return createErrorResponse(400, error.message)
@@ -127,7 +125,6 @@ export const DELETE = requireAuth(async (
       'ブログポストを削除しました'
     )
   } catch (error) {
-    console.error(`Error deleting blog post:`, error)
     
     if (error instanceof Error) {
       return createErrorResponse(400, error.message)

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import Image from 'next/image'
 import Button from './Button'
 
 interface ImageUploadProps {
@@ -29,7 +30,7 @@ export function ImageUpload({
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([])
 
   // ファイル検証
-  const validateFile = (file: File): string | null => {
+  const validateFile = useCallback((file: File): string | null => {
     if (!acceptedFormats.includes(file.type)) {
       return `サポートされていないファイル形式です。${acceptedFormats.join(', ')}のみ対応しています。`
     }
@@ -39,14 +40,14 @@ export function ImageUpload({
     }
     
     return null
-  }
+  }, [acceptedFormats, maxFileSize])
 
   // 画像圧縮（クライアントサイド）
   const compressImage = (file: File, quality: number = 0.8): Promise<Blob> => {
     return new Promise((resolve) => {
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
-      const img = new Image()
+      const img = new window.Image()
       
       img.onload = () => {
         // 最大サイズを設定（1920x1080）
@@ -125,7 +126,7 @@ export function ImageUpload({
         onError?.(error instanceof Error ? error.message : 'アップロードに失敗しました')
       }
     }
-  }, [onUpload, onError, maxFileSize, acceptedFormats])
+  }, [onUpload, onError, validateFile])
 
   // ドラッグ&ドロップハンドラー
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -231,9 +232,11 @@ export function ImageUpload({
               >
                 <div className="flex items-center space-x-3">
                   {image.url && (
-                    <img
+                    <Image
                       src={image.url}
                       alt={image.file.name}
+                      width={40}
+                      height={40}
                       className="h-10 w-10 rounded object-cover"
                     />
                   )}

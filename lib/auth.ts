@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { SignOptions } from 'jsonwebtoken'
 import { NextRequest } from 'next/server'
 
 export interface AuthUser {
@@ -55,9 +55,8 @@ export function generateToken(username: string): string {
   
   const payload = { username }
   const secret = config.jwtSecret
-  const options = { expiresIn: config.tokenExpiry }
   
-  return jwt.sign(payload, secret, options)
+  return jwt.sign(payload, secret, { expiresIn: '24h' })
 }
 
 /**
@@ -67,10 +66,7 @@ export function verifyToken(token: string): AuthUser | null {
   try {
     const config = getAuthConfig()
     
-    const decoded = jwt.verify(token, config.jwtSecret, {
-      issuer: 'cosmic-dance-blog',
-      audience: 'admin'
-    }) as AuthUser
+    const decoded = jwt.verify(token, config.jwtSecret) as AuthUser
 
     return decoded
   } catch (error) {
