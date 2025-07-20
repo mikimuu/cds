@@ -1,40 +1,63 @@
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
-
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  pageExtensions: ['js', 'jsx', 'md', 'mdx'],
-  eslint: {
-    dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
+  // Next.js 14 App Router configuration
+  experimental: {
+    mdxRs: true,
   },
+  
+  // MDX configuration
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  
+  // Image optimization
+  images: {
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [320, 420, 768, 1024, 1200],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+  
+  // Custom webpack configuration
+  webpack: (config, { dev, isServer }) => {
+    // Next.js 14 handles optimization automatically
+    // Custom configurations can be added here if needed
+    
+    return config
+  },
+  
+  // Performance optimizations
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
+  
+  // TypeScript configuration
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  
+  // ESLint configuration
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  
+  // Security headers
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: '/(.*)',
         headers: [
           {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' *.google-analytics.com *.googletagmanager.com",
-              "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: https: blob: *.google-analytics.com",
-              "font-src 'self' data:",
-              "frame-src 'self' https: *.spotify.com *.youtube.com *.google.com *.music.apple.com",
-              "connect-src 'self' *.google-analytics.com *.doubleclick.net *.generativelanguage.googleapis.com",
-              "media-src 'self' https:",
-              "worker-src 'self' blob:",
-              "child-src 'self' blob:",
-            ].join('; '),
+            key: 'X-Frame-Options',
+            value: 'DENY',
           },
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
           },
           {
             key: 'X-XSS-Protection',
@@ -44,50 +67,6 @@ const nextConfig = {
       },
     ]
   },
-  webpack: (config, { dev, isServer }) => {
-    // Shader files loader
-    config.module.rules.push({
-      test: /\.(glsl|vs|fs|vert|frag)$/,
-      exclude: /node_modules/,
-      use: ['raw-loader'],
-    })
-
-    // MDX optimization
-    config.module.rules.push({
-      test: /\.mdx?$/,
-      use: [
-        {
-          loader: '@mdx-js/loader',
-          options: {
-            providerImportSource: '@mdx-js/react',
-            // Remove direct requires of ESM modules
-            remarkPlugins: [],
-            rehypePlugins: [],
-          },
-        },
-      ],
-    })
-
-    if (!dev && !isServer) {
-      // Preact in production
-      Object.assign(config.resolve.alias, {
-        'react/jsx-runtime.js': 'preact/compat/jsx-runtime',
-        react: 'preact/compat',
-        'react-dom/test-utils': 'preact/test-utils',
-        'react-dom': 'preact/compat',
-      })
-
-      // Additional production optimizations
-      config.optimization = {
-        ...config.optimization,
-        moduleIds: 'deterministic',
-        innerGraph: true,
-        concatenateModules: true,
-      }
-    }
-
-    return config
-  },
 }
 
-module.exports = withBundleAnalyzer(nextConfig)
+module.exports = nextConfig

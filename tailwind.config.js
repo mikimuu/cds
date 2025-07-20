@@ -1,365 +1,180 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
-
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './pages/**/*.js',
-    './components/**/*.js',
-    './layouts/**/*.js',
-    './lib/**/*.js',
-    './data/**/*.mdx',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx}',
   ],
-  darkMode: 'class',
   theme: {
     extend: {
-      // 🎨 モダンカラーシステム
-      colors: {
-        // Primary Brand Colors
-        sapphire: {
-          50: '#EFF6FF',
-          100: '#DBEAFE', 
-          200: '#BFDBFE',
-          300: '#93C5FD',
-          400: '#60A5FA',
-          500: '#3B82F6',
-          600: '#1E40AF', // Primary
-          700: '#1E3A8A',
-          800: '#1E3A8A',
-          900: '#1E2E7A',
-        },
-        amber: {
-          50: '#FFFBEB',
-          100: '#FEF3C7',
-          200: '#FDE68A', 
-          300: '#FCD34D',
-          400: '#FBBF24',
-          500: '#F59E0B', // Secondary
-          600: '#D97706',
-          700: '#B45309',
-          800: '#92400E',
-          900: '#78350F',
-        },
-        teal: {
-          50: '#F0FDFA',
-          100: '#CCFBF1',
-          200: '#99F6E4',
-          300: '#5EEAD4',
-          400: '#2DD4BF',
-          500: '#06B6D4', // Accent
-          600: '#0891B2',
-          700: '#0E7490',
-          800: '#155E75',
-          900: '#164E63',
-        },
-        // Sophisticated Neutrals
-        stone: {
-          50: '#FAFAF9',
-          100: '#F5F5F4',
-          200: '#E7E5E4',
-          300: '#D6D3D1',
-          400: '#A8A29E',
-          500: '#78716C',
-          600: '#57534E',
-          700: '#44403C',
-          800: '#292524',
-          900: '#1C1917',
-        },
-        // Warm Backgrounds
-        cream: {
-          50: '#FEFCE8',
-          100: '#FEF9C3',
-          200: '#FEF08A',
-          300: '#FDE047',
-          400: '#FACC15',
-          500: '#EAB308',
-          600: '#CA8A04',
-          700: '#A16207',
-          800: '#854D0E',
-          900: '#713F12',
-        }
-      },
-
-      // 🔤 佐藤可士和レベル：タイポグラフィシステム
+      // 日本語最適化フォントファミリー - Phase 2強化
       fontFamily: {
-        // Primary Sans - 最高品質のサンセリフ
-        sans: ['DM Sans', 'M PLUS 1p', '-apple-system', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', ...defaultTheme.fontFamily.sans],
-        // Display Fonts - ヒーロー・見出し用
-        display: ['Space Grotesk', 'M PLUS 1p', 'sans-serif'],
-        // Japanese Primary - 日本語最適化
-        japanese: ['M PLUS 1p', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'sans-serif'],
-        // Serif - 特別な場面用
-        serif: ['Crimson Text', 'Times New Roman', ...defaultTheme.fontFamily.serif],
-        // Monospace - コード・技術的要素用
-        mono: ['Space Mono', 'Menlo', 'Monaco', 'monospace'],
+        sans: [
+          'M PLUS 1p',
+          'Noto Sans JP',
+          'Hiragino Kaku Gothic ProN',
+          'Yu Gothic',
+          'YuGothic',
+          'Meiryo',
+          'system-ui',
+          'sans-serif',
+        ],
+        serif: [
+          'Noto Serif JP',
+          'Hiragino Mincho ProN',
+          'Yu Mincho',
+          'YuMincho',
+          'HG Mincho E',
+          'MS PMincho',
+          'serif',
+        ],
+        display: [
+          'M PLUS 1p',
+          'Noto Sans JP',
+          'Space Grotesk',
+          'system-ui',
+          'sans-serif',
+        ],
+        body: [
+          'M PLUS 1p',
+          'Noto Sans JP',
+          'Hiragino Kaku Gothic ProN',
+          'system-ui',
+          'sans-serif',
+        ],
+        mono: [
+          'JetBrains Mono',
+          'Fira Code',
+          'Consolas',
+          'Monaco',
+          'Andale Mono',
+          'Ubuntu Mono',
+          'monospace',
+        ],
       },
+      
+      // レスポンシブタイポグラフィスケール - Phase 2精密化
       fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1rem' }],
-        'sm': ['0.875rem', { lineHeight: '1.25rem' }],
-        'base': ['1rem', { lineHeight: '1.5rem' }],
-        'lg': ['1.125rem', { lineHeight: '1.75rem' }],
-        'xl': ['1.25rem', { lineHeight: '1.75rem' }],
-        '2xl': ['1.5rem', { lineHeight: '2rem' }],
-        '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
-        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
-        '5xl': ['3rem', { lineHeight: '1.16' }],
-        '6xl': ['3.75rem', { lineHeight: '1.16' }],
-        '7xl': ['4.5rem', { lineHeight: '1.16' }],
-        '8xl': ['6rem', { lineHeight: '1.16' }],
-        '9xl': ['8rem', { lineHeight: '1.16' }],
-        'display': ['5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
-        'display-lg': ['6rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        // ディスプレイサイズ（ヒーロー、メインタイトル用）
+        'display': ['clamp(3rem, 8vw, 6rem)', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        'display-sm': ['clamp(2.5rem, 6vw, 4rem)', { lineHeight: '1.15', letterSpacing: '-0.015em' }],
+        
+        // 見出しサイズ（記事タイトル、セクション見出し用）
+        'heading-1': ['clamp(2rem, 5vw, 3.5rem)', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
+        'heading-2': ['clamp(1.5rem, 4vw, 2.5rem)', { lineHeight: '1.3', letterSpacing: '-0.005em' }],
+        'heading-3': ['clamp(1.25rem, 3vw, 2rem)', { lineHeight: '1.4', letterSpacing: '0' }],
+        'heading-4': ['clamp(1.125rem, 2.5vw, 1.5rem)', { lineHeight: '1.45', letterSpacing: '0' }],
+        'heading-5': ['clamp(1rem, 2vw, 1.25rem)', { lineHeight: '1.5', letterSpacing: '0.01em' }],
+        'heading-6': ['clamp(0.9rem, 1.5vw, 1.125rem)', { lineHeight: '1.55', letterSpacing: '0.015em' }],
+        
+        // 本文サイズ（記事コンテンツ用）
+        'body-xl': ['1.25rem', { lineHeight: '1.8', letterSpacing: '0.02em' }], // 20px
+        'body-lg': ['1.125rem', { lineHeight: '1.9', letterSpacing: '0.05em' }], // 18px - 日本語最適化
+        'body': ['1rem', { lineHeight: '1.9', letterSpacing: '0.05em' }],       // 16px - 日本語最適化
+        'body-sm': ['0.9375rem', { lineHeight: '1.8', letterSpacing: '0.04em' }], // 15px
+        
+        // キャプション・メタ情報用
+        'caption': ['0.875rem', { lineHeight: '1.7', letterSpacing: '0.025em' }], // 14px
+        'caption-sm': ['0.8125rem', { lineHeight: '1.6', letterSpacing: '0.02em' }], // 13px
+        'micro': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.015em' }], // 12px
       },
-
-      // 🏠 スペーシングシステム
+      
+      // 日本語最適化行間 - Phase 2拡張
+      lineHeight: {
+        'japanese': '1.9',      // 日本語標準
+        'japanese-tight': '1.75', // 日本語タイト
+        'japanese-loose': '2.1',  // 日本語ルーズ
+        'english': '1.6',       // 英語標準
+        'english-tight': '1.4',  // 英語タイト
+        'english-loose': '1.8',  // 英語ルーズ
+        'mixed': '1.8',         // 日英混在
+        'editorial': '1.85',    // エディトリアル
+        'display': '1.1',       // ディスプレイ
+        'heading': '1.25',      // 見出し
+      },
+      
+      // 文字間隔 - Phase 2拡張
+      letterSpacing: {
+        'japanese': '0.05em',     // 日本語標準
+        'japanese-wide': '0.08em', // 日本語ワイド
+        'japanese-narrow': '0.02em', // 日本語ナロー
+        'english': '0',           // 英語標準
+        'english-tight': '-0.01em', // 英語タイト
+        'english-wide': '0.025em',  // 英語ワイド
+        'display-tight': '-0.02em', // ディスプレイタイト
+        'heading-tight': '-0.01em', // 見出しタイト
+        'body-optimal': '0.05em',   // 本文最適化
+      },
+      
+      // エディトリアルカラーパレット
+      colors: {
+        primary: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
+        },
+        accent: {
+          editorial: '#2563eb',
+          highlight: '#f59e0b',
+          success: '#10b981',
+          warning: '#f59e0b',
+          error: '#ef4444',
+        },
+        typography: {
+          primary: '#1e293b',
+          secondary: '#64748b',
+          muted: '#94a3b8',
+          inverse: '#f8fafc',
+        },
+      },
+      
+      // エディトリアルスペーシング
       spacing: {
         '18': '4.5rem',
         '88': '22rem',
         '128': '32rem',
-        '144': '36rem',
       },
-
-      // 🌈 グラデーション
-      backgroundImage: {
-        'gradient-brand': 'linear-gradient(135deg, #1E40AF 0%, #06B6D4 100%)',
-        'gradient-warm': 'linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)',
-        'gradient-cool': 'linear-gradient(135deg, #06B6D4 0%, #8B5CF6 100%)',
-        'gradient-subtle': 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
-        'mesh-gradient': 'radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0px, transparent 50%)',
+      
+      // 読書最適化
+      maxWidth: {
+        'reading': '65ch',
+        'prose': '75ch',
       },
-
-      // 🎭 アニメーション
+      
+      // グリッドシステム
+      gridTemplateColumns: {
+        'editorial': 'minmax(1rem, 1fr) minmax(0, 65ch) minmax(1rem, 1fr)',
+        'editorial-wide': 'minmax(1rem, 1fr) minmax(0, 75ch) minmax(1rem, 1fr)',
+      },
+      
+      // アニメーション
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+      },
+      
       keyframes: {
-        // Micro-interactions
-        'bounce-soft': {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-2px)' },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
-        'pulse-soft': {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '.8' },
-        },
-        'slide-up': {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
-        'slide-in-right': {
-          '0%': { transform: 'translateX(10px)', opacity: '0' },
-          '100%': { transform: 'translateX(0)', opacity: '1' },
-        },
-        'scale-in': {
-          '0%': { transform: 'scale(0.95)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-        'gradient-xy': {
-          '0%, 100%': { 'background-position': '0% 0%' },
-          '50%': { 'background-position': '100% 100%' },
-        },
-        'float': {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-4px)' },
-        },
-        'shimmer': {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' },
-        }
-      },
-      animation: {
-        'bounce-soft': 'bounce-soft 1s ease-in-out infinite',
-        'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
-        'slide-up': 'slide-up 0.5s ease-out',
-        'slide-in-right': 'slide-in-right 0.5s ease-out',
-        'scale-in': 'scale-in 0.3s ease-out',
-        'gradient-xy': 'gradient-xy 3s ease infinite',
-        'float': 'float 3s ease-in-out infinite',
-        'shimmer': 'shimmer 1.5s ease-in-out infinite',
-      },
-
-      // 🎨 ボックスシャドウ (レイヤードデザイン用)
-      boxShadow: {
-        'soft': '0 2px 15px 0 rgba(0, 0, 0, 0.04)',
-        'medium': '0 4px 25px 0 rgba(0, 0, 0, 0.08)',
-        'large': '0 8px 50px 0 rgba(0, 0, 0, 0.12)',
-        'colored-brand': '0 8px 25px 0 rgba(30, 64, 175, 0.15)',
-        'colored-amber': '0 8px 25px 0 rgba(245, 158, 11, 0.15)',
-        'colored-teal': '0 8px 25px 0 rgba(6, 182, 212, 0.15)',
-        'inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.04)',
-        'glow-brand': '0 0 20px rgba(30, 64, 175, 0.3)',
-        'glow-amber': '0 0 20px rgba(245, 158, 11, 0.3)',
-        'glow-teal': '0 0 20px rgba(6, 182, 212, 0.3)',
-      },
-
-      // 📐 ボーダーラディウス
-      borderRadius: {
-        '4xl': '2rem',
-        '5xl': '2.5rem',
-      },
-
-      // 🎯 ブラー効果
-      backdropBlur: {
-        '4xl': '72px',
-      },
-
-      // 📱 レスポンシブブレークポイント
-      screens: {
-        'xs': '475px',
-        '3xl': '1600px',
       },
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    require('tailwindcss/plugin')(({ addUtilities, addComponents, theme }) => {
-      
-      // カスタムユーティリティ
-      addUtilities({
-        '.text-gradient-brand': {
-          'background': 'linear-gradient(135deg, #1E40AF, #06B6D4)',
-          'background-clip': 'text',
-          '-webkit-background-clip': 'text',
-          '-webkit-text-fill-color': 'transparent',
-        },
-        '.text-gradient-warm': {
-          'background': 'linear-gradient(135deg, #F59E0B, #EF4444)',
-          'background-clip': 'text',
-          '-webkit-background-clip': 'text',
-          '-webkit-text-fill-color': 'transparent',
-        },
-        '.scrollbar-none': {
-          /* Hide scrollbar for Chrome, Safari and Opera */
-          '&::-webkit-scrollbar': {
-            'display': 'none',
-          },
-          /* Hide scrollbar for IE, Edge and Firefox */
-          '-ms-overflow-style': 'none',
-          'scrollbar-width': 'none',
-        },
-      });
-
-      // モダンコンポーネント
-      addComponents({
-        // Glass Morphism
-        '.glass': {
-          'background': 'rgba(255, 255, 255, 0.1)',
-          'backdrop-filter': 'blur(10px)',
-          'border': '1px solid rgba(255, 255, 255, 0.2)',
-        },
-        '.glass-dark': {
-          'background': 'rgba(0, 0, 0, 0.1)',
-          'backdrop-filter': 'blur(10px)',
-          'border': '1px solid rgba(255, 255, 255, 0.1)',
-        },
-        
-        // Modern Cards
-        '.card-modern': {
-          'background': 'white',
-          'border-radius': '1rem',
-          'box-shadow': '0 4px 25px 0 rgba(0, 0, 0, 0.08)',
-          'transition': 'all 0.3s ease',
-          '&:hover': {
-            'transform': 'translateY(-2px)',
-            'box-shadow': '0 8px 50px 0 rgba(0, 0, 0, 0.12)',
-          }
-        },
-        '.card-modern-dark': {
-          'background': '#1F2937',
-          'border': '1px solid #374151',
-          'border-radius': '1rem',
-          'box-shadow': '0 4px 25px 0 rgba(0, 0, 0, 0.3)',
-          'transition': 'all 0.3s ease',
-          '&:hover': {
-            'transform': 'translateY(-2px)',
-            'box-shadow': '0 8px 50px 0 rgba(0, 0, 0, 0.4)',
-          }
-        },
-
-        // Buttons
-        '.btn-primary': {
-          'background': 'linear-gradient(135deg, #1E40AF, #06B6D4)',
-          'color': 'white',
-          'padding': '0.75rem 1.5rem',
-          'border-radius': '0.75rem',
-          'font-weight': '600',
-          'transition': 'all 0.3s ease',
-          'border': 'none',
-          '&:hover': {
-            'transform': 'translateY(-1px)',
-            'box-shadow': '0 8px 25px 0 rgba(30, 64, 175, 0.25)',
-          },
-          '&:active': {
-            'transform': 'translateY(0)',
-          }
-        },
-        '.btn-secondary': {
-          'background': 'white',
-          'color': '#1E40AF',
-          'padding': '0.75rem 1.5rem',
-          'border-radius': '0.75rem',
-          'font-weight': '600',
-          'border': '2px solid #1E40AF',
-          'transition': 'all 0.3s ease',
-          '&:hover': {
-            'background': '#1E40AF',
-            'color': 'white',
-            'transform': 'translateY(-1px)',
-          }
-        },
-
-        // Layout Components
-        '.container-modern': {
-          'max-width': '1200px',
-          'margin': '0 auto',
-          'padding': '0 1.5rem',
-          '@media (min-width: 640px)': {
-            'padding': '0 2rem',
-          },
-          '@media (min-width: 1024px)': {
-            'padding': '0 3rem',
-          },
-        },
-
-        // Typography
-        '.text-display': {
-          'font-size': '5rem',
-          'line-height': '1.1',
-          'letter-spacing': '-0.02em',
-          'font-weight': '700',
-          '@media (max-width: 768px)': {
-            'font-size': '3rem',
-          }
-        },
-        '.text-heading': {
-          'font-size': '3rem',
-          'line-height': '1.2',
-          'font-weight': '700',
-          'letter-spacing': '-0.01em',
-          '@media (max-width: 768px)': {
-            'font-size': '2rem',
-          }
-        },
-        '.text-body-large': {
-          'font-size': '1.125rem',
-          'line-height': '1.75',
-          'color': '#6B7280',
-        },
-
-        // Modern Scrollbar
-        '.scrollbar-modern': {
-          '&::-webkit-scrollbar': {
-            'width': '6px',
-          },
-          '&::-webkit-scrollbar-track': {
-            'background': '#F3F4F6',
-            'border-radius': '3px',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            'background': 'linear-gradient(135deg, #1E40AF, #06B6D4)',
-            'border-radius': '3px',
-          },
-          '&::-webkit-scrollbar-thumb:hover': {
-            'background': 'linear-gradient(135deg, #1E3A8A, #0891B2)',
-          },
-        },
-      });
-    }),
   ],
 }

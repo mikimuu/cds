@@ -1,0 +1,275 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 日本語フォント最適化 - サブセッティングとプリロード */
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@300;400;500;700&display=swap&subset=japanese');
+
+/* 追加フォント - エディトリアル用 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap&subset=japanese');
+
+/* フォントプリロード最適化 */
+@font-face {
+  font-family: 'M PLUS 1p';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('M PLUS 1p Regular'), local('MPLUS1p-Regular');
+  unicode-range: U+3040-309F, U+30A0-30FF, U+4E00-9FAF, U+0020-007E;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: "palt" 1;
+  }
+  
+  body {
+    @apply font-sans text-typography-primary bg-white leading-japanese;
+    font-feature-settings: "palt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* 日本語テキスト最適化 - Phase 2拡張 */
+  :lang(ja) {
+    @apply leading-japanese tracking-japanese;
+    font-feature-settings: "palt" 1, "kern" 1;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* 英語テキスト最適化 */
+  :lang(en) {
+    @apply leading-english tracking-english;
+    font-feature-settings: "kern" 1, "liga" 1, "clig" 1;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* 日英混在テキスト最適化 */
+  .text-mixed-lang {
+    @apply leading-mixed tracking-body-optimal;
+    font-feature-settings: "palt" 1, "kern" 1, "liga" 1;
+    text-rendering: optimizeLegibility;
+    hanging-punctuation: first last;
+  }
+  
+  /* 日本語文字の自動調整 */
+  .text-japanese-auto {
+    text-emphasis: none;
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    font-kerning: auto;
+    font-variant-east-asian: proportional-width;
+  }
+  
+  /* 英数字の日本語内最適化 */
+  .text-alphanumeric-in-japanese {
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+}
+
+@layer components {
+  /* エディトリアルタイポグラフィ - Phase 2強化 */
+  .typography-display {
+    @apply text-display font-display font-bold text-mixed-lang;
+  }
+  
+  .typography-display-sm {
+    @apply text-display-sm font-display font-bold text-mixed-lang;
+  }
+  
+  .typography-h1 {
+    @apply text-heading-1 font-sans font-bold text-mixed-lang;
+  }
+  
+  .typography-h2 {
+    @apply text-heading-2 font-sans font-semibold text-mixed-lang;
+  }
+  
+  .typography-h3 {
+    @apply text-heading-3 font-sans font-medium text-mixed-lang;
+  }
+  
+  .typography-h4 {
+    @apply text-heading-4 font-sans font-medium text-mixed-lang;
+  }
+  
+  .typography-h5 {
+    @apply text-heading-5 font-sans font-medium text-mixed-lang;
+  }
+  
+  .typography-h6 {
+    @apply text-heading-6 font-sans font-medium text-mixed-lang;
+  }
+  
+  .typography-body-xl {
+    @apply text-body-xl font-body text-mixed-lang;
+  }
+  
+  .typography-body-lg {
+    @apply text-body-lg font-body text-mixed-lang;
+  }
+  
+  .typography-body {
+    @apply text-body font-body text-mixed-lang;
+  }
+  
+  .typography-body-sm {
+    @apply text-body-sm font-body text-mixed-lang;
+  }
+  
+  .typography-caption {
+    @apply text-caption font-body text-typography-secondary text-mixed-lang;
+  }
+  
+  .typography-caption-sm {
+    @apply text-caption-sm font-body text-typography-muted text-mixed-lang;
+  }
+  
+  .typography-micro {
+    @apply text-micro font-body text-typography-muted text-mixed-lang;
+  }
+  
+  /* レイアウトコンテナ - Phase 2読書体験最適化 */
+  .container-editorial {
+    @apply mx-auto max-w-reading px-4 sm:px-6 lg:px-8;
+    /* 垂直リズム基準 */
+    line-height: 1.5rem; /* 24px ベースライン */
+  }
+  
+  .container-wide {
+    @apply mx-auto max-w-prose px-4 sm:px-6 lg:px-8;
+  }
+  
+  .container-narrow {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 55ch; /* 狭い幅のテキスト用 */
+  }
+  
+  .container-ultra-wide {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 85ch; /* 広い幅のコンテンツ用 */
+  }
+  
+  /* プロースタイリング - Phase 2読書体験最適化 */
+  .prose-editorial {
+    @apply prose prose-lg prose-slate max-w-none text-mixed-lang;
+    @apply prose-headings:font-semibold prose-headings:text-mixed-lang;
+    @apply prose-p:text-mixed-lang;
+    @apply prose-a:text-accent-editorial prose-a:no-underline hover:prose-a:underline prose-a:transition-colors;
+    @apply prose-strong:font-semibold prose-strong:text-typography-primary;
+    @apply prose-em:text-typography-primary prose-em:not-italic;
+    @apply prose-code:text-accent-editorial prose-code:bg-primary-50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:font-mono;
+    @apply prose-pre:bg-primary-900 prose-pre:text-primary-50 prose-pre:font-mono;
+    @apply prose-blockquote:border-l-accent-editorial prose-blockquote:text-typography-secondary prose-blockquote:font-medium;
+    @apply prose-ul:list-disc prose-ol:list-decimal;
+    @apply prose-li:text-mixed-lang prose-li:leading-editorial;
+    
+    /* 垂直リズム最適化 */
+    --tw-prose-body: theme('colors.typography.primary');
+    --tw-prose-headings: theme('colors.typography.primary');
+    --tw-prose-lead: theme('colors.typography.secondary');
+    --tw-prose-links: theme('colors.accent.editorial');
+    --tw-prose-bold: theme('colors.typography.primary');
+    --tw-prose-counters: theme('colors.typography.muted');
+    --tw-prose-bullets: theme('colors.typography.muted');
+    --tw-prose-hr: theme('colors.primary.200');
+    --tw-prose-quotes: theme('colors.typography.primary');
+    --tw-prose-quote-borders: theme('colors.primary.200');
+    --tw-prose-captions: theme('colors.typography.secondary');
+    
+    /* 読書体験向上 */
+    hyphens: auto;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* 特別なプローススタイル */
+  .prose-reading-optimized {
+    @apply prose-editorial;
+    max-width: 65ch;
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.9;
+    letter-spacing: 0.05em;
+  }
+  
+  .prose-compact {
+    @apply prose prose-sm prose-slate max-w-none text-mixed-lang;
+    max-width: 55ch;
+  }
+}
+
+@layer utilities {
+  /* アニメーション */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  /* フォーカススタイル */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-accent-editorial focus:ring-offset-2;
+  }
+  
+  /* 読書体験最適化 - Phase 2拡張 */
+  .reading-flow {
+    @apply space-y-6 text-mixed-lang;
+  }
+  
+  .reading-rhythm {
+    /* 垂直リズム - 24px ベースライン */
+    margin-bottom: 1.5rem;
+    line-height: 1.5rem;
+  }
+  
+  .reading-rhythm-sm {
+    /* 小さな垂直リズム - 20px ベースライン */
+    margin-bottom: 1.25rem;
+    line-height: 1.25rem;
+  }
+  
+  .reading-rhythm-lg {
+    /* 大きな垂直リズム - 32px ベースライン */
+    margin-bottom: 2rem;
+    line-height: 2rem;
+  }
+  
+  /* テキスト最適化ユーティリティ */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  
+  .text-hanging-punctuation {
+    hanging-punctuation: first last;
+  }
+  
+  /* 読みやすさ向上 */
+  .content-optimized {
+    @apply text-mixed-lang reading-flow;
+    max-width: 65ch;
+    hyphens: auto;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* 段落スペーシング */
+  .paragraph-spacing-comfortable {
+    @apply space-y-6;
+  }
+  
+  .paragraph-spacing-tight {
+    @apply space-y-4;
+  }
+  
+  .paragraph-spacing-loose {
+    @apply space-y-8;
+  }
+}
